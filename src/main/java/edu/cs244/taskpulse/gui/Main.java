@@ -7,6 +7,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		LoginScreen loginScreen = new LoginScreen();
+		// Profile Settings Window GUI
+		ProfileSettings profileSettings = new ProfileSettings();
 		loginScreen.start(primaryStage);
 	}
 
