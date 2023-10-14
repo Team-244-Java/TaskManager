@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #AFB9FF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #52535C;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="800.0" fitWidth="654.0">
+               <image>
+                  <Image url="@../../../../../Downloads/LogoLogin.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane fx:id="userZipCode" prefHeight="800.0" prefWidth="629.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="PasswordLabel" layoutX="10.0" layoutY="404.0" text="Password">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="UsernameLabel" layoutX="7.0" layoutY="271.0" text="Username">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Label>
+            <TextField fx:id="username" layoutX="164.0" layoutY="268.0" prefHeight="45.0" prefWidth="300.0" promptText="Username" />
+            <PasswordField fx:id="password" layoutX="164.0" layoutY="400.0" prefHeight="47.0" prefWidth="299.0" promptText="Password" />
+            <Label fx:id="loginErrorAnnouncement" layoutX="178.0" layoutY="337.0">
+               <font>
+                  <Font name="System Bold Italic" size="27.0" />
+               </font>
+            </Label>
+            <Button fx:id="RegisterButtonFinalize" layoutX="264.0" layoutY="543.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="99.0" text="Register" />
+            <Label fx:id="EmailLabel" layoutX="14.0" layoutY="337.0" text="Email">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Label>
+            <TextField fx:id="userEmail" layoutX="164.0" layoutY="334.0" prefHeight="45.0" prefWidth="300.0" promptText="Email" />
+            <TextField fx:id="username1" layoutX="164.0" layoutY="465.0" prefHeight="45.0" prefWidth="300.0" promptText="Enter Zip Code" />
+            <Label fx:id="userZipCodeLabel" layoutX="15.0" layoutY="468.0" text="Zip Code">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
