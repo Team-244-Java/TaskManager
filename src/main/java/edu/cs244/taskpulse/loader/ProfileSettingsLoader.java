@@ -1,17 +1,16 @@
-package edu.cs244.taskpulse.gui;
+package edu.cs244.taskpulse.loader;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 
-public class ProfileSettings {
+public class ProfileSettingsLoader {
 	
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("profile_settings.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/ProfileSetting.fxml"));
 			primaryStage.setTitle("Profile Settings");
 			primaryStage.setScene(new Scene(root, 1220, 740));
 			primaryStage.show();

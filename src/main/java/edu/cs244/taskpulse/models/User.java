@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.Hasher;
 
 public class User {
 
@@ -25,7 +24,7 @@ public class User {
 	// Parameterized constructor
 	public User(String username, String password, String email) {
 		this.username = username;
-		this.hashedPassword = hashPassword(password); // Placeholder for hashing logic
+		this.hashedPassword = Hasher.getSHA(password); // Placeholder for hashing logic
 		this.email = email;
 	}
 
@@ -56,7 +55,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.hashedPassword = hashPassword(password); // Hashing the password before storing
+		this.hashedPassword = Hasher.getSHA(password); // Hashing the password before storing
 	}
 
 	public void setEmail(String email) {
@@ -69,7 +68,7 @@ public class User {
 	public boolean register() {
 		Connection connection = null;
 		String checkUserQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
-		String insertUserQuery = "INSERT INTO users (username, hashedPassword, email) VALUES (?, ?, ?)";
+		String insertUserQuery = "INSERT INTO users (username, hashed_password, email) VALUES (?, ?, ?)";
 
 		try {
 			connection = DatabaseHandler.getConnection();
@@ -129,68 +128,62 @@ public class User {
 
 	// Login method for the user
 	public static boolean login(String inputUsername, String inputPassword) {
-		 Connection connection = null;
-		    PreparedStatement stmt = null;
-		    ResultSet rs = null;
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 
-		    try {
-		        connection = DatabaseHandler.getConnection();
+		try {
+			connection = DatabaseHandler.getConnection();
 
-		        // 1. Retrieve the stored hashed password for the given username
-		        String retrieveUserQuery = "SELECT hashedPassword FROM users WHERE username = ?";
-		        stmt = connection.prepareStatement(retrieveUserQuery);
-		        stmt.setString(1, inputUsername);
-		        
-		        rs = stmt.executeQuery();
+			// 1. Retrieve the stored hashed password for the given username
+			String retrieveUserQuery = "SELECT hashed_password FROM users WHERE username = ?";
+			stmt = connection.prepareStatement(retrieveUserQuery);
+			stmt.setString(1, inputUsername);
 
-		        if (rs.next()) {
-		            String storedHashedPassword = rs.getString("hashedPassword");
+			rs = stmt.executeQuery();
 
-		            // 2. Hash the password provided by the user attempting to login
-		            String hashedInputPassword = hashPassword(inputPassword); // This is the same hashPassword method as in the User class
+			if (rs.next()) {
+				String storedHashedPassword = rs.getString("hashed_password");
 
-		            // 3. Compare the two hashes
-		            if(storedHashedPassword.equals(hashedInputPassword)) {
-		                // Successful login
-		                updateLastLogin(connection, inputUsername); // Updating the lastLogin
-		                return true; 
-		            }
-		        }
+				// 2. Hash the password provided by the user attempting to login
+				String hashedInputPassword = Hasher.getSHA(inputPassword); // This is the same hashPassword method as in
+																			// the User class
 
-		        return false; // Username not found or password mismatch
+				// 3. Compare the two hashes
+				if (storedHashedPassword.equals(hashedInputPassword)) {
+					// Successful login
+					updateLastLogin(connection, inputUsername); // Updating the lastLogin
+					return true;
+				}
+			}
 
-		    } catch (SQLException ex) {
-		        ex.printStackTrace(); // Consider using a logging framework
-		        return false;
-		    } finally {
-		        // Close resources
-		        try {
-		            if (rs != null) rs.close();
-		            if (stmt != null) stmt.close();
-		            if (connection != null) connection.close();
-		        } catch (SQLException ex) {
-		            ex.printStackTrace();
-		        }
-		    }
+			return false; // Username not found or password mismatch
+
+		} catch (SQLException ex) {
+			ex.printStackTrace(); // Consider using a logging framework
+			return false;
+		} finally {
+			// Close resources
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
 		}
-
-		// Helper method to update the lastLogin for the user
-		private static void updateLastLogin(Connection connection, String username) throws SQLException {
-		    String updateLastLoginQuery = "UPDATE users SET lastLogin = NOW() WHERE username = ?";
-		    try (PreparedStatement stmt = connection.prepareStatement(updateLastLoginQuery)) {
-		        stmt.setString(1, username);
-		        stmt.executeUpdate();
-		    }
 	}
 
-	// Private utility method to hash a password
-	private static String hashPassword(String password) {
-		// Consider using a library like BCrypt for Java to hash and validate passwords
-		return BCrypt.hashpw(password, BCrypt.gensalt(12));
-	}
-
-	public boolean checkPassword(String enterPassword) {
-		return BCrypt.checkpw(enterPassword, this.hashedPassword);
+	// Helper method to update the lastLogin for the user
+	private static void updateLastLogin(Connection connection, String username) throws SQLException {
+		String updateLastLoginQuery = "UPDATE users SET last_login = NOW() WHERE username = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(updateLastLoginQuery)) {
+			stmt.setString(1, username);
+			stmt.executeUpdate();
+		}
 	}
 
 }
