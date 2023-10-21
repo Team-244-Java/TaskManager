@@ -1,2 +1,12 @@
-*.properties
+# Ignore compiled binary files
+*.class
+
+# Ignore build output
 target/
+
+# Ignore IDE-specific files and directories
+.settings/
+.classpath
+.project
+build/
+out/
