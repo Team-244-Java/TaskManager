@@ -10,18 +10,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="TaskCardAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="TaskCardAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="200.0" style="-fx-background-color: #246B9D; -fx-border-radius: 12px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="-4.0" layoutY="2.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="34.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="TaskCardDateDueLabel" prefHeight="17.0" prefWidth="129.0" text="Date Due:">
+                  <Label fx:id="TaskCardDateDueLabel" prefHeight="17.0" prefWidth="129.0" text="Date Due:" textFill="#0a0000">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="TaskCardDateDisplay" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="60.0" text="Label" textAlignment="RIGHT">
+                  <Label fx:id="TaskCardDateDisplay" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="60.0" text="Label" textAlignment="RIGHT" textFill="#0a0000">
                      <HBox.margin>
                         <Insets right="1.0" />
                      </HBox.margin>
@@ -32,33 +32,36 @@
                <children>
                   <HBox prefHeight="17.0" prefWidth="119.0">
                      <children>
-                        <Label fx:id="TaskCardAssignedBy" text="AssignedBy">
+                        <Label fx:id="TaskCardAssignedBy" text="AssignedBy" textFill="#0a0000">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
-                  <Label fx:id="TaskCardTaskName" text="TaskName">
+                  <Label fx:id="TaskCardTaskName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="80.0" text="TaskName" textFill="#0a0000">
                      <HBox.margin>
                         <Insets right="1.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <TextFlow fx:id="TaskCardTextFlow" prefHeight="200.0" prefWidth="200.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <TextFlow fx:id="TaskCardTextFlow" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a9a9a9;" />
+            <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-border-radius: 8;">
                <children>
-                  <ComboBox fx:id="TaskCardComboBox" prefHeight="25.0" prefWidth="121.0" />
-                  <Button fx:id="TaskCardEditButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="39.0" text="Edit">
+                  <ComboBox fx:id="TaskCardComboBox" opacity="0.6" prefHeight="25.0" prefWidth="121.0" />
+                  <Button fx:id="TaskCardEditButton" mnemonicParsing="false" opacity="0.6" prefHeight="25.0" prefWidth="39.0" text="Edit">
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Button>
-                  <Button fx:id="TaskCardMarkAsCompleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="39.0" text="Done">
+                  <Button fx:id="TaskCardMarkAsCompleteButton" mnemonicParsing="false" opacity="0.6" prefHeight="25.0" prefWidth="39.0" text="Done">
                      <font>
                         <Font size="10.0" />
                      </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </Button>
                </children>
             </HBox>
