@@ -1,6 +1,7 @@
 # Task Manager and Reminder Application
 
-![App Logo](app-logo.png)
+![LoginPageImage](https://github.com/Team-244-Java/TaskManager/assets/146600925/0f5a9861-9bc4-41cf-9e6b-70e1c71dff71)
+
 
 ## Table of Contents
 
