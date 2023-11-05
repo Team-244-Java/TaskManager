@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #B9C1FF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
+   <top>
+      <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="87.0" prefWidth="268.0">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="184.0" text="TASK DIVER" textFill="#fffefe">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <HBox fx:id="searchBar" alignment="CENTER" layoutX="283.0" layoutY="17.0" prefHeight="57.0" prefWidth="313.0" styleClass="searchbar" stylesheets="@../Dashboard.css">
+               <children>
+                  <TextField fx:id="searchBox" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" promptText="Type here for search" styleClass="transparent" stylesheets="@../Dashboard.css">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="searchBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onSearch" prefHeight="30.0" prefWidth="80.0" styleClass="searchBtn" stylesheets="@../Dashboard.css" text="Search" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children></AnchorPane>
+   </top>
+   <left>
+      <FlowPane fx:id="DashboardFlowPaneLeft" prefHeight="743.0" prefWidth="192.0" style="-fx-background-color: #F7F7F2;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardCreateNewTaskButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="235.0" prefWidth="200.0" text="New Task" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="37.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardEditTasksButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="170.0" prefWidth="200.0" text="Edit Task" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="48.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/pencil.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardEditRegistrationButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" text="Edit Profile" textAlignment="CENTER" wrapText="true">
+                     <graphic>
+                        <ImageView fitHeight="48.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardEmailTaskOwnerButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="200.0" text="Email Task " textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/envelop.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardFeatureRequestButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" text="Upload Tasks" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/arrow-up.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="DashboardFeatureRequestButton1" contentDisplay="TOP" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" text="Export Tasks" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/arrow-down.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="60.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="200.0" text="Team Members">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="116.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="150.0" prefWidth="170.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="42.0" prefWidth="144.0" text="Mike S, Developer">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+   </left>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="900.0">
+                     <content>
+                        <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="39.0" prefWidth="43.0">
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>

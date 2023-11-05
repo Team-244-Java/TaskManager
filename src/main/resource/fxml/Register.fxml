@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -7,81 +8,67 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane
-	fx:controller="edu.cs244.taskpulse.controller.RegisterController"
-	maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0"
-	style="-fx-background-color: #AFB9FF;"
-	xmlns="http://javafx.com/javafx/20.0.1"
-	xmlns:fx="http://javafx.com/fxml/1">
-	<left>
-		<AnchorPane prefHeight="200.0" prefWidth="200.0"
-			style="-fx-background-color: #52535C;" BorderPane.alignment="CENTER">
-			<children>
-				<ImageView fitHeight="800.0" fitWidth="654.0">
-					<image>
-						<Image url="/images/LogoLogin.png" />
-					</image>
-				</ImageView>
-			</children>
-		</AnchorPane>
-	</left>
-	<right>
-		<AnchorPane fx:id="userZipCode" prefHeight="800.0"
-			prefWidth="629.0" BorderPane.alignment="CENTER">
-			<children>
-				<Label fx:id="PasswordLabel" layoutX="10.0" layoutY="404.0"
-					text="Password">
-					<font>
-						<Font name="System Bold Italic" size="28.0" />
-					</font>
-				</Label>
-				<Label fx:id="UsernameLabel" layoutX="7.0" layoutY="271.0"
-					text="Username">
-					<font>
-						<Font name="System Bold Italic" size="28.0" />
-					</font>
-				</Label>
-				<Label fx:id="registerErrorAnnouncement" layoutX="164.0"
-					layoutY="220.0">
-					<font>
-						<Font name="System Bold Italic" size="20.0" />
-					</font>
-				</Label>
-				<Label fx:id="EmailLabel" layoutX="14.0" layoutY="337.0"
-					text="Email">
-					<font>
-						<Font name="System Bold Italic" size="28.0" />
-					</font>
-				</Label>
-				<Label fx:id="userZipCodeLabel" layoutX="15.0" layoutY="468.0"
-					text="Zip Code">
-					<font>
-						<Font name="System Bold Italic" size="28.0" />
-					</font>
-				</Label>
-				<TextField fx:id="username" layoutX="164.0"
-					layoutY="268.0" prefHeight="45.0" prefWidth="300.0"
-					promptText="Username" />
-				<TextField fx:id="userEmail" layoutX="164.0"
-					layoutY="334.0" prefHeight="45.0" prefWidth="300.0"
-					promptText="Email" />
-				<PasswordField fx:id="password" layoutX="164.0"
-					layoutY="400.0" prefHeight="47.0" prefWidth="299.0"
-					promptText="Password" />
-				<TextField fx:id="zipcode" layoutX="164.0" layoutY="465.0"
-					prefHeight="45.0" prefWidth="300.0" promptText="Enter Zip Code" />
-				<Button fx:id="RegisterButtonFinalize" layoutX="290.0"
-					layoutY="543.0" mnemonicParsing="false" prefHeight="49.0"
-					prefWidth="99.0" text="Register" onAction="#handleRegistration" />
-				<Button fx:id="LoginButton" layoutX="200.0" layoutY="543.0"
-					mnemonicParsing="false" prefHeight="49.0" prefWidth="99.0"
-					text="Login" onAction="#handleLoginButton" />
-
-			</children>
-		</AnchorPane>
-	</right>
-</BorderPane>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../loginStyle.css" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.RegisterController">
+   <children>
+      <Pane fx:id="content_area" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #246B9D;">
+         <children>
+            <ImageView fitHeight="362.0" fitWidth="348.0" layoutX="76.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/LoginPageImage.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <ImageView fx:id="profileIcon" fitHeight="131.0" fitWidth="167.0" layoutX="717.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/ProfileIcon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="welcomeLabel" layoutX="723.0" layoutY="145.0" text="WELCOME">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="loginErrorAnnouncement" layoutX="663.0" layoutY="186.0" prefHeight="20.0" prefWidth="244.0" textFill="#f40000">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="usernameLabel" layoutX="520.0" layoutY="228.0" prefHeight="36.0" prefWidth="94.0" text="Username">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="username" layoutX="661.0" layoutY="228.0" prefHeight="36.0" prefWidth="244.0" promptText="Username" />
+      <Label fx:id="emailLabel" layoutX="520.0" layoutY="278.0" prefHeight="36.0" prefWidth="94.0" text="Email">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="userEmail" layoutX="661.0" layoutY="278.0" prefHeight="36.0" prefWidth="244.0" promptText="Email" />
+      <Label fx:id="passwordLabel" layoutX="520.0" layoutY="328.0" prefHeight="36.0" prefWidth="94.0" text="Password">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="password" layoutX="661.0" layoutY="328.0" prefHeight="36.0" prefWidth="244.0" promptText="Password" />
+      <Label fx:id="confirmPasswordLabel" layoutX="520.0" layoutY="378.0" prefHeight="36.0" prefWidth="141.0" text="Confirm Password">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="confirmPassword" layoutX="660.0" layoutY="378.0" prefHeight="36.0" prefWidth="244.0" promptText="Confirm Password" />
+      <Button fx:id="registerBtn" layoutX="708.0" layoutY="460.0" mnemonicParsing="false" onAction="#actionRegisterBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Register" textFill="WHITE" />
+      <Button fx:id="returnLoginBtn" layoutX="708.0" layoutY="510.0" mnemonicParsing="false" onAction="#actionReturnLogin" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE" />
+      <FontAwesomeIcon fx:id="closeBtn" glyphName="CLOSE" layoutX="980.0" layoutY="20.0" onMouseClicked="#actionClose" size="1.5em" />
+      <FontAwesomeIcon fx:id="returnLoginArrow" glyphName="ARROW_LEFT" layoutX="512.0" layoutY="20.0" onMouseClicked="#actionReturnLogin" size="1.5em" />
+      <FontAwesomeIcon fx:id="copyright" fill="GREY" glyphName="COPYRIGHT" layoutX="744.0" layoutY="588.0" onMouseClicked="#actionReturnLogin" text="" />
+      <Label layoutX="760.0" layoutY="575.0" text="2023 CIS244" textFill="GREY" />
+      <Label layoutX="940.0" layoutY="585.0" text="version 1.0" textFill="GREY" />
+      <FontAwesomeIcon fx:id="greenCheckIcon" fill="GREEN" glyphName="CHECK" layoutX="882.0" layoutY="250.0" visible="false" />
+      <FontAwesomeIcon fx:id="redFailIcon" fill="RED" glyphName="CLOSE" layoutX="883.0" layoutY="251.0" text="" visible="false" />
+   </children>
+</AnchorPane>

@@ -1,58 +1,93 @@
 package edu.cs244.taskpulse.controller;
 
-import edu.cs244.taskpulse.loader.LandingLoader;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
 import edu.cs244.taskpulse.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class LoginController {
 
 	@FXML
-	private TextField username;
+	private AnchorPane anchorPane;
 
 	@FXML
-	private PasswordField password;
+	private FontAwesomeIcon closeBtn;
 
 	@FXML
-	private Button loginButton;
+	private Pane content_area;
+
+	@FXML
+	private Label forgetPassword;
+
+	@FXML
+	private Button loginBtn;
 
 	@FXML
 	private Label loginErrorAnnouncement;
 
 	@FXML
-	private Button goToRegistrationForm;
+	private TextField password;
 
 	@FXML
-	public void handleLoginButtonAction() {
+	private Label passwordLabel;
+
+	@FXML
+	private ImageView profileIcon;
+
+	@FXML
+	private Button signUpBtn;
+
+	@FXML
+	private TextField username;
+
+	@FXML
+	private Label usernameLabel;
+
+	@FXML
+	private Label welcomeLabel;
+
+	@FXML
+	void actionForgetPassword(MouseEvent event) {
+
+	}
+
+	@FXML
+	void actionLoginBtn() {
 		String userName = username.getText();
 		String passWord = password.getText();
-
-		// Call the login method from the User class
 		boolean loginSuccessful = User.login(userName, passWord);
-
-		if (loginSuccessful) {
-			// Successful login
-			loginErrorAnnouncement.setText(""); // Clear any previous error messages
-			Stage currentStage = (Stage) loginButton.getScene().getWindow();
-			LandingLoader landingLoader = new LandingLoader();
-			landingLoader.start(currentStage);
+		if (userName.isEmpty()) {
+			loginErrorAnnouncement.setText("Please enter Username");
+		} else if (passWord.isEmpty()) {
+			loginErrorAnnouncement.setText("Please enter Password");
 		} else {
-			loginErrorAnnouncement.setText("Username and/or password are incorrect.");
+			if (loginSuccessful) {
+				// Successful login
+				loginErrorAnnouncement.setText(""); // Clear any previous error messages
+				Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+				DashboardLoader dashboardLoader = new DashboardLoader();
+				dashboardLoader.start(currentStage);
+			} else {
+				loginErrorAnnouncement.setText("Incorrect Username or Password");
+			}
 		}
 	}
 
-	// Event handler for the Register button
 	@FXML
-	private void handleRegisterButtonAction(ActionEvent event) {
-		Stage currentStage = (Stage) loginButton.getScene().getWindow();
+	void actionSignUpBtn(ActionEvent event) {
+		Stage currentStage = (Stage) loginBtn.getScene().getWindow();
 
 		// Create a new instance of RegisterLoader
 		RegisterLoader registerLoader = new RegisterLoader();
@@ -60,12 +95,28 @@ public class LoginController {
 		// Start the registration screen
 		registerLoader.start(currentStage);
 	}
+
+	@FXML
+	void actioncloseBtn() {
+
+	}
+
+	@FXML
+	void setOnMousePressed() {
+
+	}
+
+	@FXML
+	void setOnMouseDragged() {
+
+	}
 	
 	@FXML
 	private void handleKeyPress(KeyEvent event) {
 	    if (event.getCode() == KeyCode.ENTER) {
 	        // If Enter key is pressed, perform the same action as clicking the login button
-	    	handleLoginButtonAction();
+	    	actionLoginBtn();
 	    }
 	}
+
 }

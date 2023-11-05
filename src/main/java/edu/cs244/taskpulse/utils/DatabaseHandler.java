@@ -22,7 +22,7 @@ public class DatabaseHandler {
 			config.setPassword(props.getProperty("db.pass"));
 
 			// Configuration settings for HikariCP and MySQL specifics
-			config.setMaximumPoolSize(10);
+			config.setMaximumPoolSize(100);
 			config.setAutoCommit(false);
 			config.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
 			config.addDataSourceProperty("cachePrepStmts", "true");

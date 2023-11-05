@@ -1,60 +1,9 @@
-.colorBackground{
-    -fx-background-color: linear-gradient( to right top,#facd68, #fc76b3);
+#forgetPassword:hover{
+	-fx-text-fill: #246B9D;
 }
 
-.root {
-    -fx-background-color: #2C3E50;
-    -fx-font-family: 'Arial', sans-serif;
-}
-.grid-pane {
-    -fx-background-color: #34495E;
-    -fx-padding: 20px;
-    -fx-border-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 1);
-}
+#button:hover{
 
-.label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
-
-.text-field, .password-field {
-    -fx-pref-width: 200px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border: 2px solid #BDC3C7;
-    -fx-background-color: #ECF0F1;
-}
-
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #27AE60;
-}
-
-.button {
-    -fx-background-color: #E74C3C;
-    -fx-text-fill: white;
-    -fx-border-radius: 5px;
-    -fx-padding: 10px 20px;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-}
-
-.button:hover {
-    -fx-background-color: #C0392B;
-}
-
-.button:pressed {
-    -fx-background-color: #A93226;
-}
-
-.alert {
-    -fx-background-color: #E74C3C;
-    -fx-text-fill: white;
-}
-
-.error-label {
-    -fx-text-fill: red; /* Change the text color to red */
-    -fx-font-weight: bold; /* Make the text bold */
-    -fx-font-style: italic; /* Make the text italic */
+	-fx-text-fill:#246B9D;
+	
 }

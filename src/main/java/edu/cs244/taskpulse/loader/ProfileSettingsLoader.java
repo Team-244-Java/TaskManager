@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
 
 public class ProfileSettingsLoader {

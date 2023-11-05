@@ -22,6 +22,10 @@ public class Task {
 	        this.userId = userId;
 	        this.priority = priority;
 	    }
+	    
+	    public Task(String title) {
+	    	this.title=title;
+	    }
 
 	    public int getTaskId() {
 	        return taskId;

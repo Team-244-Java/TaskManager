@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="173.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.TaskController">
+   <children>
+      <ImageView fx:id="task" fitHeight="150.0" fitWidth="193.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/task.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="taskTitle" layoutX="22.0" layoutY="14.0" prefHeight="18.0" prefWidth="133.0" text="Task Title" />
+   </children>
+</AnchorPane>

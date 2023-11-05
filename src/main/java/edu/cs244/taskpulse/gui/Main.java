@@ -7,12 +7,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//LoginScreen loginScreen = new LoginScreen();
-		// Profile Settings Window GUI
-		//ProfileSettingsLoader profileSettings = new ProfileSettingsLoader();
-		
-		//Registration registration = new Registration();
-		
 		LoginLoader login = new LoginLoader();
 		login.start(primaryStage);
 	}

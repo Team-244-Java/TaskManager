@@ -3,14 +3,18 @@ package edu.cs244.taskpulse.loader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class LandingLoader {
+public class DashboardLoader {
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Landing.fxml"));
-			primaryStage.setTitle("Landing");
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Dashboard.fxml"));
+			Image icon = new Image("/images/PageIcon.png");
+			primaryStage.getIcons().add(icon);
+			primaryStage.setTitle("Dashboard");
 			primaryStage.setScene(new Scene(root));
+			primaryStage.setResizable(true);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
