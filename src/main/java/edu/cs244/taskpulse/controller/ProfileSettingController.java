@@ -47,7 +47,7 @@ public class ProfileSettingController {
 	    	String birthdateField = birthdateTextField.getText();
 	    	String phonenumberField = phoneTextField.getText();
 	    	
-//	    	set my username textfield to my unsernameField input
+//	    	sets the user name label based on the input from unsernameField
 	    	ProfileSettingsUsernameLabel.setText(usernameField);
 	    	
 //	    	prints out the inputs
@@ -75,7 +75,6 @@ public class ProfileSettingController {
 	        	ProfileSettingsMainProfileAvatar.setFitWidth(200); // Set width
 	        	ProfileSettingsMainProfileAvatar.setFitHeight(200); // Set height
 
-	        	System.out.println(image);
 	        }
 	    	
 //	    	add code to save the image to the database here
