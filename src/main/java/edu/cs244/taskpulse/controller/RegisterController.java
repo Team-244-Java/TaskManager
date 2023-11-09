@@ -3,7 +3,7 @@ package edu.cs244.taskpulse.controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.cs244.taskpulse.loader.LandingLoader;
+
 import edu.cs244.taskpulse.loader.LoginLoader;
 import edu.cs244.taskpulse.models.User;
 import javafx.fxml.FXML;
@@ -79,8 +79,8 @@ public class RegisterController {
 			if (registrationSuccess) {
 
 				registerErrorAnnouncement.setText(""); // Clear any previous error messages
-				LandingLoader landingLoader = new LandingLoader();
-				landingLoader.start((Stage) RegisterButtonFinalize.getScene().getWindow());
+				LoginLoader login = new LoginLoader();
+				login.start((Stage) RegisterButtonFinalize.getScene().getWindow());
 				// Registration was successful, you can navigate to another page
 				// or display a success message
 			} else {

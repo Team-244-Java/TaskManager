@@ -1,5 +1,7 @@
 package edu.cs244.taskpulse.controller;
 
+import edu.cs244.taskpulse.utils.Verification;
+import edu.cs244.taskpulse.loader.VerificationLoader;
 import edu.cs244.taskpulse.loader.LandingLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
 import edu.cs244.taskpulse.models.User;
@@ -34,16 +36,26 @@ public class LoginController {
 	public void handleLoginButtonAction() {
 		String userName = username.getText();
 		String passWord = password.getText();
-
+		
 		// Call the login method from the User class
 		boolean loginSuccessful = User.login(userName, passWord);
-
+		boolean active = Verification.checkStatus(userName);
 		if (loginSuccessful) {
 			// Successful login
 			loginErrorAnnouncement.setText(""); // Clear any previous error messages
-			Stage currentStage = (Stage) loginButton.getScene().getWindow();
-			LandingLoader landingLoader = new LandingLoader();
-			landingLoader.start(currentStage);
+			
+			//check if active
+			if (active) {
+				//send to main page
+				Stage currentStage = (Stage) loginButton.getScene().getWindow();
+				LandingLoader landingLoader = new LandingLoader();
+				landingLoader.start(currentStage);
+			}else {
+				//send to verify page
+				Stage currentStage = (Stage) loginButton.getScene().getWindow();
+				VerificationLoader VerificationLoader = new VerificationLoader();
+				VerificationLoader.start(currentStage);
+			}
 		} else {
 			loginErrorAnnouncement.setText("Username and/or password are incorrect.");
 		}
