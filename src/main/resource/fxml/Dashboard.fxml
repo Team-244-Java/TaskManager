@@ -9,13 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #B9C1FF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
+<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
    <top>
       <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
          <children>
@@ -28,14 +27,14 @@
                   </Label>
                </children>
             </VBox>
-            <HBox fx:id="searchBar" alignment="CENTER" layoutX="283.0" layoutY="17.0" prefHeight="57.0" prefWidth="313.0" styleClass="searchbar" stylesheets="@../Dashboard.css">
+            <HBox fx:id="searchBar" alignment="CENTER" layoutX="283.0" layoutY="35.0" prefHeight="44.0" prefWidth="485.0" styleClass="searchbar" stylesheets="@../Dashboard.css">
                <children>
-                  <TextField fx:id="searchBox" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" promptText="Type here for search" styleClass="transparent" stylesheets="@../Dashboard.css">
+                  <TextField fx:id="searchBox" alignment="CENTER" prefHeight="40.0" prefWidth="385.0" promptText="Type here for search" styleClass="transparent" stylesheets="@../Dashboard.css">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="searchBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onSearch" prefHeight="30.0" prefWidth="80.0" styleClass="searchBtn" stylesheets="@../Dashboard.css" text="Search" textFill="WHITE" />
+                  <Button fx:id="searchBtn" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSearch" prefHeight="30.0" prefWidth="80.0" styleClass="searchBtn" stylesheets="@../Dashboard.css" text="Search" textFill="WHITE" />
                </children>
             </HBox>
          </children></AnchorPane>
@@ -167,15 +166,11 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="900.0">
+                  <ScrollPane fx:id="scrollPane" prefHeight="663.0" prefWidth="757.0">
                      <content>
-                        <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="39.0" prefWidth="43.0">
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                           </rowConstraints>
-                        </GridPane>
+                        <TilePane fx:id="tilePane" prefHeight="652.0" prefWidth="759.0" />
                      </content>
                   </ScrollPane>
                </children>

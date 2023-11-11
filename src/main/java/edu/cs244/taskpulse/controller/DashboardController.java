@@ -2,25 +2,33 @@ package edu.cs244.taskpulse.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import edu.cs244.taskpulse.models.Task;
+import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.TilePane;
 
 public class DashboardController implements Initializable {
 
@@ -53,8 +61,8 @@ public class DashboardController implements Initializable {
 	@FXML
 	private FlowPane DashboardFlowPaneLeft;
 
-	@FXML
-	private GridPane gridPane;
+    @FXML
+    private TilePane tilePane;
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -73,24 +81,37 @@ public class DashboardController implements Initializable {
 
 	}
 
-	private List<Task> getData() {
+	private List<Task> getData(int userId) throws SQLException {
 
 		List<Task> tasks = new ArrayList<>();
-		Task task;
 
-		for (int i = 0; i < 20; i++) {
-			task = new Task("Hello World");
-			tasks.add(task);
+		try (Connection connection = DatabaseHandler.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement("SELECT * FROM tasks WHERE user_id = ?")) {
+			preparedStatement.setInt(1, userId);
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					Task task = new Task(resultSet.getString("title"), resultSet.getString("due_date"),
+							resultSet.getString("status"), resultSet.getString("description"));
+					tasks.add(task);
+				}
+			}
 		}
+
 		return tasks;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tasks.addAll(getData());
+		int userId = UserSession.getCurrentUser().getUserId();
+
 		int column = 0;
 		int row = 1;
+		
 		try {
+			tasks.addAll(getData(userId));
+
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(getClass().getResource("/fxml/Task.fxml"));
@@ -99,29 +120,13 @@ public class DashboardController implements Initializable {
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
 
-				if (column == 4) {
-					column = 0;
-					row++;
-				}
+				tilePane.getChildren().add(anchorPane);
+				tilePane.setPadding(new Insets(10));
 
-				//set grid width
-				gridPane.add(anchorPane, column++, row);
-				gridPane.setAlignment(Pos.CENTER);
-				gridPane.setMinWidth(Region.USE_COMPUTED_SIZE);
-				gridPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-				gridPane.setMaxWidth(Region.USE_COMPUTED_SIZE);
-				
-				//set grid height
-				gridPane.setMinHeight(Region.USE_COMPUTED_SIZE);
-				gridPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-				gridPane.setMaxHeight(Region.USE_COMPUTED_SIZE);
-				
-				
-				GridPane.setMargin(anchorPane, new Insets(10));
 			}
-		} catch (IOException e) {
+		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

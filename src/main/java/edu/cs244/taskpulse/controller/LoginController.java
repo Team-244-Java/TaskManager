@@ -4,6 +4,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
 import edu.cs244.taskpulse.models.User;
+import edu.cs244.taskpulse.utils.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -67,14 +68,17 @@ public class LoginController {
 	void actionLoginBtn() {
 		String userName = username.getText();
 		String passWord = password.getText();
-		boolean loginSuccessful = User.login(userName, passWord);
+		
+		User authenticatedUser = User.login2(userName, passWord);
+		//boolean loginSuccessful = User.login(userName, passWord);
 		if (userName.isEmpty()) {
 			loginErrorAnnouncement.setText("Please enter Username");
 		} else if (passWord.isEmpty()) {
 			loginErrorAnnouncement.setText("Please enter Password");
 		} else {
-			if (loginSuccessful) {
+			if (authenticatedUser != null) {
 				// Successful login
+				UserSession.setCurrentUser(authenticatedUser);
 				loginErrorAnnouncement.setText(""); // Clear any previous error messages
 				Stage currentStage = (Stage) loginBtn.getScene().getWindow();
 				DashboardLoader dashboardLoader = new DashboardLoader();

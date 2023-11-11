@@ -14,7 +14,7 @@ public class DashboardLoader {
 			primaryStage.getIcons().add(icon);
 			primaryStage.setTitle("Dashboard");
 			primaryStage.setScene(new Scene(root));
-			primaryStage.setResizable(true);
+			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
