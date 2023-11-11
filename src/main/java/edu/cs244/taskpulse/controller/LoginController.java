@@ -3,6 +3,8 @@ package edu.cs244.taskpulse.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
+import edu.cs244.taskpulse.utils.Verification;
+import edu.cs244.taskpulse.loader.VerificationLoader;
 import edu.cs244.taskpulse.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,6 +70,7 @@ public class LoginController {
 		String userName = username.getText();
 		String passWord = password.getText();
 		boolean loginSuccessful = User.login(userName, passWord);
+		boolean active = Verification.checkStatus(userName);
 		if (userName.isEmpty()) {
 			loginErrorAnnouncement.setText("Please enter Username");
 		} else if (passWord.isEmpty()) {
@@ -75,10 +78,21 @@ public class LoginController {
 		} else {
 			if (loginSuccessful) {
 				// Successful login
-				loginErrorAnnouncement.setText(""); // Clear any previous error messages
-				Stage currentStage = (Stage) loginBtn.getScene().getWindow();
-				DashboardLoader dashboardLoader = new DashboardLoader();
-				dashboardLoader.start(currentStage);
+				loginErrorAnnouncement.setText("");// Clear any previous error messages
+				
+				//check if active
+				if (active) {
+					//send to main page
+					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+					DashboardLoader dashboardLoader = new DashboardLoader();
+					dashboardLoader.start(currentStage);
+				}else {
+					//send to verify page
+					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+					VerificationLoader VerificationLoader = new VerificationLoader();
+					VerificationLoader.start(currentStage);
+				}	
+				
 			} else {
 				loginErrorAnnouncement.setText("Incorrect Username or Password");
 			}

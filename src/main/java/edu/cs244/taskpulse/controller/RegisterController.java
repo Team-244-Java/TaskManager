@@ -173,8 +173,9 @@ public class RegisterController {
 		    boolean registrationSuccess = newUser.register();
 		    if (registrationSuccess) {
 		        loginErrorAnnouncement.setText(""); // Clear any previous error messages
-		        DashboardLoader dashboardLocader = new DashboardLoader();
-		        dashboardLocader.start((Stage) registerBtn.getScene().getWindow());
+		        LoginLoader login = new LoginLoader();
+		        login.start((Stage) registerBtn.getScene().getWindow());
+
 		        // Registration was successful, you can navigate to another page
 		        // or display a success message
 		    } else {

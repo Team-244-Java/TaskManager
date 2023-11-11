@@ -45,7 +45,7 @@
          <children>
             <HBox prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="DashboardCreateNewTaskButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="235.0" prefWidth="200.0" text="New Task" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="DashboardCreateNewTaskButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#DashboardCreateNewTaskButton" prefHeight="235.0" prefWidth="200.0" text="New Task" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>

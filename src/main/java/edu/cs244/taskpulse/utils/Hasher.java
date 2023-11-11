@@ -5,7 +5,16 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.spec.KeySpec;
+import java.util.Base64;
 import java.util.Properties;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Hasher {
 
@@ -44,6 +53,7 @@ public class Hasher {
 
 	public static String getProperty(String key) {
 
+
 		if (prop == null) {
 
 			String path = getResourcePath(PROPERTY_PATH);
@@ -65,4 +75,44 @@ public class Hasher {
 
 		return "";
 	}
+	
+	private static Cipher getCipherInstance(int mode) throws Exception {
+
+		byte[] iv = Hasher.getProperty("sec.iv").getBytes();
+		IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+		String secKey = Hasher.getProperty("sec.key");
+		String secSalt = Hasher.getProperty("sec.salt");
+		KeySpec spec = new PBEKeySpec(secKey.toCharArray(), secSalt.getBytes(), 65536, 256);
+		SecretKey tmp = factory.generateSecret(spec);
+		SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+		cipher.init(mode, secretKey, ivspec);
+
+		return cipher;
+
+	}
+
+	public static String encrypt(String msg) {
+		try {
+			Cipher cipher = getCipherInstance(Cipher.ENCRYPT_MODE);
+			return Base64.getEncoder().encodeToString(cipher.doFinal(msg.getBytes(StandardCharsets.UTF_8)));
+		} catch (Exception e) {
+			System.out.println("Error encrypting: " + e.toString());
+		}
+		return null;
+	}
+
+	public static String decrypt(String encMsg) {
+		try {
+			Cipher cipher = getCipherInstance(Cipher.DECRYPT_MODE);
+			return new String(cipher.doFinal(Base64.getDecoder().decode(encMsg)));
+		} catch (Exception e) {
+			System.out.println("Error decrypting: " + e.toString());
+		}
+		return null;
+	}
+	
 }

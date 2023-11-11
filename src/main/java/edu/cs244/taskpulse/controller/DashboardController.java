@@ -6,12 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import edu.cs244.taskpulse.loader.TaskCreationLoader;
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.models.Task;
+import edu.cs244.taskpulse.utils.Verification;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -21,6 +26,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
 public class DashboardController implements Initializable {
 
@@ -124,4 +130,11 @@ public class DashboardController implements Initializable {
 		}
 	}
 	
+	@FXML
+	void DashboardCreateNewTaskButton() {
+		TaskCreationLoader taskCreationUi = new TaskCreationLoader();
+		taskCreationUi.newWindow();
+
+		
+	}
 }
