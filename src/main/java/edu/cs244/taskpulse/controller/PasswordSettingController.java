@@ -43,22 +43,7 @@ public class PasswordSettingController {
     private TextField newPasswordTextField;
     
 
-    @FXML
-    void actionChangePassword(MouseEvent event) {
 
-    }
-
-
-
-    @FXML
-    void handleEditPhoto(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleSaveChanges(ActionEvent event) {
-
-    }
     
     @FXML
     void actionChangeProfile(MouseEvent event) {
@@ -78,22 +63,37 @@ public class PasswordSettingController {
     
     @FXML
     private void savePasswordChanges() {
-//    	get current and new password inputs 
+//    	get current and new password, user name inputs
     	String currentPasswordField = currentPasswordTextField.getText();
     	String newPasswordField = newPasswordTextField.getText();
-    	String usernameField = ProfileSettingsUsernameLabel.getText();
+
+//    	get user name data from database
     	
 //    	TODO: implement a way to show error if password is invalid
     	
-//    	sets the user name label based on the input from unsernameField
-    	ProfileSettingsUsernameLabel.setText(usernameField);
-    	
+
 //    	prints out the inputs
     	System.out.println(currentPasswordField);
     	System.out.println(newPasswordField);
     	
 //    	TODO: add code to save the changes to the database here
+    	
     }
+    
+    @FXML
+    void actionChangePassword(MouseEvent event) {
+//    	set the current state  
+    	Stage currentStage = (Stage) ProfileSettingPage.getScene().getWindow();
+    	
+//    	create a new instance of PasswordSettingsLoader 
+    	PasswordSettingLoader passwordLoader = new PasswordSettingLoader(); 
+    	
+//    	start the password settings screen 
+    	passwordLoader.start(currentStage);
+    	
+    	System.out.println("The password Icon was clicked!!");
+    }
+
     
 
 }
