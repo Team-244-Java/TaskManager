@@ -66,27 +66,7 @@
                         <String fx:value="selected-border" />
                      </styleClass>
                   </HBox>
-                  <HBox fx:id="ProfileSettingsNotificationsIcon" alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@../profileSettings.css">
-                     <children>
-                        <ImageView fitHeight="27.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/bell.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                        <Label prefHeight="31.0" prefWidth="195.0" text="Notifications" textFill="#fcfcfc">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="ProfileSettingsPasswordIcon" alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@../profileSettings.css">
+                  <HBox fx:id="ProfileSettingsPasswordIcon" alignment="CENTER" onMouseClicked="#actionChangePassword" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@../profileSettings.css">
                      <children>
                         <ImageView fitHeight="29.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -97,46 +77,6 @@
                            </effect>
                         </ImageView>
                         <Label prefHeight="31.0" prefWidth="195.0" text="Password" textFill="#fcfcfc">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="ProfileSettingsSettingsIcon" alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@../profileSettings.css">
-                     <children>
-                        <ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/cog.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                        <Label prefHeight="31.0" prefWidth="195.0" text="Settings" textFill="#fcfcfc">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="ProfileSettingsPrivacyPolicyIcon" alignment="CENTER" prefHeight="35.0" prefWidth="340.0" styleClass="selected">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/lock.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                        <Label prefHeight="31.0" prefWidth="195.0" text="Privacy Policy" textFill="#fcfcfc">
                            <font>
                               <Font size="16.0" />
                            </font>
