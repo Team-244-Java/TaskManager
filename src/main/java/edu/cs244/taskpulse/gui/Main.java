@@ -10,8 +10,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		LoginLoader login = new LoginLoader();
 		ProfileSettingsLoader pro = new ProfileSettingsLoader(); 
-//		login.start(primaryStage);
-		pro.start(primaryStage);
+		login.start(primaryStage);
+//		pro.start(primaryStage);
 	}
 
 	public static void main(String[] args) {

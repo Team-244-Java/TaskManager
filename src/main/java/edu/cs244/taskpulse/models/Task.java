@@ -1,9 +1,11 @@
 package edu.cs244.taskpulse.models;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
+
 
 public class Task {
-	
 	    private int taskId;
 	    private String title;
 	    private String description;
@@ -11,7 +13,9 @@ public class Task {
 	    private String status;
 	    private int userId;
 	    private String priority;
-
+//	    add a list Task
+	    private List<Task> tasks;
+	    
 	    //Constructor : setting the defaults...
 	    public Task(int taskId, String title, String description, String dueDate, String status, int userId, String priority) {
 	        this.taskId = taskId;
@@ -21,6 +25,7 @@ public class Task {
 	        this.status = status;
 	        this.userId = userId;
 	        this.priority = priority;
+	        this.tasks = new ArrayList<>();
 	    }
 	    
 	    public Task(String title) {
@@ -79,13 +84,38 @@ public class Task {
 	        this.priority = priority;
 	    }
 
-	    public void addTask() {
+	    public void addTask(Task task) {
+	    	tasks.add(task);
 	    }
 
-	    public void updateTask() {
+	    public void updateTask(Task updatedTask) {
+	    	try {
+	    		for(int i = 0; i < tasks.size(); i++) {
+	    			if(tasks.get(i).getTaskId() == updatedTask.getTaskId()) {
+	    				tasks.set(i, updatedTask);
+	    				return;
+	    			}
+	    		}
+	    		throw new Exception("Task with taskId " + updatedTask.getTaskId() + " not found.");
+	    	} catch (Exception e) {
+	    		System.out.println(e.getMessage());
+	    	}
 	    }
 
-	    public void deleteTask() {
+	    public void deleteTask(int taskId) {
+	    	try {
+	    		Iterator<Task> iterator = tasks.iterator();
+	    		while(iterator.hasNext()) {
+	    			Task task = iterator.next();
+	    			if(task.getTaskId() == taskId) {
+	    				iterator.remove();
+	    				return;
+	    			}
+	    		}
+	    		throw new Exception("Task with taskId " + taskId + " not found.");
+	    	} catch (Exception e) {
+	    		System.out.println(e.getMessage());
+	    	}
 	    }
 
 	    public static List<Task> getTasksForUser(User user) {
