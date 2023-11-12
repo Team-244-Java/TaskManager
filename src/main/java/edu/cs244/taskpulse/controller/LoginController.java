@@ -3,8 +3,10 @@ package edu.cs244.taskpulse.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
+import edu.cs244.taskpulse.loader.VerificationLoader;
 import edu.cs244.taskpulse.models.User;
 import edu.cs244.taskpulse.utils.UserSession;
+import edu.cs244.taskpulse.utils.Verification;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -68,8 +70,9 @@ public class LoginController {
 	void actionLoginBtn() {
 		String userName = username.getText();
 		String passWord = password.getText();
-		
+		boolean active = Verification.checkStatus(userName);
 		User authenticatedUser = User.login2(userName, passWord);
+		
 		//boolean loginSuccessful = User.login(userName, passWord);
 		if (userName.isEmpty()) {
 			loginErrorAnnouncement.setText("Please enter Username");
@@ -78,11 +81,22 @@ public class LoginController {
 		} else {
 			if (authenticatedUser != null) {
 				// Successful login
-				UserSession.setCurrentUser(authenticatedUser);
-				loginErrorAnnouncement.setText(""); // Clear any previous error messages
-				Stage currentStage = (Stage) loginBtn.getScene().getWindow();
-				DashboardLoader dashboardLoader = new DashboardLoader();
-				dashboardLoader.start(currentStage);
+				
+				if(active) {
+					// User is Verify
+					UserSession.setCurrentUser(authenticatedUser);
+					loginErrorAnnouncement.setText(""); // Clear any previous error messages
+					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+					DashboardLoader dashboardLoader = new DashboardLoader();
+					dashboardLoader.start(currentStage);
+				}else {
+					// User need to be Verify
+					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
+					VerificationLoader VerificationLoader = new VerificationLoader();
+					UserSession.setCurrentUser(authenticatedUser);
+					VerificationLoader.start(currentStage);
+				}
+				
 			} else {
 				loginErrorAnnouncement.setText("Incorrect Username or Password");
 			}
