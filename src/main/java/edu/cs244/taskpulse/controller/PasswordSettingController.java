@@ -94,7 +94,7 @@ public class PasswordSettingController {
     @FXML
     void actionChangePassword(MouseEvent event) {
 //    	set the current state  
-    	Stage currentStage = (Stage) ProfileSettingsPasswordIcon.getScene().getWindow();
+    	Stage currentStage = (Stage) ProfileSettingPage.getScene().getWindow();
     	
 //    	create a new instance of PasswordSettingsLoader 
     	PasswordSettingLoader passwordLoader = new PasswordSettingLoader(); 
