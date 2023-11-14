@@ -28,12 +28,12 @@
                         <Image url="@../images/PageIcon.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="ProfileSettingsUsernameLabel" text="Username" textFill="WHITE">
+                  <Label fx:id="ProfileSettingsUsernameLabel" stylesheets="@../profileSettings.css" text="Username" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="ProfileSettingsEditProfileButton" mnemonicParsing="false" onAction="#handleEditPhoto" prefHeight="30.0" prefWidth="105.0" style="-fx-background-color: C4CAD0; -fx-background-radius: 30;" text="Edit Avatar">
+                  <Button fx:id="ProfileSettingsEditProfileButton" mnemonicParsing="false" onAction="#handleEditPhoto" prefHeight="30.0" prefWidth="105.0" style="-fx-background-color: C4CAD0;" stylesheets="@../profileSettings.css" text="Edit Avatar">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -175,7 +175,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="780.0" />
                </children>
             </VBox>
-            <Button fx:id="ProfileSettingsSaveChangesBtn" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="50.0" prefWidth="155.0" style="-fx-background-color: 246B9D; -fx-background-radius: 30;" text="Save Changes" textFill="#f8f8f8">
+            <Button fx:id="ProfileSettingsSaveChangesBtn" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="50.0" prefWidth="155.0" text="Save Changes" textFill="#f8f8f8">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
