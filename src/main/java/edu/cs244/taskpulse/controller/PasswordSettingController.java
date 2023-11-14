@@ -43,11 +43,7 @@ public class PasswordSettingController {
     private TextField newPasswordTextField;
     
 
-    @FXML
-    void actionChangePassword(MouseEvent event) {
-
-    }
-
+   
 
 
     @FXML
@@ -95,5 +91,18 @@ public class PasswordSettingController {
 //    	TODO: add code to save the changes to the database here
     }
     
+    @FXML
+    void actionChangePassword(MouseEvent event) {
+//    	set the current state  
+    	Stage currentStage = (Stage) ProfileSettingsPasswordIcon.getScene().getWindow();
+    	
+//    	create a new instance of PasswordSettingsLoader 
+    	PasswordSettingLoader passwordLoader = new PasswordSettingLoader(); 
+    	
+//    	start the password settings screen 
+    	passwordLoader.start(currentStage);
+    	
+    	System.out.println("The password Icon was clicked!!");
+    }
 
 }
