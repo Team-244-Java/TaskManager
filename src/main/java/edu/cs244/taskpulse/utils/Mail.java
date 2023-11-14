@@ -37,7 +37,6 @@ public class Mail{
 		Message message = prepareMessage(session,myAccountEmail, recepient);
 		
 		Transport.send(message);
-		System.out.println("Message sent successfully");
 	
 	}
 	
@@ -47,7 +46,7 @@ public class Mail{
 		message.setFrom(new InternetAddress(myAccountEmail));
 		message.setRecipient(Message.RecipientType.TO,new InternetAddress(recepient));
 		message.setSubject("Task Reminder");
-		message.setText("This is a task Reminder test from ben");
+		message.setText("This is a task Reminder");
 		return message;
 		}catch (Exception ex) {
 			Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
