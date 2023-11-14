@@ -29,6 +29,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import java.time.*;
+import java.time.temporal.*;
 
 public class DashboardController implements Initializable {
 
@@ -114,7 +116,16 @@ public class DashboardController implements Initializable {
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
-				fxmlLoader.setLocation(getClass().getResource("/fxml/Task.fxml"));
+				//TODO insert class info
+				Task task = tasks.get(i);
+			    LocalDate today = LocalDate.now();
+			    LocalDate taskDueDays = LocalDate.parse(task.getDueDate());  //test date, need to implement accepting input from task
+				
+				long result = today.until(taskDueDays, ChronoUnit.DAYS);
+				String color = ColorOfPostIt(result);
+
+				
+				fxmlLoader.setLocation(getClass().getResource(color));
 				AnchorPane anchorPane = fxmlLoader.load();
 
 				TaskController taskController = fxmlLoader.getController();
@@ -128,5 +139,23 @@ public class DashboardController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//TODO implement red for overdue
+	public static String ColorOfPostIt(long result) {
+	    if (result <= 0) {
+		    return "/fxml/Task.fxml"; //plain original working post it.
+		}
+		else if ((result >= 1) && (result <= 4)) {
+		    return "/fxml/TaskDarkYellow.fxml";
+		}
+		else if ((result >= 5) && (result <= 6)) {
+		    return "/fxml/TaskSalmon.fxml";
+		}
+		else if ((result >= 7) && (result <= 14)) {
+		    return "/fxml/TaskPink.fxml";
+		}
+		else {
+		    return "/fxml/TaskBlue.fxml"; //placeholder file, low readability.
+		}
+	}
 }
