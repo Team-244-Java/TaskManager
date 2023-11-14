@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,21 +18,15 @@ import edu.cs244.taskpulse.utils.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
-import java.time.*;
-import java.time.temporal.*;
 
 public class DashboardController implements Initializable {
 
@@ -107,16 +103,12 @@ public class DashboardController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		int userId = UserSession.getCurrentUser().getUserId();
-
-		int column = 0;
-		int row = 1;
 		
 		try {
 			tasks.addAll(getData(userId));
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
-				//TODO insert class info
 				Task task = tasks.get(i);
 			    LocalDate today = LocalDate.now();
 			    LocalDate taskDueDays = LocalDate.parse(task.getDueDate());  //test date, need to implement accepting input from task
@@ -140,7 +132,6 @@ public class DashboardController implements Initializable {
 		}
 	}
 	
-	//TODO implement red for overdue
 	public static String ColorOfPostIt(long result) {
 	    if (result <= 0) {
 		    return "/fxml/Task.fxml"; //plain original working post it.
@@ -158,4 +149,5 @@ public class DashboardController implements Initializable {
 		    return "/fxml/TaskBlue.fxml"; //placeholder file, low readability.
 		}
 	}
+
 }

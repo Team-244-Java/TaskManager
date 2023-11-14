@@ -15,6 +15,7 @@ public class DashboardLoader {
 			primaryStage.setTitle("Dashboard");
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setResizable(false);
+			primaryStage.centerOnScreen();
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,5 +1,7 @@
 package edu.cs244.taskpulse.controller;
 
+import java.io.File;
+
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
@@ -18,6 +20,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -72,8 +76,8 @@ public class LoginController {
 		String passWord = password.getText();
 		boolean active = Verification.checkStatus(userName);
 		User authenticatedUser = User.login2(userName, passWord);
-		
-		//boolean loginSuccessful = User.login(userName, passWord);
+
+		// boolean loginSuccessful = User.login(userName, passWord);
 		if (userName.isEmpty()) {
 			loginErrorAnnouncement.setText("Please enter Username");
 		} else if (passWord.isEmpty()) {
@@ -81,22 +85,22 @@ public class LoginController {
 		} else {
 			if (authenticatedUser != null) {
 				// Successful login
-				
-				if(active) {
+
+				if (active) {
 					// User is Verify
 					UserSession.setCurrentUser(authenticatedUser);
 					loginErrorAnnouncement.setText(""); // Clear any previous error messages
 					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
 					DashboardLoader dashboardLoader = new DashboardLoader();
 					dashboardLoader.start(currentStage);
-				}else {
+				} else {
 					// User need to be Verify
 					Stage currentStage = (Stage) loginBtn.getScene().getWindow();
 					VerificationLoader VerificationLoader = new VerificationLoader();
 					UserSession.setCurrentUser(authenticatedUser);
 					VerificationLoader.start(currentStage);
 				}
-				
+
 			} else {
 				loginErrorAnnouncement.setText("Incorrect Username or Password");
 			}
@@ -128,13 +132,13 @@ public class LoginController {
 	void setOnMouseDragged() {
 
 	}
-	
+
 	@FXML
 	private void handleKeyPress(KeyEvent event) {
-	    if (event.getCode() == KeyCode.ENTER) {
-	        // If Enter key is pressed, perform the same action as clicking the login button
-	    	actionLoginBtn();
-	    }
+		if (event.getCode() == KeyCode.ENTER) {
+			// If Enter key is pressed, perform the same action as clicking the login button
+			actionLoginBtn();
+		}
 	}
 
 }
