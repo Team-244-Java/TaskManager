@@ -42,13 +42,13 @@
 				<Font name="System Bold" size="16.0" />
 			</font>
 		</Label>
-		<TextField fx:id="username" layoutX="661.0" layoutY="300.0" prefHeight="36.0" prefWidth="244.0" promptText="Username" />
+		<TextField fx:id="username" layoutX="661.0" layoutY="300.0" prefHeight="36.0" prefWidth="244.0" promptText="Username"  text="test"/>
 		<Label fx:id="passwordLabel" layoutX="540.0" layoutY="354.0" prefHeight="36.0" prefWidth="94.0" text="Password">
 			<font>
 				<Font name="System Bold" size="16.0" />
 			</font>
 		</Label>
-		<PasswordField fx:id="password" layoutX="661.0" layoutY="354.0" prefHeight="35.0" prefWidth="244.0" promptText="Password" />
+		<PasswordField fx:id="password" layoutX="661.0" layoutY="354.0" prefHeight="35.0" prefWidth="244.0" promptText="Password" text="123" />
 		<Label fx:id="forgetPassword" layoutX="811.0" layoutY="400.0" onMouseClicked="#actionForgetPassword" text="Forget password?" />
 		<Button fx:id="loginBtn" layoutX="708.0" layoutY="460.0" mnemonicParsing="false" onAction="#actionLoginBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE" />
 		<Button fx:id="signUpBtn" layoutX="708.0" layoutY="510.0" mnemonicParsing="false" onAction="#actionSignUpBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Signup" textFill="WHITE" />

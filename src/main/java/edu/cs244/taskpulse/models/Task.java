@@ -1,6 +1,11 @@
 package edu.cs244.taskpulse.models;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+
+import edu.cs244.taskpulse.utils.DatabaseHandler;
 
 public class Task {
 
@@ -22,6 +27,14 @@ public class Task {
 		this.status = status;
 		this.userId = userId;
 		this.priority = priority;
+	}
+	
+	public Task(int id, String title, String dueDate, String status, String description) {
+		this.taskId = id;
+		this.title = title;
+		this.dueDate = dueDate;
+		this.status = status;
+		this.description = description;
 	}
 
 	public Task(String title, String dueDate, String status, String description) {
@@ -89,7 +102,14 @@ public class Task {
 	public void updateTask() {
 	}
 
-	public void deleteTask() {
+	public void deleteTask(int taskID) throws SQLException {
+		try (Connection connection = DatabaseHandler.getConnection();
+				PreparedStatement preparedStatement = connection
+				.prepareStatement("DELETE FROM tasks WHERE id = ?")) {
+			preparedStatement.setInt(1, taskID);
+			preparedStatement.executeQuery();
+			
+		}
 	}
 
 	public static List<Task> getTasksForUser(User user) {
