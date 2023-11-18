@@ -64,11 +64,11 @@ public class PasswordSettingController {
 //    	create a new instance of PasswordSettingsLoader 
     	ProfileSettingsLoader profileLoader = new ProfileSettingsLoader(); 
     	
+    	
 //    	start the registration screen 
     	profileLoader.start(currentStage);
-    	
 //    	print statement to check event listener works
-    	System.out.println("The profile Icon was clicked!!");
+
     }
     
     
@@ -102,7 +102,7 @@ public class PasswordSettingController {
 //    	start the password settings screen 
     	passwordLoader.start(currentStage);
     	
-    	System.out.println("The password Icon was clicked!!");
+
     }
 
 }

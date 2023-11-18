@@ -1,6 +1,14 @@
 package edu.cs244.taskpulse.controller;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.UserSession;
+import edu.cs244.taskpulse.controller.RegisterController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -53,29 +61,49 @@ public class ProfileSettingController {
 	    private BorderPane ProfileSettingsBorderPane;
 	    
 	    
-	   
-	    
+
 	    
 	    @FXML
 	    private void handleSaveChanges() {
-	    	String nameField = nameTextField.getText();
+	    	//String nameField = nameTextField.getText();
 	    	String usernameField = usernameTextField.getText();
 	    	
 //	    	TODO: implement a way to show error if user name is taken 
 	    	
-	    	String birthdateField = birthdateTextField.getText();
+	    	//String birthdateField = birthdateTextField.getText();
 	    	String phonenumberField = phoneTextField.getText();
+	    	String emailField = emailTextField.getText();
 	    	
 //	    	sets the user name label based on the input from unsernameField
 	    	ProfileSettingsUsernameLabel.setText(usernameField);
 	    	
-//	    	prints out the inputs
-	    	System.out.println(nameField);
-	    	System.out.println(usernameField);
-	    	System.out.println(birthdateField);
-	    	System.out.println(phonenumberField);
+
+	    	
+//	    	Get user data
+	    	int userId = UserSession.getCurrentUser().getUserId();
+
 	    	
 //	    	TODO: add code to save the changes to the database here
+	    	Connection connection = null;
+	    	try {
+	    		String sql = "UPDATE users "
+	    				+ "SET username = ?, phone = ?, email = ? WHERE id = ?";
+	    			
+	    		connection = DatabaseHandler.getConnection();
+	    		PreparedStatement pStmt = connection.prepareStatement(sql);
+	    		
+	    		// Set Parameters
+				pStmt.setString(1, usernameField);
+				pStmt.setString(2, phonenumberField);
+				pStmt.setString(3, emailField);
+				pStmt.setInt(4, userId);
+	    		
+	    		//execute update
+				pStmt.executeUpdate();
+				connection.commit();
+	    	}catch (Exception ex) {
+	    		ex.printStackTrace();
+	    	}
 	    }
 	    
 	    
@@ -83,7 +111,6 @@ public class ProfileSettingController {
 	    private void handleEditPhoto() {
 	    	FileChooser fileChooser = new FileChooser();
 	    	fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.gif"));
-	    	
 //	    	show the file dialog
 	    	Stage stage = (Stage) ProfileSettingsMainProfileAvatar.getScene().getWindow();
 	        File selectedFile = fileChooser.showOpenDialog(stage);
@@ -95,12 +122,33 @@ public class ProfileSettingController {
 	        	ProfileSettingsMainProfileAvatar.setFitHeight(200); // Set height
 
 	        }
+	        //Get user info
+	    	int userId = UserSession.getCurrentUser().getUserId();
+
 	    	
-//	    	TODO: add code to save the image to the database here
-	        
-//	    
-	     
+	    	//Get the URl and save to database
+	        Connection connection = null;
+	    	try {
+	    		String sql = "UPDATE users "
+	    				+ "SET profile_picture = ? WHERE id = ?";
+	    			
+	    		connection = DatabaseHandler.getConnection();
+	    		PreparedStatement pStmt = connection.prepareStatement(sql);
+	    		
+	    		// Set Parameters
+	    		String imageUrl = (selectedFile.toURI().toString());
+	    		pStmt.setString(1, imageUrl);
+				pStmt.setInt(2, userId);
+	    		
+	    		//execute update
+				pStmt.executeUpdate();
+				connection.commit();
+	    	}catch (Exception ex) {
+	    		ex.printStackTrace();
+	    	}
 	    }
+    
+	    
 	    @FXML
 	    void actionChangePassword(MouseEvent event) {
 //	    	set the current state  
@@ -112,7 +160,46 @@ public class ProfileSettingController {
 //	    	start the password settings screen 
 	    	passwordLoader.start(currentStage);
 	    	
-	    	System.out.println("The password Icon was clicked!!");
 	    }
+	    
+	    static public String getPicture() {
+	    	//Get user info
+	    	int userId = UserSession.getCurrentUser().getUserId();
+	    	
+	    	//Check if user have profile picture
+	    	String url = "";
+	        Connection connection = null;
+	    	try {
+	    		String sql = "SELECT profile_picture FROM users WHERE id = ?";
+	    			
+	    		connection = DatabaseHandler.getConnection();
+	    		PreparedStatement pStmt = connection.prepareStatement(sql);
+	    		
+	    		// Set Parameters
+				pStmt.setInt(1, userId);
+				
+				try (ResultSet rs = pStmt.executeQuery()) {
+					if (rs.next()) {
+						url = rs.getString("profile_picture");
+						
+			        	if (url == null) {
+			        		url = "images/PageIcon.png";
+			        	}
+						return url;
+					} 
+				}
+	    		
 
+	    	}catch (Exception ex) {
+	    		ex.printStackTrace();
+	    	}
+			return url;
+	    }
+	    
+	    public void updatePicture(String url) {
+        	Image image = new Image(url);
+        	ProfileSettingsMainProfileAvatar.setImage(image);
+        	ProfileSettingsMainProfileAvatar.setFitWidth(200); // Set width
+        	ProfileSettingsMainProfileAvatar.setFitHeight(200);
+	    }
 }

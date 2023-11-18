@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
+<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
    <top>
       <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
          <children>
@@ -44,7 +44,7 @@
          <children>
             <HBox prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="DashboardCreateNewTaskButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="235.0" prefWidth="200.0" text="New Task" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="DashboardCreateNewTaskButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#DashboardCreateNewTaskButton" prefHeight="235.0" prefWidth="200.0" text="New Task" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -60,23 +60,7 @@
             </HBox>
             <HBox prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="DashboardEditTasksButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="170.0" prefWidth="200.0" text="Edit Task" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="48.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/pencil.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox prefHeight="80.0" prefWidth="200.0">
-               <children>
-                  <Button fx:id="DashboardEditRegistrationButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="90.0" prefWidth="200.0" text="Edit Profile" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="DashboardEditRegistrationButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#editProfile" prefHeight="90.0" prefWidth="200.0" text="Edit Profile" textAlignment="CENTER" wrapText="true">
                      <graphic>
                         <ImageView fitHeight="48.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -168,7 +152,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ScrollPane fx:id="scrollPane" prefHeight="663.0" prefWidth="757.0">
+                  <ScrollPane fx:id="scrollPane" prefHeight="663.0" prefWidth="780.0">
                      <content>
                         <TilePane fx:id="tilePane" prefHeight="652.0" prefWidth="759.0" />
                      </content>

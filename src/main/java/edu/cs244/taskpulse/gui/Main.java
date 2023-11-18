@@ -1,5 +1,6 @@
 package edu.cs244.taskpulse.gui;
 
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.LoginLoader;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,12 +11,12 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		LoginLoader login = new LoginLoader();
 		ProfileSettingsLoader profile = new ProfileSettingsLoader();
+		//DashboardLoader dashboard = new DashboardLoader();
 
-		profile.start(primaryStage);
+		login.start(primaryStage);
 	}
 
 	public static void main(String[] args) {
 		launch(args);
-		System.out.print("");
 	}
 }

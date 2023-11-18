@@ -15,10 +15,16 @@ import java.util.ResourceBundle;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
+import edu.cs244.taskpulse.loader.DashboardLoader;
+import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
+
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -27,6 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 
 public class DashboardController implements Initializable {
 
@@ -90,8 +97,12 @@ public class DashboardController implements Initializable {
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
-					Task task = new Task(resultSet.getString("title"), resultSet.getString("due_date"),
-							resultSet.getString("status"), resultSet.getString("description"));
+					Task task = new Task(
+							resultSet.getInt("id"), 
+							resultSet.getString("title"), 
+							resultSet.getString("due_date"),
+							resultSet.getString("status"), 
+							resultSet.getString("description"));
 					tasks.add(task);
 				}
 			}
@@ -122,7 +133,9 @@ public class DashboardController implements Initializable {
 
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
+				
 
+				
 				tilePane.getChildren().add(anchorPane);
 				tilePane.setPadding(new Insets(10));
 
@@ -150,4 +163,28 @@ public class DashboardController implements Initializable {
 		}
 	}
 
+	@FXML
+	void DashboardCreateNewTaskButton() {
+
+		try {
+			FXMLLoader fxmlLoader =  new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
+			Parent root1 = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Task Creation");
+			stage.setScene(new Scene(root1));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+
+	}
+	
+	@FXML
+	void editProfile() {
+		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
+		profileUi.newWindow();
+		
+	}
+	
 }
