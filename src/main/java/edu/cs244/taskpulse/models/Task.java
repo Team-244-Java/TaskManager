@@ -96,7 +96,27 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public void addTask() {
+	public static void addTask(String title, String description, String due_date, int user_id){
+		Connection connection = null;
+		try {
+			String sql = "INSERT INTO tasks (title, description, due_date, user_id) " +  
+					"VALUES (?, ?, ?, ?)";
+			connection = DatabaseHandler.getConnection();
+			
+			PreparedStatement pStmt = connection.prepareStatement(sql);
+
+//			// Set Parameters
+			pStmt.setString(1, title);
+			pStmt.setString(2, description);
+			pStmt.setString(3, due_date);
+			pStmt.setInt(4, user_id);
+			
+			//execute
+			pStmt.executeUpdate();
+			connection.commit();
+		}catch (Exception ex) {
+				ex.printStackTrace();
+			}
 	}
 
 	public void updateTask() {

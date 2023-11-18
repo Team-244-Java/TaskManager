@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 
 
@@ -169,7 +170,6 @@ public class DashboardController implements Initializable {
 			FXMLLoader fxmlLoader =  new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
 			Parent root1 = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
-			
 			stage.setTitle("Task Creation");
 			stage.setScene(new Scene(root1));
 			stage.show();
