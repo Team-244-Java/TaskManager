@@ -10,11 +10,16 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
+import edu.cs244.taskpulse.models.User;
+import edu.cs244.taskpulse.utils.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class ProfileSettingController {
@@ -52,30 +57,88 @@ public class ProfileSettingController {
 	    @FXML
 	    private BorderPane ProfileSettingsBorderPane;
 	    
+	    private User userId;
 	    
+	    @FXML
+	    private Label errorLabel;
 	   
 	    
 	    
 	    @FXML
 	    private void handleSaveChanges() {
-	    	String nameField = nameTextField.getText();
-	    	String usernameField = usernameTextField.getText();
+	    	String newName = nameTextField.getText();
+	    	String newUsername = usernameTextField.getText();
+	    	String newBirthday = birthdateTextField.getText();
+	    	String newPhoneNumber = phoneTextField.getText();
 	    	
-//	    	TODO: implement a way to show error if user name is taken 
+//	    	used isUsernameAvailable method from User Class to check if the username is available
+	    	boolean isUsernameAvailable = User.isUsernameAvailable(newUsername);
 	    	
-	    	String birthdateField = birthdateTextField.getText();
-	    	String phonenumberField = phoneTextField.getText();
+//	    	if it's available, then update the information on the database
+	    	if(isUsernameAvailable) { 
+	    		boolean isUpdateSuccessful = updateUserProfile(newUsername, newName, newBirthday, newPhoneNumber);
+//	    		
+//	    		if update is successful, display username next to the avatar
+	    		if (isUpdateSuccessful) {
+	    			ProfileSettingsUsernameLabel.setText(newUsername);
+	    			
+//	    		if there was an error with updating the database, display error message
+	    		} else {
+	    			errorLabel.setText("Failed to save changes to the database!");
+	    			errorLabel.setVisible(true);
+	    		}
+	    		
+//	    	if user name is not available then display the error 
+	    	} else {
+	    		// Show error message if the user name is taken
+	            errorLabel.setText("Username is already taken!");
+	            errorLabel.setVisible(true);
+	    	}
 	    	
-//	    	sets the user name label based on the input from unsernameField
-	    	ProfileSettingsUsernameLabel.setText(usernameField);
-	    	
+	    
 //	    	prints out the inputs
-	    	System.out.println(nameField);
-	    	System.out.println(usernameField);
-	    	System.out.println(birthdateField);
-	    	System.out.println(phonenumberField);
+	    	System.out.println(newName);
+	    	System.out.println(newUsername);
+	    	System.out.println(newBirthday);
+	    	System.out.println(newPhoneNumber);
 	    	
-//	    	TODO: add code to save the changes to the database here
+
+	    }
+	    
+//	    a function that updates the profile changes to the database 
+	    private boolean updateUserProfile(String newUsername, String newName, String newBirthday, String newPhoneNumber) {
+	    	Connection connection = null;
+	    	PreparedStatement updateStmt = null; 
+	    	
+	    	try {
+	    		connection = DatabaseHandler.getConnection();
+	    		
+//	    		implement your update query here
+	    		String updateQuery = "UPDATE users SET username = ?, name = ?, birthday = ?, phone_numer = ? WHERE user_id = ? ";
+	    		updateStmt = connection.prepareStatement(updateQuery);
+	    		updateStmt.setString(1, newUsername);
+	    		updateStmt.setString(2, newName);
+	    		updateStmt.setString(3, newBirthday);
+	    		updateStmt.setString(4, newPhoneNumber);
+	    		
+	    		
+	    		int rowsAffected = updateStmt.executeUpdate();
+	    		return rowsAffected > 0;
+	    		
+	    	} catch (SQLException ex) {
+	    		ex.printStackTrace();
+	    		return false;
+	    	} finally {
+	    		// Close resources
+				try {
+					if (updateStmt != null)
+						updateStmt.close();
+					if (connection != null)
+						connection.close();
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+	    	}
 	    }
 	    
 	    

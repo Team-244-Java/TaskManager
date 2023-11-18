@@ -175,6 +175,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="780.0" />
                </children>
             </VBox>
+            <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="390.0" style="visibility: false;" textFill="#ee0a0a" />
             <Button fx:id="ProfileSettingsSaveChangesBtn" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="50.0" prefWidth="155.0" text="Save Changes" textFill="#f8f8f8">
                <font>
                   <Font name="System Bold" size="15.0" />

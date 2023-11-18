@@ -14,6 +14,10 @@ public class User {
 	private String username;
 	private String hashedPassword; // Hashed for security reasons
 	private String email;
+	private String fullname;
+	private String birthday;
+	private String phoneNumber;
+	
 
 	// Constructors:
 
@@ -49,6 +53,10 @@ public class User {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	
+	public void setFullname (String fullname) {
+		this.fullname = fullname;
+	}
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -60,6 +68,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public void setBirthdate(String birthday) {
+		this.birthday = birthday;
+	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	// Operational Methods:
@@ -241,6 +257,11 @@ public class User {
 			stmt.setString(1, username);
 			stmt.executeUpdate();
 		}
+	}
+
+	public static boolean isUsernameAvailable(String newUsername) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
