@@ -1,7 +1,5 @@
 package edu.cs244.taskpulse.controller;
 
-import java.io.File;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
@@ -20,8 +18,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class LoginController {

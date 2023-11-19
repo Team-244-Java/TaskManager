@@ -11,3 +11,14 @@
 	-fx-background-color: #246B9D;
 	-fx-background-radius: 30;
 }
+.list-view {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}
+
+.list-cell:odd {
+    -fx-background-color: transparent;
+}

@@ -12,14 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import edu.cs244.taskpulse.models.Task;
-import edu.cs244.taskpulse.utils.DatabaseHandler;
-import edu.cs244.taskpulse.utils.UserSession;
-import edu.cs244.taskpulse.loader.DashboardLoader;
+import com.jfoenix.controls.JFXListView;
+
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
-
-
+import edu.cs244.taskpulse.models.Task;
+import edu.cs244.taskpulse.utils.ChatGPTHttpClient;
+import edu.cs244.taskpulse.utils.ChatListCell;
+import edu.cs244.taskpulse.utils.ChatListCellFactory;
+import edu.cs244.taskpulse.utils.ChatMessage;
+import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -67,8 +70,8 @@ public class DashboardController implements Initializable {
 	@FXML
 	private FlowPane DashboardFlowPaneLeft;
 
-    @FXML
-    private TilePane tilePane;
+	@FXML
+	private TilePane tilePane;
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -81,6 +84,15 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private Button searchBtn;
+
+	@FXML
+	private JFXListView<String> chatBoxListView;
+
+	@FXML
+	private TextField chatBoxTextField;
+
+	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
+	private boolean waitingForGptResponse = false;
 
 	@FXML
 	void onSearch() {
@@ -98,11 +110,8 @@ public class DashboardController implements Initializable {
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
-					Task task = new Task(
-							resultSet.getInt("id"), 
-							resultSet.getString("title"), 
-							resultSet.getString("due_date"),
-							resultSet.getString("status"), 
+					Task task = new Task(resultSet.getInt("id"), resultSet.getString("title"),
+							resultSet.getString("due_date"), resultSet.getString("status"),
 							resultSet.getString("description"));
 					tasks.add(task);
 				}
@@ -115,28 +124,26 @@ public class DashboardController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		int userId = UserSession.getCurrentUser().getUserId();
-		
+
 		try {
 			tasks.addAll(getData(userId));
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				Task task = tasks.get(i);
-			    LocalDate today = LocalDate.now();
-			    LocalDate taskDueDays = LocalDate.parse(task.getDueDate());  //test date, need to implement accepting input from task
-				
+				LocalDate today = LocalDate.now();
+				LocalDate taskDueDays = LocalDate.parse(task.getDueDate()); // test date, need to implement accepting
+																			// input from task
+
 				long result = today.until(taskDueDays, ChronoUnit.DAYS);
 				String color = ColorOfPostIt(result);
 
-				
 				fxmlLoader.setLocation(getClass().getResource(color));
 				AnchorPane anchorPane = fxmlLoader.load();
 
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
-				
 
-				
 				tilePane.getChildren().add(anchorPane);
 				tilePane.setPadding(new Insets(10));
 
@@ -144,23 +151,20 @@ public class DashboardController implements Initializable {
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
+
 	}
-	
+
 	public static String ColorOfPostIt(long result) {
-	    if (result <= 0) {
-		    return "/fxml/Task.fxml"; //plain original working post it.
-		}
-		else if ((result >= 1) && (result <= 4)) {
-		    return "/fxml/TaskDarkYellow.fxml";
-		}
-		else if ((result >= 5) && (result <= 6)) {
-		    return "/fxml/TaskSalmon.fxml";
-		}
-		else if ((result >= 7) && (result <= 14)) {
-		    return "/fxml/TaskPink.fxml";
-		}
-		else {
-		    return "/fxml/TaskBlue.fxml"; //placeholder file, low readability.
+		if (result <= 0) {
+			return "/fxml/Task.fxml"; // plain original working post it.
+		} else if ((result >= 1) && (result <= 4)) {
+			return "/fxml/TaskDarkYellow.fxml";
+		} else if ((result >= 5) && (result <= 6)) {
+			return "/fxml/TaskSalmon.fxml";
+		} else if ((result >= 7) && (result <= 14)) {
+			return "/fxml/TaskPink.fxml";
+		} else {
+			return "/fxml/TaskBlue.fxml"; // placeholder file, low readability.
 		}
 	}
 
@@ -168,7 +172,7 @@ public class DashboardController implements Initializable {
 	void DashboardCreateNewTaskButton() {
 
 		try {
-			FXMLLoader fxmlLoader =  new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
 			Parent root1 = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setTitle("Task Creation");
@@ -177,21 +181,63 @@ public class DashboardController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
-
+		chatBoxListView.setCellFactory(param -> new ChatListCell());
 	}
-	
+
 	@FXML
 	void editProfile() {
 		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
 		profileUi.newWindow();
-		
+
 	}
-	
+
 	@FXML
 	void editPassword() {
 		PasswordSettingLoader passwordUi = new PasswordSettingLoader();
 		passwordUi.newWindow();
 	}
-	
+
+	@FXML
+	void textFieldPressEnter() {
+		String userMessage = "You: "+chatBoxTextField.getText().trim();
+
+		// Check if the user message is not blank and not waiting for a response
+		if (!userMessage.isEmpty() && !waitingForGptResponse) {
+			// Set the flag to indicate that we are waiting for the ChatGPT response
+			waitingForGptResponse = true;
+
+			// Disable the ability to enter new messages
+			chatBoxTextField.setDisable(true);
+
+			// Add user message to the ListView 
+			chatBoxListView.getItems().add(userMessage.replace("You: ", UserSession.getCurrentUser().getUsername()+":"+"\n"));
+
+			// Clear the text field after adding the user message
+			chatBoxTextField.clear();
+
+			// Send user message to ChatGPT asynchronously and get the response
+			new Thread(() -> {
+				String gptResponse = chatGPTClient.chatGPT(userMessage.replace("You: ",""));
+
+				// Update JavaFX UI components on the JavaFX Application Thread
+				javafx.application.Platform.runLater(() -> {
+					// Add GPT response to the ListView
+					chatBoxListView.getItems().add("ChatGPT:\n" + gptResponse);
+
+					// Scroll to the bottom of the ListView
+					chatBoxListView.scrollTo(chatBoxListView.getItems().size() - 1);
+
+					// Reset the flag
+					waitingForGptResponse = false;
+
+					// Enable the ability to enter new messages
+					chatBoxTextField.setDisable(false);
+
+					// Set focus back to the text field
+					chatBoxTextField.requestFocus();
+				});
+			}).start();
+		}
+	}
+
 }
