@@ -206,7 +206,7 @@ public class RegisterController {
 
 	}
 
-	private boolean checkUsernameAvailability(String username) {
+	static boolean checkUsernameAvailability(String username) {
 		boolean isUsernameAvailable = true;
 
 		Connection connection = null;
