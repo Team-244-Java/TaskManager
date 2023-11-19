@@ -1,15 +1,16 @@
 package edu.cs244.taskpulse.loader;
 
+import edu.cs244.taskpulse.controller.PasswordSettingController;
+import edu.cs244.taskpulse.controller.ProfileSettingController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 
 
 
 public class PasswordSettingLoader {
 	
-	public void start(Stage primaryStage) {
+	public void open(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/PasswordSetting.fxml"));
 			primaryStage.setTitle("Password Setting");
@@ -19,6 +20,23 @@ public class PasswordSettingLoader {
 			e.printStackTrace();
 		}
 	}
+	
+	public void newWindow() {
+		try {
+			FXMLLoader fxmlLoader =  new FXMLLoader(getClass().getResource("/fxml/PasswordSetting.fxml"));
+			Parent root1 = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			
+			PasswordSettingController profile = (PasswordSettingController)fxmlLoader.getController();
+//			profile.updatePicture(ProfileSettingController.getPicture());
+			
+			stage.setTitle("Profile");
+			stage.setScene(new Scene(root1));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		}
 	
 
 }

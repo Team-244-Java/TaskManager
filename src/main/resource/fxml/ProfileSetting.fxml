@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -40,54 +38,7 @@
                   </Button>
                </children>
             </VBox>
-            <VBox fx:id="ProfileSettingVBoxIcons" prefHeight="303.0" prefWidth="340.0" spacing="15.0">
-               <children>
-                  <HBox fx:id="ProfileSettingsProfileIcon" alignment="CENTER" prefHeight="47.0" prefWidth="340.0" stylesheets="@../profileSettings.css">
-                     <children>
-                        <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/user.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                        <Label prefHeight="31.0" prefWidth="195.0" text="Profile" textFill="#fcfcfc">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                     <styleClass>
-                        <String fx:value="selected" />
-                        <String fx:value="selected-border" />
-                     </styleClass>
-                  </HBox>
-                  <HBox fx:id="ProfileSettingsPasswordIcon" alignment="CENTER" onMouseClicked="#actionChangePassword" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@../profileSettings.css">
-                     <children>
-                        <ImageView fitHeight="29.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/key.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="1.0" />
-                           </effect>
-                        </ImageView>
-                        <Label prefHeight="31.0" prefWidth="195.0" text="Password" textFill="#fcfcfc">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
+            <VBox fx:id="ProfileSettingVBoxIcons" prefHeight="303.0" prefWidth="340.0" spacing="15.0" />
          </children>
       </VBox>
    </left>
@@ -99,7 +50,7 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <VBox prefHeight="236.0" prefWidth="780.0" stylesheets="@../profileSettings.css">
+            <VBox prefHeight="183.0" prefWidth="780.0" stylesheets="@../profileSettings.css">
                <children>
                   <Label prefHeight="16.0" prefWidth="886.0" text="Profile details">
                      <font>
@@ -108,13 +59,24 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="780.0">
                      <children>
-                        <Label prefHeight="30.0" prefWidth="88.0" text="Name">
+                        <Label prefHeight="30.0" prefWidth="88.0" text="First name">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="40.0" prefWidth="140.0" />
-                        <TextField fx:id="nameTextField" prefHeight="25.0" prefWidth="310.0" />
+                        <TextField fx:id="firstNameTextField" prefHeight="25.0" prefWidth="310.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0" prefHeight="51.0" prefWidth="780.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="88.0" text="Last name">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Pane prefHeight="40.0" prefWidth="140.0" />
+                        <TextField fx:id="lastNameTextField" prefHeight="25.0" prefWidth="310.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="780.0">
@@ -128,23 +90,11 @@
                         <TextField fx:id="usernameTextField" prefHeight="20.0" prefWidth="310.0" />
                      </children>
                   </HBox>
-                  <Pane prefHeight="2.0" prefWidth="780.0" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="780.0">
-                     <children>
-                        <Label prefHeight="30.0" prefWidth="122.0" text="Date of Birth">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Pane prefHeight="38.0" prefWidth="105.0" />
-                        <TextField fx:id="birthdateTextField" prefHeight="21.0" prefWidth="310.0" />
-                     </children>
-                  </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="173.0" prefWidth="780.0">
+            <VBox prefHeight="136.0" prefWidth="780.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="780.0" text="Contact info">
+                  <Label prefHeight="16.0" prefWidth="780.0" text="Contact info">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -172,9 +122,9 @@
                      </children>
                   </HBox>
                   <Pane prefHeight="2.0" prefWidth="780.0" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="780.0" />
                </children>
             </VBox>
+            <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="469.0" style="visibility: false;" textFill="#ee0a0a" />
             <Button fx:id="ProfileSettingsSaveChangesBtn" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="50.0" prefWidth="155.0" text="Save Changes" textFill="#f8f8f8">
                <font>
                   <Font name="System Bold" size="15.0" />

@@ -16,6 +16,7 @@ import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
 import edu.cs244.taskpulse.loader.DashboardLoader;
+import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 
 
@@ -185,6 +186,12 @@ public class DashboardController implements Initializable {
 		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
 		profileUi.newWindow();
 		
+	}
+	
+	@FXML
+	void editPassword() {
+		PasswordSettingLoader passwordUi = new PasswordSettingLoader();
+		passwordUi.newWindow();
 	}
 	
 }

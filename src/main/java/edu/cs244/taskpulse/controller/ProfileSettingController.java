@@ -60,6 +60,8 @@ public class ProfileSettingController {
 	    @FXML
 	    private BorderPane ProfileSettingsBorderPane;
 	    
+	    @FXML
+	    private Label errorLabel;
 	    
 
 	    
@@ -68,17 +70,23 @@ public class ProfileSettingController {
 	    	//String nameField = nameTextField.getText();
 	    	String usernameField = usernameTextField.getText();
 	    	
-//	    	TODO: implement a way to show error if user name is taken 
+//	    	TODO: implement a way to show error if user name is taken
+//	    	used the method from registration, but i had to change the method to public and static - Note from Jen
+	    	boolean isUsernameAvailable = RegisterController.checkUsernameAvailability(usernameField);
+	    	
+//	    	if(isUsernameAvailable) {
+////	    		sets the user name label based on the input from unsernameField
+//		    	ProfileSettingsUsernameLabel.setText(usernameField);
+//	    	} else {
+//	    		errorLabel.setText("Username is already taken!");
+//	    		errorLabel.setVisible(true);
+//	    	}
 	    	
 	    	//String birthdateField = birthdateTextField.getText();
 	    	String phonenumberField = phoneTextField.getText();
 	    	String emailField = emailTextField.getText();
 	    	
-//	    	sets the user name label based on the input from unsernameField
-	    	ProfileSettingsUsernameLabel.setText(usernameField);
-	    	
-
-	    	
+	    		    	
 //	    	Get user data
 	    	int userId = UserSession.getCurrentUser().getUserId();
 
@@ -158,7 +166,7 @@ public class ProfileSettingController {
 	    	PasswordSettingLoader passwordLoader = new PasswordSettingLoader(); 
 	    	
 //	    	start the password settings screen 
-	    	passwordLoader.start(currentStage);
+	    	passwordLoader.open(currentStage);
 	    	
 	    }
 	    

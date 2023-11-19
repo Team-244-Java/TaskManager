@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
+<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
    <top>
       <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
          <children>
@@ -74,19 +74,19 @@
                   </Button>
                </children>
             </HBox>
-            <HBox prefHeight="80.0" prefWidth="200.0">
+            <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="DashboardEmailTaskOwnerButton" contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="200.0" text="Email Task " textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+                  <Button fx:id="ProfileSettingsPasswordIcon" contentDisplay="TOP" mnemonicParsing="false" onAction="#editPassword" prefHeight="90.0" prefWidth="200.0" text="Change Password" textAlignment="CENTER" wrapText="true">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="48.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../icons/envelop.png" />
+                              <Image url="@../icons/key.png" />
                            </image>
                         </ImageView>
                      </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Button>
                </children>
             </HBox>

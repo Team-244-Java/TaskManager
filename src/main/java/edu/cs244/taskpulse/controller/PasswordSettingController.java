@@ -100,7 +100,7 @@ public class PasswordSettingController {
     	PasswordSettingLoader passwordLoader = new PasswordSettingLoader(); 
     	
 //    	start the password settings screen 
-    	passwordLoader.start(currentStage);
+    	passwordLoader.open(currentStage);
     	
 
     }

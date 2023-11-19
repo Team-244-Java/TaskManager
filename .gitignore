@@ -10,3 +10,12 @@ target/
 .project
 build/
 out/
+
+
+# Local configuration file (sdk path, etc)
+local.properties
+.properties
+
+project.properties
+*.properties
+project.properties
