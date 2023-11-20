@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +19,7 @@
 
 <BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
    <top>
-      <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246B9D;" stylesheets="@../Dashboard.css" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="87.0" prefWidth="268.0">
                <children>
@@ -41,7 +43,7 @@
          </children></AnchorPane>
    </top>
    <left>
-      <FlowPane fx:id="DashboardFlowPaneLeft" prefHeight="743.0" prefWidth="192.0" style="-fx-background-color: #F7F7F2;" stylesheets="@Dashboard.css" BorderPane.alignment="CENTER">
+      <FlowPane fx:id="DashboardFlowPaneLeft" prefHeight="743.0" prefWidth="192.0" style="-fx-background-color: #F7F7F2;" stylesheets="@../Dashboard.css" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="80.0" prefWidth="200.0">
                <children>
@@ -160,12 +162,33 @@
                   </ScrollPane>
                   <VBox prefHeight="663.0" prefWidth="323.0">
                      <children>
-                        <JFXListView fx:id="chatBoxListView" prefHeight="401.0" prefWidth="344.0" />
-                        <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="36.0" prefWidth="322.0" promptText="Type your message...">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </TextField>
+                        <Accordion prefHeight="350.0">
+                          <panes>
+                            <TitledPane fx:id="accordion" animated="false" prefHeight="350.0" prefWidth="322.0" text="Assistant">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ScrollPane fx:id="chatScrollPane" prefHeight="288.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #89a0e7, #afbde8);">
+                                             <content>
+                                                <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="319.0" style="-fx-background-color: linear-gradient(to top, #89a0e7, #afbde8);" />
+                                             </content>
+                                          </ScrollPane>
+                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutY="288.0" prefHeight="38.0" prefWidth="317.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
+                                             <children>
+                                                <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="40.0" prefWidth="276.0" promptText="Type your message..." styleClass="transparent" stylesheets="@../Dashboard.css">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </TextField>
+                                                <FontAwesomeIcon fx:id="chatBoxSendBtn" glyphName="SEND" onMouseClicked="#textFieldPressEnter" size="1.5em" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
                      </children>
                   </VBox>
                </children>

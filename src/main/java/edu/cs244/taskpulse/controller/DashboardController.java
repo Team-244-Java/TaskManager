@@ -12,31 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.jfoenix.controls.JFXListView;
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.ChatGPTHttpClient;
-import edu.cs244.taskpulse.utils.ChatListCell;
-import edu.cs244.taskpulse.utils.ChatListCellFactory;
-import edu.cs244.taskpulse.utils.ChatMessage;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class DashboardController implements Initializable {
@@ -86,10 +88,22 @@ public class DashboardController implements Initializable {
 	private Button searchBtn;
 
 	@FXML
-	private JFXListView<String> chatBoxListView;
+	private ScrollPane chatScrollPane;
+
+	@FXML
+	private VBox chatContainer;
 
 	@FXML
 	private TextField chatBoxTextField;
+
+	@FXML
+	private TitledPane accordion;
+	
+    @FXML
+    private FontAwesomeIcon chatBoxSendBtn;
+
+    @FXML
+    private HBox chatBoxTextBar;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -151,7 +165,6 @@ public class DashboardController implements Initializable {
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static String ColorOfPostIt(long result) {
@@ -181,7 +194,6 @@ public class DashboardController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		chatBoxListView.setCellFactory(param -> new ChatListCell());
 	}
 
 	@FXML
@@ -199,7 +211,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void textFieldPressEnter() {
-		String userMessage = "You: "+chatBoxTextField.getText().trim();
+		String userMessage = chatBoxTextField.getText().trim();
 
 		// Check if the user message is not blank and not waiting for a response
 		if (!userMessage.isEmpty() && !waitingForGptResponse) {
@@ -209,23 +221,52 @@ public class DashboardController implements Initializable {
 			// Disable the ability to enter new messages
 			chatBoxTextField.setDisable(true);
 
-			// Add user message to the ListView 
-			chatBoxListView.getItems().add(userMessage.replace("You: ", UserSession.getCurrentUser().getUsername()+":"+"\n"));
+			// Create an HBox for the user message
+			HBox userMessageHBox = new HBox();
 
-			// Clear the text field after adding the user message
+			// Create a TextFlow for the user message
+			TextFlow userMessageTextFlow = new TextFlow();
+			Text userText = new Text(userMessage);
+			userText.setFill(Color.WHITE);
+			userMessageTextFlow.setStyle("-fx-background-color: #174AE4;" + "-fx-background-radius: 10px;");
+			userMessageTextFlow.setPadding(new Insets(5));
+			userMessageTextFlow.getChildren().add(userText);
+
+			// Add the TextFlow to the HBox
+			userMessageHBox.getChildren().add(userMessageTextFlow);
+			userMessageHBox.setAlignment(Pos.CENTER_RIGHT);
+			userMessageHBox.setPadding(new Insets(5, 5, 5, 10));
+
+			// Add the HBox to the VBox
+			chatContainer.getChildren().add(userMessageHBox);
+
 			chatBoxTextField.clear();
 
 			// Send user message to ChatGPT asynchronously and get the response
 			new Thread(() -> {
-				String gptResponse = chatGPTClient.chatGPT(userMessage.replace("You: ",""));
+				String gptResponse = chatGPTClient.chatGPT(userMessage);
 
 				// Update JavaFX UI components on the JavaFX Application Thread
 				javafx.application.Platform.runLater(() -> {
-					// Add GPT response to the ListView
-					chatBoxListView.getItems().add("ChatGPT:\n" + gptResponse);
+					HBox gptResponseHBox = new HBox();
+					gptResponseHBox.setAlignment(Pos.CENTER_LEFT);
 
-					// Scroll to the bottom of the ListView
-					chatBoxListView.scrollTo(chatBoxListView.getItems().size() - 1);
+					// Create a TextFlow for the ChatGPT response
+					TextFlow gptResponseTextFlow = new TextFlow();
+					Text gptText = new Text("ChatGPT:\n" + gptResponse);
+					gptResponseTextFlow.setStyle("-fx-background-color: #FFFFFF;" + "-fx-background-radius: 10px");
+					gptResponseTextFlow.setPadding(new Insets(5));
+					gptResponseTextFlow.getChildren().add(gptText);
+
+					// Add the TextFlow to the HBox
+					gptResponseHBox.getChildren().add(gptResponseTextFlow);
+					gptResponseHBox.setPadding(new Insets(5, 10, 5, 5));
+
+					// Add the HBox to the VBox
+					chatContainer.getChildren().add(gptResponseHBox);
+
+					// Scroll to the bottom of the VBox
+					chatScrollPane.setVvalue(1.0);
 
 					// Reset the flag
 					waitingForGptResponse = false;
@@ -234,7 +275,7 @@ public class DashboardController implements Initializable {
 					chatBoxTextField.setDisable(false);
 
 					// Set focus back to the text field
-					chatBoxTextField.requestFocus();
+					// chatBoxTextField.requestFocus();
 				});
 			}).start();
 		}
