@@ -162,9 +162,9 @@
                   </ScrollPane>
                   <VBox prefHeight="663.0" prefWidth="323.0">
                      <children>
-                        <Accordion prefHeight="350.0">
+                        <Accordion fx:id="assistantAccordion" prefHeight="377.0" prefWidth="322.0">
                           <panes>
-                            <TitledPane fx:id="accordion" animated="false" prefHeight="350.0" prefWidth="322.0" text="Assistant">
+                            <TitledPane fx:id="assistantTitlePane" animated="false" prefHeight="350.0" prefWidth="322.0" text="Assistant">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -173,11 +173,11 @@
                                                 <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="319.0" style="-fx-background-color: linear-gradient(to top, #89a0e7, #afbde8);" />
                                              </content>
                                           </ScrollPane>
-                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutY="288.0" prefHeight="38.0" prefWidth="317.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
+                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutY="288.0" prefHeight="45.0" prefWidth="317.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
                                              <children>
                                                 <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="40.0" prefWidth="276.0" promptText="Type your message..." styleClass="transparent" stylesheets="@../Dashboard.css">
                                                    <font>
-                                                      <Font size="13.0" />
+                                                      <Font name="Segoe UI" size="13.0" />
                                                    </font>
                                                 </TextField>
                                                 <FontAwesomeIcon fx:id="chatBoxSendBtn" glyphName="SEND" onMouseClicked="#textFieldPressEnter" size="1.5em" />
@@ -186,7 +186,36 @@
                                        </children>
                                     </AnchorPane>
                               </content>
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
                             </TitledPane>
+                              <TitledPane fx:id="reminderTitlePane" animated="false" layoutX="10.0" layoutY="10.0" prefHeight="262.0" prefWidth="322.0" text="Reminder">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ScrollPane fx:id="reminderScrollPane" prefHeight="290.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
+                                             <content>
+                                                <VBox fx:id="reminderContainer" prefHeight="288.0" prefWidth="319.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);" />
+                                             </content>
+                                          </ScrollPane>
+                                          <HBox fx:id="addReminderHBox" alignment="CENTER" layoutX="-2.0" layoutY="288.0" onMouseClicked="#addNewReminder" prefHeight="45.0" prefWidth="322.0" spacing="10.0">
+                                             <children>
+                                                <FontAwesomeIcon glyphName="PLUS" size="1.5em" />
+                                                <Label text="Add New Reminder">
+                                                   <font>
+                                                      <Font name="Segoe UI Bold" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="12.0" />
+                                 </font>
+                              </TitledPane>
                           </panes>
                         </Accordion>
                      </children>

@@ -26,6 +26,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -100,10 +101,28 @@ public class DashboardController implements Initializable {
 	private TitledPane accordion;
 	
     @FXML
+    private TitledPane assistantTitlePane;
+	
+    @FXML
     private FontAwesomeIcon chatBoxSendBtn;
 
     @FXML
     private HBox chatBoxTextBar;
+    
+    @FXML
+    private Accordion assistantAccordion;
+    
+    @FXML
+    private TitledPane reminderAccordion;
+    
+    @FXML
+    private VBox reminderContainer;
+
+    @FXML
+    private ScrollPane reminderScrollPane;
+
+    @FXML
+    private TitledPane reminderTitlePane;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -275,10 +294,15 @@ public class DashboardController implements Initializable {
 					chatBoxTextField.setDisable(false);
 
 					// Set focus back to the text field
-					// chatBoxTextField.requestFocus();
+				   chatBoxTextField.requestFocus();
 				});
 			}).start();
 		}
 	}
+	
+    @FXML
+    void addNewReminder() {
+
+    }
 
 }
