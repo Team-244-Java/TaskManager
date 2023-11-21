@@ -2,6 +2,7 @@ package edu.cs244.taskpulse.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
@@ -13,7 +14,6 @@ public class Reminder {
 	private LocalDateTime date;
 
 	public Reminder(String title, String note, LocalDateTime date) {
-		super();
 		this.title = title;
 		this.note = note;
 		this.date = date;
@@ -43,7 +43,7 @@ public class Reminder {
 		this.date = date;
 	}
 
-	public static void addReminder(String title, String note, LocalDateTime date, int user_id) {
+	public static void addReminder(String title, String note, LocalDate date, int user_id) {
 		Connection connection = null;
 		try {
 			String sql = "INSERT INTO reminders (title, note, reminder_date, user_id) " + "VALUES (?, ?, ?, ?)";

@@ -1,0 +1,74 @@
+.root {
+    -fx-background-color: #f0f0f0;
+}
+
+.header-label {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 18;
+    -fx-text-fill: #333333;
+}
+
+.field-label {
+    -fx-font-family: 'Segoe UI';
+    -fx-text-fill: #555555;
+}
+
+.text-field,
+.text-area,
+.date-picker {
+    -fx-font-family: 'Segoe UI';
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-padding: 2;
+}
+
+/* Modern button style */
+.action-button {
+    -fx-font-family: 'Segoe UI';
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 3;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for buttons */
+.action-button:hover {
+    -fx-background-color: #45a049;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+}
+
+/* Pressed effect for buttons */
+.action-button:pressed {
+    -fx-background-color: #388e3c;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+/* Cancel button style with a slightly harder red color */
+#cancelButton {
+    -fx-font-family: 'Segoe UI';
+    -fx-background-color: #e53935; /* Slightly harder red color */
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 3;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for cancel button */
+#cancelButton:hover {
+    -fx-background-color: #d32f2f; /* Lighter red on hover */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+}
+
+/* Pressed effect for cancel button */
+#cancelButton:pressed {
+    -fx-background-color: #b71c1c; /* Darker red when pressed */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+/* Outer frame styling */
+.anchor-pane {
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}

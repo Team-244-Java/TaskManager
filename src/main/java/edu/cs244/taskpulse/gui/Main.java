@@ -8,7 +8,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		LoginLoader login = new LoginLoader();
-
 		login.start(primaryStage);
 	}
 

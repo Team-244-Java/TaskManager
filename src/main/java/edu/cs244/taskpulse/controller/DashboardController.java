@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 import edu.cs244.taskpulse.models.Task;
@@ -302,7 +303,8 @@ public class DashboardController implements Initializable {
 	
     @FXML
     void addNewReminder() {
-
+    	CreateReminderLoader reminderUi = new CreateReminderLoader();
+    	reminderUi.newWindow();
     }
 
 }
