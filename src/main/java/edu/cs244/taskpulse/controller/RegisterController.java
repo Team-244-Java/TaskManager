@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.LoginLoader;
 import edu.cs244.taskpulse.models.User;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
@@ -95,7 +94,7 @@ public class RegisterController {
 	public void initialize() {
 		pause.setOnFinished(e -> {
 			String newValue = username.getText();
-			if (newValue.isEmpty()) {
+			if (newValue.length()<4) {
 				greenCheckIcon.setVisible(false);
 				redFailIcon.setVisible(false);
 			} else {
@@ -135,6 +134,10 @@ public class RegisterController {
 		        loginErrorAnnouncement.setText("Username field is empty");
 		        return;
 		    }
+		    if (userName.length() < 4 || !userName.matches("^[a-zA-Z0-9]+$")) {
+		        loginErrorAnnouncement.setText("Username must be at least 4 characters long and contain only alphanumeric characters");
+		        return;
+		    }
 		    if (!checkUsernameAvailability(userName)) {
 		        loginErrorAnnouncement.setText("Username has already been taken");
 		        return;
@@ -154,6 +157,10 @@ public class RegisterController {
 		    }
 		    if (passWord.isEmpty()) {
 		        loginErrorAnnouncement.setText("Password field is empty");
+		        return;
+		    }
+		    if (passWord.length() <= 8) {
+		        loginErrorAnnouncement.setText("Password must be at least 8 characters long");
 		        return;
 		    }
 		    if (confirmpassword.isEmpty()) {

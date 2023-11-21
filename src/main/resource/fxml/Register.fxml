@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../loginStyle.css" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.RegisterController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../loginStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.RegisterController">
    <children>
       <Pane fx:id="content_area" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #246B9D;">
          <children>
@@ -22,53 +22,84 @@
             </ImageView>
          </children>
       </Pane>
-      <ImageView fx:id="profileIcon" fitHeight="131.0" fitWidth="167.0" layoutX="717.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/ProfileIcon.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="welcomeLabel" layoutX="723.0" layoutY="145.0" text="WELCOME">
+      <Label fx:id="welcomeLabel" layoutX="699.0" layoutY="44.0" text="Register">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="Segoe UI Bold" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="loginErrorAnnouncement" layoutX="663.0" layoutY="186.0" prefHeight="20.0" prefWidth="244.0" textFill="#f40000">
+      <Label fx:id="loginErrorAnnouncement" alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="156.0" lineSpacing="3.0" prefHeight="52.0" prefWidth="424.0" textAlignment="CENTER" textFill="#f40000" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="usernameLabel" layoutX="520.0" layoutY="228.0" prefHeight="36.0" prefWidth="94.0" text="Username">
+      <Label fx:id="usernameLabel" layoutX="535.0" layoutY="216.0" prefHeight="36.0" prefWidth="94.0" text="Username">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="Segoe UI Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="username" layoutX="661.0" layoutY="228.0" prefHeight="36.0" prefWidth="244.0" promptText="Username" />
-      <Label fx:id="emailLabel" layoutX="520.0" layoutY="278.0" prefHeight="36.0" prefWidth="94.0" text="Email">
+      <TextField fx:id="username" layoutX="714.0" layoutY="216.0" prefHeight="36.0" prefWidth="244.0" promptText="Username">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="Segoe UI" size="12.0" />
+         </font></TextField>
+      <Label fx:id="emailLabel" layoutX="535.0" layoutY="266.0" prefHeight="36.0" prefWidth="94.0" text="Email">
+         <font>
+            <Font name="Segoe UI Bold" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="userEmail" layoutX="661.0" layoutY="278.0" prefHeight="36.0" prefWidth="244.0" promptText="Email" />
-      <Label fx:id="passwordLabel" layoutX="520.0" layoutY="328.0" prefHeight="36.0" prefWidth="94.0" text="Password">
+      <TextField fx:id="userEmail" layoutX="714.0" layoutY="266.0" prefHeight="36.0" prefWidth="244.0" promptText="example@email.com">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="Segoe UI" size="12.0" />
+         </font></TextField>
+      <Label fx:id="passwordLabel" layoutX="535.0" layoutY="316.0" prefHeight="36.0" prefWidth="94.0" text="Password">
+         <font>
+            <Font name="Segoe UI Bold" size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="password" layoutX="661.0" layoutY="328.0" prefHeight="36.0" prefWidth="244.0" promptText="Password" />
-      <Label fx:id="confirmPasswordLabel" layoutX="520.0" layoutY="378.0" prefHeight="36.0" prefWidth="141.0" text="Confirm Password">
+      <PasswordField fx:id="password" layoutX="714.0" layoutY="316.0" prefHeight="36.0" prefWidth="244.0" promptText="Password">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="Segoe UI" size="12.0" />
+         </font></PasswordField>
+      <Label fx:id="confirmPasswordLabel" layoutX="535.0" layoutY="366.0" prefHeight="36.0" prefWidth="141.0" text="Confirm Password">
+         <font>
+            <Font name="Segoe UI Bold" size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="confirmPassword" layoutX="660.0" layoutY="378.0" prefHeight="36.0" prefWidth="244.0" promptText="Confirm Password" />
-      <Button fx:id="registerBtn" layoutX="708.0" layoutY="460.0" mnemonicParsing="false" onAction="#actionRegisterBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Register" textFill="WHITE" />
-      <Button fx:id="returnLoginBtn" layoutX="708.0" layoutY="510.0" mnemonicParsing="false" onAction="#actionReturnLogin" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE" />
-      <FontAwesomeIcon fx:id="closeBtn" glyphName="CLOSE" layoutX="980.0" layoutY="20.0" onMouseClicked="#actionClose" size="1.5em" />
-      <FontAwesomeIcon fx:id="returnLoginArrow" glyphName="ARROW_LEFT" layoutX="512.0" layoutY="20.0" onMouseClicked="#actionReturnLogin" size="1.5em" />
-      <FontAwesomeIcon fx:id="copyright" fill="GREY" glyphName="COPYRIGHT" layoutX="744.0" layoutY="588.0" onMouseClicked="#actionReturnLogin" text="" />
-      <Label layoutX="760.0" layoutY="575.0" text="2023 CIS244" textFill="GREY" />
+      <PasswordField fx:id="confirmPassword" layoutX="714.0" layoutY="366.0" prefHeight="36.0" prefWidth="244.0" promptText="Confirm Password">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font></PasswordField>
+      <Button fx:id="registerBtn" layoutX="806.0" layoutY="432.0" mnemonicParsing="false" onAction="#actionRegisterBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Register" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font></Button>
+      <Button fx:id="returnLoginBtn" layoutX="535.0" layoutY="432.0" mnemonicParsing="false" onAction="#actionReturnLogin" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font></Button>
+      <FontAwesomeIcon fx:id="copyright" fill="GREY" glyphName="COPYRIGHT" layoutX="704.0" layoutY="590.0" onMouseClicked="#actionReturnLogin" text="" />
+      <Label layoutX="720.0" layoutY="577.0" text="2023 CIS244" textFill="GREY" />
       <Label layoutX="940.0" layoutY="585.0" text="version 1.0" textFill="GREY" />
-      <FontAwesomeIcon fx:id="greenCheckIcon" fill="GREEN" glyphName="CHECK" layoutX="882.0" layoutY="250.0" visible="false" />
-      <FontAwesomeIcon fx:id="redFailIcon" fill="RED" glyphName="CLOSE" layoutX="883.0" layoutY="251.0" text="" visible="false" />
+      <ImageView fitHeight="29.0" fitWidth="24.0" layoutX="693.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/fb_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="29.0" fitWidth="24.0" layoutX="733.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/tw_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="29.0" fitWidth="24.0" layoutX="773.0" layoutY="531.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/ins_icon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="welcomeLabel1" layoutX="627.0" layoutY="95.0" text="Enter your information below to join us">
+         <font>
+            <Font name="Segoe UI Bold" size="14.0" />
+         </font>
+      </Label>
+      <FontAwesomeIcon fx:id="greenCheckIcon" fill="GREEN" glyphName="CHECK" layoutX="934.0" layoutY="238.0" visible="false" />
+      <FontAwesomeIcon fx:id="redFailIcon" fill="RED" glyphName="CLOSE" layoutX="935.0" layoutY="238.0" visible="false" />
    </children>
 </AnchorPane>
