@@ -68,11 +68,11 @@
          <font>
             <Font name="Segoe UI" size="12.0" />
          </font></PasswordField>
-      <Button fx:id="registerBtn" layoutX="806.0" layoutY="432.0" mnemonicParsing="false" onAction="#actionRegisterBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Register" textFill="WHITE">
+      <Button fx:id="registerBtn" layoutX="764.0" layoutY="425.0" mnemonicParsing="false" onAction="#actionRegisterBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Register" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font></Button>
-      <Button fx:id="returnLoginBtn" layoutX="535.0" layoutY="432.0" mnemonicParsing="false" onAction="#actionReturnLogin" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE">
+      <Button fx:id="returnLoginBtn" layoutX="575.0" layoutY="425.0" mnemonicParsing="false" onAction="#actionReturnLogin" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Login" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font></Button>
