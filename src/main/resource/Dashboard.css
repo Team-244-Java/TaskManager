@@ -14,5 +14,21 @@
 
 .chatBoxTextBar{
 	-fx-background-color: #FFFFFF;
-	-fx-background-radius: 10;
+	-fx-background-radius: 20;
+	-fx-border-radius: 20;
+	-fx-border-color: #cccccc;
+    -fx-border-width: 1;
+}
+.add-reminder{
+	-fx-background-color: #7ED7C1;
+	-fx-background-radius: 100;
+}
+.add-reminder:hover{
+	-fx-background-color: #2D9596;
+	transition: -fx-background-color 2s ease-in;
+    transition-easing-function: linear;
+}
+.add-reminder:pressed{
+	-fx-background-color: #29ADB2;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }

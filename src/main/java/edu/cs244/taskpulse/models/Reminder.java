@@ -2,21 +2,32 @@ package edu.cs244.taskpulse.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 
 public class Reminder {
 
+	private int reminderid;
 	private String title;
 	private String note;
 	private LocalDateTime date;
+	private String frequency;
 
-	public Reminder(String title, String note, LocalDateTime date) {
+	public Reminder(int reminderid, String title, String note, LocalDateTime date, String frequency) {
+		this.reminderid = reminderid;
 		this.title = title;
 		this.note = note;
 		this.date = date;
+		this.frequency = frequency;
+	}
+
+	public int getId() {
+		return reminderid;
+	}
+
+	public void setId(int reminderid) {
+		this.reminderid = reminderid;
 	}
 
 	public String getTitle() {
@@ -43,10 +54,19 @@ public class Reminder {
 		this.date = date;
 	}
 
-	public static void addReminder(String title, String note, LocalDate date, int user_id) {
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	public static void addReminder(String title, String note, LocalDateTime date, String frequency, int user_id) {
 		Connection connection = null;
 		try {
-			String sql = "INSERT INTO reminders (title, note, reminder_date, user_id) " + "VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO reminders (title, note, reminder_date, frequency, user_id) "
+					+ "VALUES (?, ?, ?, ?, ?)";
 			connection = DatabaseHandler.getConnection();
 
 			PreparedStatement pStmt = connection.prepareStatement(sql);
@@ -54,7 +74,28 @@ public class Reminder {
 			pStmt.setString(1, title);
 			pStmt.setString(2, note);
 			pStmt.setObject(3, date);
-			pStmt.setInt(4, user_id);
+			pStmt.setObject(4, frequency);
+			pStmt.setInt(5, user_id);
+
+			pStmt.executeUpdate();
+			connection.commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public static void updateReminder(String title, String note, LocalDateTime date, String frequency, int reminderid) {
+
+		try {
+			Connection connection = DatabaseHandler.getConnection();
+			PreparedStatement pStmt = connection.prepareStatement(
+					"UPDATE reminders SET title=?, note=?, reminder_date=?, frequency=? WHERE id= ?");
+
+			pStmt.setString(1, title);
+			pStmt.setString(2, note);
+			pStmt.setObject(3, date);
+			pStmt.setObject(4, frequency);
+			pStmt.setInt(5, reminderid);
 
 			pStmt.executeUpdate();
 			connection.commit();
@@ -64,12 +105,11 @@ public class Reminder {
 	}
 
 	public static void removeReminder(int reminderId) {
-		Connection connection = null;
-		try {
-			String sql = "DELETE FROM reminders WHERE id = ?";
-			connection = DatabaseHandler.getConnection();
 
-			PreparedStatement pStmt = connection.prepareStatement(sql);
+		try {
+			Connection connection = DatabaseHandler.getConnection();
+
+			PreparedStatement pStmt = connection.prepareStatement("DELETE FROM reminders WHERE id = ?");
 
 			pStmt.setInt(1, reminderId);
 

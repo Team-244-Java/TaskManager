@@ -16,6 +16,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
+import edu.cs244.taskpulse.models.Reminder;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.ChatGPTHttpClient;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
@@ -46,6 +47,8 @@ import javafx.stage.Stage;
 public class DashboardController implements Initializable {
 
 	private List<Task> tasks = new ArrayList<>();
+
+	private List<Reminder> reminders = new ArrayList<>();
 
 	@FXML
 	private AnchorPane DashboardAnchorPaneTop;
@@ -100,30 +103,36 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private TitledPane accordion;
+
+	@FXML
+	private TitledPane assistantTitlePane;
+
+	@FXML
+	private FontAwesomeIcon chatBoxSendBtn;
+
+	@FXML
+	private HBox chatBoxTextBar;
+
+	@FXML
+	private Accordion assistantAccordion;
+
+	@FXML
+	private TitledPane reminderAccordion;
+
+	@FXML
+	private VBox reminderContainer;
+
+	@FXML
+	private ScrollPane reminderScrollPane;
+
+	@FXML
+	private TitledPane reminderTitlePane;
 	
-    @FXML
-    private TitledPane assistantTitlePane;
-	
-    @FXML
-    private FontAwesomeIcon chatBoxSendBtn;
+	@FXML
+    private HBox refreshBtn;
 
-    @FXML
-    private HBox chatBoxTextBar;
-    
-    @FXML
-    private Accordion assistantAccordion;
-    
-    @FXML
-    private TitledPane reminderAccordion;
-    
-    @FXML
-    private VBox reminderContainer;
-
-    @FXML
-    private ScrollPane reminderScrollPane;
-
-    @FXML
-    private TitledPane reminderTitlePane;
+	@FXML
+	private HBox addReminderHBox;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -155,50 +164,32 @@ public class DashboardController implements Initializable {
 		return tasks;
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		int userId = UserSession.getCurrentUser().getUserId();
+	private List<Reminder> getReminderData(int userId) throws SQLException {
 
-		try {
-			tasks.addAll(getData(userId));
+		List<Reminder> reminders = new ArrayList<>();
 
-			for (int i = 0; i < tasks.size(); i++) {
-				FXMLLoader fxmlLoader = new FXMLLoader();
-				Task task = tasks.get(i);
-				LocalDate today = LocalDate.now();
-				LocalDate taskDueDays = LocalDate.parse(task.getDueDate()); // test date, need to implement accepting
-																			// input from task
+		try (Connection connection = DatabaseHandler.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement("SELECT * FROM reminders WHERE user_id = ?")) {
+			preparedStatement.setInt(1, userId);
 
-				long result = today.until(taskDueDays, ChronoUnit.DAYS);
-				String color = ColorOfPostIt(result);
-
-				fxmlLoader.setLocation(getClass().getResource(color));
-				AnchorPane anchorPane = fxmlLoader.load();
-
-				TaskController taskController = fxmlLoader.getController();
-				taskController.setData(tasks.get(i));
-
-				tilePane.getChildren().add(anchorPane);
-				tilePane.setPadding(new Insets(10));
-
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					Reminder reminder = new Reminder(resultSet.getInt("id"), resultSet.getString("title"),
+							resultSet.getString("note"), resultSet.getTimestamp("reminder_date").toLocalDateTime(),
+							resultSet.getString("frequency"));
+					reminders.add(reminder);
+				}
 			}
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
 		}
+
+		return reminders;
 	}
 
-	public static String ColorOfPostIt(long result) {
-		if (result <= 0) {
-			return "/fxml/Task.fxml"; // plain original working post it.
-		} else if ((result >= 1) && (result <= 4)) {
-			return "/fxml/TaskDarkYellow.fxml";
-		} else if ((result >= 5) && (result <= 6)) {
-			return "/fxml/TaskSalmon.fxml";
-		} else if ((result >= 7) && (result <= 14)) {
-			return "/fxml/TaskPink.fxml";
-		} else {
-			return "/fxml/TaskBlue.fxml"; // placeholder file, low readability.
-		}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		loadTask();
+		loadReminder();
 	}
 
 	@FXML
@@ -255,7 +246,7 @@ public class DashboardController implements Initializable {
 			// Add the TextFlow to the HBox
 			userMessageHBox.getChildren().add(userMessageTextFlow);
 			userMessageHBox.setAlignment(Pos.CENTER_RIGHT);
-			userMessageHBox.setPadding(new Insets(5, 5, 5, 10));
+			userMessageHBox.setPadding(new Insets(5, 10, 5, 25));
 
 			// Add the HBox to the VBox
 			chatContainer.getChildren().add(userMessageHBox);
@@ -280,13 +271,13 @@ public class DashboardController implements Initializable {
 
 					// Add the TextFlow to the HBox
 					gptResponseHBox.getChildren().add(gptResponseTextFlow);
-					gptResponseHBox.setPadding(new Insets(5, 10, 5, 5));
+					gptResponseHBox.setPadding(new Insets(5, 25, 5, 10));
 
 					// Add the HBox to the VBox
 					chatContainer.getChildren().add(gptResponseHBox);
 
 					// Scroll to the bottom of the VBox
-					chatScrollPane.setVvalue(1.0);
+					chatScrollPane.vvalueProperty().bind(chatContainer.heightProperty());
 
 					// Reset the flag
 					waitingForGptResponse = false;
@@ -295,16 +286,99 @@ public class DashboardController implements Initializable {
 					chatBoxTextField.setDisable(false);
 
 					// Set focus back to the text field
-				   chatBoxTextField.requestFocus();
+					chatBoxTextField.requestFocus();
 				});
 			}).start();
 		}
 	}
-	
-    @FXML
-    void addNewReminder() {
-    	CreateReminderLoader reminderUi = new CreateReminderLoader();
-    	reminderUi.newWindow();
-    }
+
+	@FXML
+	void addNewReminder() {
+		CreateReminderLoader reminderUi = new CreateReminderLoader(this);
+		reminderUi.newWindow();
+	}
+
+	private void loadTask() {
+		int userId = UserSession.getCurrentUser().getUserId();
+
+		try {
+			tasks.addAll(getData(userId));
+
+			for (int i = 0; i < tasks.size(); i++) {
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				Task task = tasks.get(i);
+				LocalDate today = LocalDate.now();
+				LocalDate taskDueDays = LocalDate.parse(task.getDueDate()); // test date, need to implement accepting
+																			// input from task
+
+				long result = today.until(taskDueDays, ChronoUnit.DAYS);
+				String color = ColorOfPostIt(result);
+
+				fxmlLoader.setLocation(getClass().getResource(color));
+				AnchorPane anchorPane = fxmlLoader.load();
+
+				TaskController taskController = fxmlLoader.getController();
+				taskController.setData(tasks.get(i));
+
+				tilePane.getChildren().add(anchorPane);
+				tilePane.setPadding(new Insets(10));
+
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static String ColorOfPostIt(long result) {
+		if (result <= 0) {
+			return "/fxml/Task.fxml"; // plain original working post it.
+		} else if ((result >= 1) && (result <= 4)) {
+			return "/fxml/TaskDarkYellow.fxml";
+		} else if ((result >= 5) && (result <= 6)) {
+			return "/fxml/TaskSalmon.fxml";
+		} else if ((result >= 7) && (result <= 14)) {
+			return "/fxml/TaskPink.fxml";
+		} else {
+			return "/fxml/TaskBlue.fxml"; // placeholder file, low readability.
+		}
+	}
+
+	void loadReminder() {
+		try {
+			int userId = UserSession.getCurrentUser().getUserId();
+			reminders.addAll(getReminderData(userId));
+			for (int a = 0; a < reminders.size(); a++) {
+				FXMLLoader reminderFxmlLoader = new FXMLLoader();
+				reminderFxmlLoader.setLocation(getClass().getResource("/fxml/reminder.fxml"));
+				AnchorPane reminderPane = reminderFxmlLoader.load();
+
+				HBox reminderHbox = new HBox(reminderPane);
+				reminderHbox.setAlignment(Pos.CENTER);
+				reminderHbox.setPadding(new Insets(10, 5, 10, 5));
+
+				ReminderController reminderController = reminderFxmlLoader.getController();
+				reminderController.setReminderData(reminders.get(a));
+
+				reminderController.setDashboardController(this);
+				
+				reminderContainer.getChildren().add(reminderHbox);
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void refreshReminder() {
+		reminders.clear();
+		reminderContainer.getChildren().clear();
+		loadReminder();
+	}
+
+	public void onReminderAddedUpdated() {
+		reminders.clear();
+		reminderContainer.getChildren().clear();
+		loadReminder();
+	}
 
 }

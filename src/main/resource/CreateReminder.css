@@ -23,7 +23,6 @@
     -fx-padding: 2;
 }
 
-/* Modern button style */
 .action-button {
     -fx-font-family: 'Segoe UI';
     -fx-background-color: #4CAF50;
@@ -44,7 +43,7 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
-/* Cancel button style with a slightly harder red color */
+/* Cancel button style */
 #cancelButton {
     -fx-font-family: 'Segoe UI';
     -fx-background-color: #e53935; /* Slightly harder red color */

@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="336.0" stylesheets="@../CreateReminder.css" fx:controller="edu.cs244.taskpulse.controller.CreateReminderController">
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="395.0" prefWidth="336.0" stylesheets="@../CreateReminder.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.CreateReminderController">
    <children>
       <Label layoutX="101.0" layoutY="14.0" styleClass="header-label" text="Create Reminder" />
       <Label layoutX="41.0" layoutY="69.0" styleClass="field-label" text="Title" />
       <Label layoutX="39.0" layoutY="107.0" styleClass="field-label" text="Note" />
-      <Label layoutX="39.0" layoutY="217.0" styleClass="field-label" text="Date" />
+      <Label layoutX="39.0" layoutY="261.0" styleClass="field-label" text="Date" />
       <TextField fx:id="titleTextField" layoutX="87.0" layoutY="65.0" prefHeight="26.0" prefWidth="187.0" styleClass="text-field" />
       <TextArea fx:id="noteTextArea" layoutX="87.0" layoutY="107.0" prefHeight="92.0" prefWidth="187.0" styleClass="text-area" />
-      <DatePicker fx:id="datePicker" layoutX="87.0" layoutY="213.0" prefHeight="26.0" prefWidth="187.0" styleClass="date-picker" />
-      <Button fx:id="saveButton" layoutX="116.0" layoutY="254.0" mnemonicParsing="false" onAction="#saveReminder" styleClass="action-button" text="Save" />
-      <Button fx:id="cancelButton" layoutX="181.0" layoutY="254.0" mnemonicParsing="false" onAction="#cancelPopup" styleClass="action-button" text="Cancel" />
+      <DatePicker fx:id="datePicker" layoutX="87.0" layoutY="257.0" prefHeight="26.0" prefWidth="187.0" styleClass="date-picker" />
+      <Button fx:id="saveButton" layoutX="115.0" layoutY="348.0" mnemonicParsing="false" onAction="#saveReminder" styleClass="action-button" text="Save" />
+      <Button fx:id="cancelButton" layoutX="180.0" layoutY="348.0" mnemonicParsing="false" onAction="#cancelPopup" styleClass="action-button" text="Cancel" />
+      <Label layoutX="26.0" layoutY="223.0" styleClass="field-label" text="Frequency" />
+      <ComboBox fx:id="comboBox" layoutX="87.0" layoutY="218.0" prefHeight="25.0" prefWidth="187.0" />
+      <Spinner fx:id="hourSpinner" layoutX="87.0" layoutY="298.0" prefHeight="21.0" prefWidth="55.0" />
+      <Label layoutX="41.0" layoutY="301.0" styleClass="field-label" text="Time" />
+      <Spinner fx:id="minuteSpinner" layoutX="154.0" layoutY="298.0" prefHeight="21.0" prefWidth="55.0" />
+      <Label layoutX="145.0" layoutY="296.0" styleClass="field-label" text=":">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

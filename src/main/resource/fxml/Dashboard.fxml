@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
+<BorderPane fx:id="DashboardBorderPaneMAIN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.DashboardController">
    <top>
       <AnchorPane fx:id="DashboardAnchorPaneTop" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #246b9d;" stylesheets="@../Dashboard.css" BorderPane.alignment="CENTER">
          <children>
@@ -191,16 +192,16 @@
                           <panes>
                             <TitledPane fx:id="assistantTitlePane" animated="false" prefHeight="350.0" prefWidth="322.0" text="Assistant">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);">
                                        <children>
-                                          <ScrollPane fx:id="chatScrollPane" prefHeight="288.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #89a0e7, #afbde8);">
+                                          <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" prefHeight="288.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);">
                                              <content>
-                                                <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="319.0" style="-fx-background-color: linear-gradient(to top, #89a0e7, #afbde8);" />
+                                                <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="318.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);" />
                                              </content>
                                           </ScrollPane>
-                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutY="288.0" prefHeight="45.0" prefWidth="317.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
+                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutX="23.0" layoutY="288.0" prefHeight="38.0" prefWidth="281.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
                                              <children>
-                                                <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="40.0" prefWidth="276.0" promptText="Type your message..." styleClass="transparent" stylesheets="@../Dashboard.css">
+                                                <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="40.0" prefWidth="213.0" promptText="Type your message..." styleClass="transparent" stylesheets="@../Dashboard.css">
                                                    <font>
                                                       <Font name="Segoe UI" size="13.0" />
                                                    </font>
@@ -217,17 +218,27 @@
                             </TitledPane>
                               <TitledPane fx:id="reminderTitlePane" animated="false" layoutX="10.0" layoutY="10.0" prefHeight="262.0" prefWidth="322.0" text="Reminder">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
                                        <children>
-                                          <ScrollPane fx:id="reminderScrollPane" prefHeight="290.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
+                                          <ScrollPane fx:id="reminderScrollPane" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
                                              <content>
-                                                <VBox fx:id="reminderContainer" prefHeight="288.0" prefWidth="319.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);" />
+                                                <VBox fx:id="reminderContainer" alignment="TOP_CENTER" prefHeight="288.0" prefWidth="320.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);" />
                                              </content>
                                           </ScrollPane>
-                                          <HBox fx:id="addReminderHBox" alignment="CENTER" layoutX="-2.0" layoutY="288.0" onMouseClicked="#addNewReminder" prefHeight="45.0" prefWidth="322.0" spacing="10.0">
+                                          <HBox fx:id="addReminderHBox" alignment="CENTER" layoutX="5.0" layoutY="293.0" onMouseClicked="#addNewReminder" prefHeight="35.0" prefWidth="153.0" spacing="10.0" styleClass="add-reminder">
                                              <children>
                                                 <FontAwesomeIcon glyphName="PLUS" size="1.5em" />
                                                 <Label text="Add New Reminder">
+                                                   <font>
+                                                      <Font name="Segoe UI Bold" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="refreshBtn" alignment="CENTER" layoutX="171.0" layoutY="293.0" onMouseClicked="#refreshReminder" prefHeight="35.0" prefWidth="145.0" spacing="10.0" styleClass="add-reminder">
+                                             <children>
+                                                <FontAwesomeIcon glyphName="REFRESH" size="1.5em" />
+                                                <Label text="Refresh">
                                                    <font>
                                                       <Font name="Segoe UI Bold" size="13.0" />
                                                    </font>
