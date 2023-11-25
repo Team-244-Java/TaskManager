@@ -2,7 +2,6 @@ package edu.cs244.taskpulse.controller;
 
 import java.util.Optional;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.models.Reminder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,28 +11,33 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ReminderController {
 
-	@FXML
-	private AnchorPane reminderAnchor;
+	  @FXML
+	    private ImageView deleteBtn;
 
-	@FXML
-	private FontAwesomeIcon editBtn;
-	
-    @FXML
-    private FontAwesomeIcon deleteBtn;
+	    @FXML
+	    private ImageView editBtn;
 
-	@FXML
-	private Label frequency;
+	    @FXML
+	    private Label frequency;
 
-	@FXML
-	private Label time;
+	    @FXML
+	    private AnchorPane reminderAnchor;
 
-	@FXML
-	private Label title;
+	    @FXML
+	    private Label time;
+
+	    @FXML
+	    private Label timeLabel;
+
+	    @FXML
+	    private Label title;
+
 
 	private Reminder reminderItem;
 
