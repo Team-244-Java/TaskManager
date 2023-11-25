@@ -195,6 +195,7 @@ public class DashboardController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		showUsername();
 		loadTask();
 		loadReminder();
 	}
@@ -386,6 +387,10 @@ public class DashboardController implements Initializable {
 		reminders.clear();
 		reminderContainer.getChildren().clear();
 		loadReminder();
+	}
+	
+	private void showUsername() {
+		welcomeUserLabel.setText("Welcome "+UserSession.getCurrentUser().getUsername());
 	}
 
 	@FXML
