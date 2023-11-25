@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -63,7 +62,7 @@
                   <Button fx:id="searchBtn" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSearch" prefHeight="30.0" prefWidth="80.0" styleClass="searchBtn" stylesheets="@../Dashboard.css" text="Search" textFill="WHITE" />
                </children>
             </HBox>
-            <Label layoutX="1143.0" layoutY="31.0" text="Welcome User" textFill="#f0f0f0">
+            <Label fx:id="welcomeUserLabel" layoutX="1143.0" layoutY="31.0" text="Welcome User" textFill="#f0f0f0">
                <font>
                   <Font name="Segoe UI Semibold" size="18.0" />
                </font>
@@ -73,7 +72,7 @@
    <left>
       <FlowPane fx:id="DashboardFlowPaneLeft" prefHeight="664.0" prefWidth="128.0" style="-fx-background-color: #f8f9ff;" stylesheets="@../Dashboard.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="341.0" prefWidth="152.0">
+            <VBox prefHeight="340.0" prefWidth="152.0">
                <children>
                   <VBox prefHeight="201.0" prefWidth="152.0">
                      <children>
@@ -88,7 +87,7 @@
                               <Font name="Segoe UI" size="16.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" onMouseClicked="#DashboardCreateNewTaskButton" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="DashboardCreateNewTaskButton" alignment="CENTER" onMouseClicked="#DashboardCreateNewTaskButton" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="work-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -105,7 +104,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" onMouseClicked="#addNewReminder" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="addReminderBtnLeft" alignment="CENTER" onMouseClicked="#addNewReminder" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="work-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -122,7 +121,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="uploadTaskBtn" alignment="CENTER" onMouseClicked="#uploadTask" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="work-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -139,7 +138,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="exportTaskBtn" alignment="CENTER" onMouseClicked="#exportTask" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="work-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -171,7 +170,7 @@
                               <Font name="Segoe UI" size="16.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" onMouseClicked="#editProfile" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="DashboardEditRegistrationButton" alignment="CENTER" onMouseClicked="#editProfile" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="profile-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -188,7 +187,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" onMouseClicked="#editPassword" prefHeight="43.0" prefWidth="152.0" spacing="15.0">
+                        <HBox fx:id="settingsBtn" alignment="CENTER" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="profile-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -224,14 +223,14 @@
                   </VBox>
                </children>
             </VBox>
-            <ScrollPane prefHeight="177.0" prefWidth="153.0">
+            <ScrollPane fx:id="teamScrollPane" prefHeight="177.0" prefWidth="153.0">
                <content>
-                  <VBox prefHeight="175.0" prefWidth="150.0" />
+                  <VBox fx:id="teamVBox" prefHeight="175.0" prefWidth="150.0" />
                </content>
             </ScrollPane>
             <VBox prefHeight="145.0" prefWidth="152.0" spacing="30.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="42.0" prefWidth="132.0">
+                  <HBox fx:id="logoutBtn" alignment="CENTER" onMouseClicked="#logout" prefHeight="42.0" prefWidth="132.0" styleClass="logout-item">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -269,12 +268,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="663.0" prefWidth="780.0">
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="663.0" prefWidth="770.0">
                      <content>
-                        <TilePane fx:id="tilePane" prefHeight="652.0" prefWidth="769.0" />
+                        <TilePane fx:id="tilePane" prefHeight="652.0" prefWidth="759.0" />
                      </content>
                   </ScrollPane>
-                  <VBox prefHeight="663.0" prefWidth="368.0">
+                  <VBox prefHeight="663.0" prefWidth="377.0">
                      <children>
                         <Accordion fx:id="assistantAccordion" prefHeight="377.0" prefWidth="322.0">
                           <panes>
@@ -282,19 +281,23 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);">
                                        <children>
-                                          <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" prefHeight="288.0" prefWidth="366.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);">
+                                          <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" prefHeight="288.0" prefWidth="376.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);">
                                              <content>
-                                                <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="364.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);" />
+                                                <VBox fx:id="chatContainer" prefHeight="286.0" prefWidth="374.0" style="-fx-background-color: linear-gradient(to top, #EDFBFF, #ffffff);" />
                                              </content>
                                           </ScrollPane>
-                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutX="50.0" layoutY="288.0" prefHeight="38.0" prefWidth="281.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
+                                          <HBox fx:id="chatBoxTextBar" alignment="CENTER" layoutX="56.0" layoutY="288.0" prefHeight="38.0" prefWidth="281.0" styleClass="chatBoxTextBar" stylesheets="@../Dashboard.css">
                                              <children>
                                                 <TextField fx:id="chatBoxTextField" onAction="#textFieldPressEnter" prefHeight="40.0" prefWidth="213.0" promptText="Type your message..." styleClass="transparent" stylesheets="@../Dashboard.css">
                                                    <font>
                                                       <Font name="Segoe UI" size="13.0" />
                                                    </font>
                                                 </TextField>
-                                                <FontAwesomeIcon fx:id="chatBoxSendBtn" glyphName="SEND" onMouseClicked="#textFieldPressEnter" size="1.5em" />
+                                                <ImageView fx:id="chatBoxSendBtn" fitHeight="25.0" fitWidth="30.0" onMouseClicked="#textFieldPressEnter" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/send.png" />
+                                                   </image>
+                                                </ImageView>
                                              </children>
                                           </HBox>
                                        </children>
@@ -308,14 +311,18 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
                                        <children>
-                                          <ScrollPane fx:id="reminderScrollPane" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="365.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
+                                          <ScrollPane fx:id="reminderScrollPane" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="380.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);">
                                              <content>
-                                                <VBox fx:id="reminderContainer" alignment="TOP_CENTER" prefHeight="288.0" prefWidth="367.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);" />
+                                                <VBox fx:id="reminderContainer" alignment="TOP_CENTER" prefHeight="288.0" prefWidth="376.0" style="-fx-background-color: linear-gradient(to top, #FFEBAD, #FFF6BF);" />
                                              </content>
                                           </ScrollPane>
-                                          <HBox fx:id="addReminderHBox" alignment="CENTER" layoutX="24.0" layoutY="293.0" onMouseClicked="#addNewReminder" prefHeight="35.0" prefWidth="153.0" spacing="10.0" styleClass="add-reminder">
+                                          <HBox fx:id="addReminderHBox" alignment="CENTER" layoutX="24.0" layoutY="293.0" onMouseClicked="#addNewReminder" prefHeight="35.0" prefWidth="153.0" spacing="3.0" styleClass="add-reminder">
                                              <children>
-                                                <FontAwesomeIcon glyphName="PLUS" size="1.5em" />
+                                                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/add.png" />
+                                                   </image>
+                                                </ImageView>
                                                 <Label text="Add New Reminder">
                                                    <font>
                                                       <Font name="Segoe UI Bold" size="13.0" />
@@ -323,9 +330,13 @@
                                                 </Label>
                                              </children>
                                           </HBox>
-                                          <HBox fx:id="refreshBtn" alignment="CENTER" layoutX="203.0" layoutY="293.0" onMouseClicked="#refreshReminder" prefHeight="35.0" prefWidth="145.0" spacing="10.0" styleClass="add-reminder">
+                                          <HBox fx:id="refreshBtn" alignment="CENTER" layoutX="199.0" layoutY="293.0" onMouseClicked="#refreshReminder" prefHeight="35.0" prefWidth="153.0" spacing="10.0" styleClass="add-reminder">
                                              <children>
-                                                <FontAwesomeIcon glyphName="REFRESH" size="1.5em" />
+                                                <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../icons/refresh.png" />
+                                                   </image>
+                                                </ImageView>
                                                 <Label text="Refresh">
                                                    <font>
                                                       <Font name="Segoe UI Bold" size="13.0" />

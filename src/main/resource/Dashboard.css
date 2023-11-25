@@ -32,3 +32,21 @@
 	-fx-background-color: #29ADB2;
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
+.work-item:hover{
+	-fx-background-color: #e2e6eb;
+}
+.work-item:pressed{
+	-fx-background-color: #9facbd;
+}
+.profile-item:hover{
+	-fx-background-color: #e2e6eb;
+}
+.profile-item:pressed{
+	-fx-background-color: #9facbd;
+}
+.logout-item:hover{
+	-fx-background-color: #e2e6eb;
+}
+.logout-item:pressed{
+	-fx-background-color: #9facbd;
+}

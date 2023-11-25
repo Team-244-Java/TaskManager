@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
@@ -30,9 +29,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -57,28 +58,58 @@ public class DashboardController implements Initializable {
 	private BorderPane DashboardBorderPaneMAIN;
 
 	@FXML
-	private Button DashboardCreateNewTaskButton;
+	private HBox DashboardCreateNewTaskButton;
 
 	@FXML
-	private Button DashboardEditRegistrationButton;
-
-	@FXML
-	private Button DashboardEditTasksButton;
-
-	@FXML
-	private Button DashboardEmailTaskOwnerButton;
-
-	@FXML
-	private Button DashboardFeatureRequestButton;
-
-	@FXML
-	private Button DashboardFeatureRequestButton1;
+	private HBox DashboardEditRegistrationButton;
 
 	@FXML
 	private FlowPane DashboardFlowPaneLeft;
 
 	@FXML
-	private TilePane tilePane;
+	private HBox addReminderBtnLeft;
+
+	@FXML
+	private HBox addReminderHBox;
+
+	@FXML
+	private Accordion assistantAccordion;
+
+	@FXML
+	private TitledPane assistantTitlePane;
+
+	@FXML
+	private ImageView chatBoxSendBtn;
+
+	@FXML
+	private HBox chatBoxTextBar;
+
+	@FXML
+	private TextField chatBoxTextField;
+
+	@FXML
+	private VBox chatContainer;
+
+	@FXML
+	private ScrollPane chatScrollPane;
+
+	@FXML
+	private HBox exportTaskBtn;
+
+	@FXML
+	private HBox logoutBtn;
+
+	@FXML
+	private HBox refreshBtn;
+
+	@FXML
+	private VBox reminderContainer;
+
+	@FXML
+	private ScrollPane reminderScrollPane;
+
+	@FXML
+	private TitledPane reminderTitlePane;
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -93,46 +124,22 @@ public class DashboardController implements Initializable {
 	private Button searchBtn;
 
 	@FXML
-	private ScrollPane chatScrollPane;
+	private HBox settingsBtn;
 
 	@FXML
-	private VBox chatContainer;
+	private ScrollPane teamScrollPane;
 
 	@FXML
-	private TextField chatBoxTextField;
+	private VBox teamVBox;
 
 	@FXML
-	private TitledPane accordion;
+	private TilePane tilePane;
 
 	@FXML
-	private TitledPane assistantTitlePane;
+	private HBox uploadTaskBtn;
 
 	@FXML
-	private FontAwesomeIcon chatBoxSendBtn;
-
-	@FXML
-	private HBox chatBoxTextBar;
-
-	@FXML
-	private Accordion assistantAccordion;
-
-	@FXML
-	private TitledPane reminderAccordion;
-
-	@FXML
-	private VBox reminderContainer;
-
-	@FXML
-	private ScrollPane reminderScrollPane;
-
-	@FXML
-	private TitledPane reminderTitlePane;
-	
-	@FXML
-    private HBox refreshBtn;
-
-	@FXML
-	private HBox addReminderHBox;
+	private Label welcomeUserLabel;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -360,7 +367,7 @@ public class DashboardController implements Initializable {
 				reminderController.setReminderData(reminders.get(a));
 
 				reminderController.setDashboardController(this);
-				
+
 				reminderContainer.getChildren().add(reminderHbox);
 			}
 		} catch (IOException | SQLException e) {
@@ -381,4 +388,18 @@ public class DashboardController implements Initializable {
 		loadReminder();
 	}
 
+	@FXML
+	void exportTask() {
+
+	}
+
+	@FXML
+	void logout() {
+
+	}
+
+	@FXML
+	void uploadTask() {
+
+	}
 }
