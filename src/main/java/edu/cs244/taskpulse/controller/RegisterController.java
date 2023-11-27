@@ -30,9 +30,6 @@ public class RegisterController {
 	private AnchorPane anchorPane;
 
 	@FXML
-	private FontAwesomeIcon closeBtn;
-
-	@FXML
 	private PasswordField confirmPassword;
 
 	@FXML

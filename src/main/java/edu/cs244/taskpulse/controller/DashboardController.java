@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
+import edu.cs244.taskpulse.loader.CreateTeamLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 import edu.cs244.taskpulse.models.Reminder;
@@ -140,6 +141,9 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private Label welcomeUserLabel;
+	
+    @FXML
+    private HBox createTeamBtn;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -407,4 +411,10 @@ public class DashboardController implements Initializable {
 	void uploadTask() {
 
 	}
+	
+    @FXML
+    void createTeam() {
+		CreateTeamLoader teamUi = new CreateTeamLoader();
+		teamUi.newWindow();
+    }
 }
