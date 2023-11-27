@@ -37,6 +37,12 @@ public class CreateTeamController implements Initializable {
 	@FXML
 	private TextField titleTextField;
 
+	private DashboardController dashboardController;
+
+	public void setDashboardController(DashboardController dashboardController) {
+		this.dashboardController = dashboardController;
+	}
+
 	@FXML
 	void cancelPopup() {
 		Stage currentStage = (Stage) cancelButton.getScene().getWindow();
@@ -85,7 +91,7 @@ public class CreateTeamController implements Initializable {
 
 		if (!team_name.isEmpty() && !selectedUserIds.isEmpty()) {
 			// Attempt to create the team
-			boolean teamCreationSuccess = Team.createTeam(team_name, creatorId, selectedUserIds);
+			boolean teamCreationSuccess = Team.createTeam(team_name, creatorId, selectedUserIds, checkComboBox);
 
 			if (teamCreationSuccess) {
 				// Team created successfully, close the Create Team UI
@@ -93,6 +99,7 @@ public class CreateTeamController implements Initializable {
 
 				// Optionally, you can show a success message to the user
 				showSuccessMessage("Team created successfully!");
+				refreshDashboard();
 			} else {
 				// Optionally, you can show a custom error message to the user
 				showErrorMessage("Failed to create the team. Please try again.");
@@ -146,5 +153,11 @@ public class CreateTeamController implements Initializable {
 		Stage currentStage = (Stage) createBtn.getScene().getWindow();
 		currentStage.close();
 	}
+	
+	private void refreshDashboard() {
+        if (dashboardController != null) {
+            dashboardController.onNewTeamAdded();
+        }
+    }
 
 }

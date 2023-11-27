@@ -21,6 +21,8 @@ import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.ChatGPTHttpClient;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,6 +32,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -141,9 +144,15 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private Label welcomeUserLabel;
+
+	@FXML
+	private HBox createTeamBtn;
+
+	@FXML
+	private ComboBox<String> teamShowComboBox;
 	
     @FXML
-    private HBox createTeamBtn;
+    private VBox teamMemberContainer;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -200,6 +209,10 @@ public class DashboardController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		showUsername();
+		
+		loadUserTeamDetails(teamShowComboBox, UserSession.getCurrentUser().getUserId());
+		String selectedTeamName = teamShowComboBox.getValue();
+		loadTeamMember(getTeamMembers(getTeamId(selectedTeamName)));
 		loadTask();
 		loadReminder();
 	}
@@ -393,12 +406,22 @@ public class DashboardController implements Initializable {
 		loadReminder();
 	}
 	
+	public void onNewTeamAdded() {
+		teamShowComboBox.getItems().clear();
+		loadUserTeamDetails(teamShowComboBox, UserSession.getCurrentUser().getUserId());
+	}
+
 	private void showUsername() {
-		welcomeUserLabel.setText("Welcome "+UserSession.getCurrentUser().getUsername());
+		welcomeUserLabel.setText("Welcome " + UserSession.getCurrentUser().getUsername());
 	}
 
 	@FXML
 	void exportTask() {
+
+	}
+
+	@FXML
+	void uploadTask() {
 
 	}
 
@@ -408,13 +431,113 @@ public class DashboardController implements Initializable {
 	}
 
 	@FXML
-	void uploadTask() {
+	void createTeam() {
+		CreateTeamLoader teamUi = new CreateTeamLoader(this);
+		teamUi.newWindow();
+	}
 
+	public List<String> getTeamsForUser(int user_id) {
+		List<String> teamNames = new ArrayList<>();
+
+		try (Connection connection = DatabaseHandler.getConnection()) {
+			String query = "SELECT t.team_name FROM teams t JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.user_id = ?";
+			try (PreparedStatement ps = connection.prepareStatement(query)) {
+				ps.setInt(1, user_id);
+
+				try (ResultSet result = ps.executeQuery()) {
+					while (result.next()) {
+						teamNames.add(result.getString("team_name"));
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return teamNames;
+	}
+
+	public void loadUserTeamDetails(ComboBox<String> comboBox, int userId) {
+
+		List<String> teamNames = getTeamsForUser(userId);
+
+		ObservableList<String> observableTeamNames = FXCollections.observableArrayList(teamNames);
+
+		comboBox.setItems(observableTeamNames);
+
+		if (!observableTeamNames.isEmpty()) {
+			comboBox.getSelectionModel().selectFirst();
+		}else {
+	        comboBox.setPromptText("No Team");
+	    }
+	    comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+	        if (newValue != null) {
+	            String selectedTeamName = newValue;
+	            int selectedTeamId = getTeamId(selectedTeamName);
+	            loadTeamMember(getTeamMembers(selectedTeamId));
+	        }
+	    });
 	}
 	
-    @FXML
-    void createTeam() {
-		CreateTeamLoader teamUi = new CreateTeamLoader();
-		teamUi.newWindow();
+	public int getTeamId(String team_name) {
+		int teamId = 0;
+		try (Connection connection = DatabaseHandler.getConnection()) {
+			String query = "SELECT team_id FROM teams WHERE team_name = ?";
+			try (PreparedStatement ps = connection.prepareStatement(query)) {
+				ps.setString(1, team_name);
+				try (ResultSet result = ps.executeQuery()) {
+					while (result.next()) {
+						teamId =result.getInt("team_id");
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return teamId;
+	}
+	
+	public List<String> getTeamMembers(int teamId){
+		List<String> teamMembers = new ArrayList<>();
+
+		try (Connection connection = DatabaseHandler.getConnection()) {
+			String query = "SELECT u.username FROM users u  JOIN team_members tm ON u.id = tm.user_id WHERE tm.team_id = ?";
+			try (PreparedStatement ps = connection.prepareStatement(query)) {
+				ps.setInt(1, teamId);
+
+				try (ResultSet result = ps.executeQuery()) {
+					while (result.next()) {
+						teamMembers.add(result.getString("username"));
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return teamMembers;
+	}
+	
+	public void loadTeamMember(List<String> teamMembers) {
+		 teamMemberContainer.getChildren().clear();
+		 for (String member : teamMembers) {
+	            HBox teamMemberHBox = createTeamMemberHBox(member);
+	            teamMemberContainer.getChildren().add(teamMemberHBox);
+	        }
+	}
+	
+    private HBox createTeamMemberHBox(String member) {
+        try {
+        	
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TeamMember.fxml"));
+            HBox teamMemberHBox = loader.load();
+
+            TeamMemberController teamMemberController = loader.getController();
+
+            teamMemberController.setData(member);
+
+            return teamMemberHBox;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new HBox(); // Return an empty HBox in case of an error
+        }
     }
 }
