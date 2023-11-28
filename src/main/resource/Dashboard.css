@@ -50,3 +50,9 @@
 .logout-item:pressed{
 	-fx-background-color: #9facbd;
 }
+.team-item:hover{
+	-fx-background-color: #e2e6eb;
+}
+.team-item:pressed{
+	-fx-background-color: #9facbd;
+}

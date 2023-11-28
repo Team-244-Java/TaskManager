@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.Hasher;
@@ -14,6 +15,7 @@ public class User {
 	private String username;
 	private String hashedPassword; // Hashed for security reasons
 	private String email;
+	private List<Team> teams;
 
 	// Constructors:
 
@@ -42,6 +44,10 @@ public class User {
 		return email;
 	}
 
+	public List<Team> getTeams() {
+		return teams;
+	}
+
 	// We won't have a getter for the password for security reasons
 
 	// Setter methods:
@@ -60,6 +66,10 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
 	}
 
 	// Operational Methods:
@@ -178,62 +188,64 @@ public class User {
 	}
 
 	public static User login2(String inputUsername, String inputPassword) {
-	    Connection connection = null;
-	    PreparedStatement stmt = null;
-	    ResultSet rs = null;
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 
-	    try {
-	        connection = DatabaseHandler.getConnection();
+		try {
+			connection = DatabaseHandler.getConnection();
 
-	        // 1. Retrieve the stored hashed password for the given username
-	        String retrieveUserQuery = "SELECT id, username, hashed_password FROM users WHERE username = ?";
-	        stmt = connection.prepareStatement(retrieveUserQuery);
-	        stmt.setString(1, inputUsername);
+			// 1. Retrieve the stored hashed password for the given username
+			String retrieveUserQuery = "SELECT id, username, hashed_password FROM users WHERE username = ?";
+			stmt = connection.prepareStatement(retrieveUserQuery);
+			stmt.setString(1, inputUsername);
 
-	        rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 
-	        if (rs.next()) {
-	            int userId = rs.getInt("id");
-	            String storedUsername = rs.getString("username");
-	            String storedHashedPassword = rs.getString("hashed_password");
+			if (rs.next()) {
+				int userId = rs.getInt("id");
+				String storedUsername = rs.getString("username");
+				String storedHashedPassword = rs.getString("hashed_password");
 
-	            // 2. Hash the password provided by the user attempting to login
-	            String hashedInputPassword = Hasher.getSHA(inputPassword); // This is the same hashPassword method as in the User class
+				// 2. Hash the password provided by the user attempting to login
+				String hashedInputPassword = Hasher.getSHA(inputPassword); // This is the same hashPassword method as in
+																			// the User class
 
-	            // 3. Compare the two hashes
-	            if (storedHashedPassword.equals(hashedInputPassword)) {
-	                // Successful login
-	                updateLastLogin(connection, inputUsername); // Updating the lastLogin
+				// 3. Compare the two hashes
+				if (storedHashedPassword.equals(hashedInputPassword)) {
+					// Successful login
+					updateLastLogin(connection, inputUsername); // Updating the lastLogin
 
-	                // Create and return a User object with relevant details
-	                User user = new User();
-	                user.setUserId(userId);
-	                user.setUsername(storedUsername);
-	                // Set other user-related fields
+					// Create and return a User object with relevant details
+					User user = new User();
+					user.setUserId(userId);
+					user.setUsername(storedUsername);
+					// Set other user-related fields
 
-	                return user;
-	            }
-	        }
+					return user;
+				}
+			}
 
-	        return null; // Username not found or password mismatch
+			return null; // Username not found or password mismatch
 
-	    } catch (SQLException ex) {
-	        ex.printStackTrace(); // Consider using a logging framework
-	        return null;
-	    } finally {
-	        // Close resources
-	        try {
-	            if (rs != null)
-	                rs.close();
-	            if (stmt != null)
-	                stmt.close();
-	            if (connection != null)
-	                connection.close();
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
-	        }
-	    }
+		} catch (SQLException ex) {
+			ex.printStackTrace(); // Consider using a logging framework
+			return null;
+		} finally {
+			// Close resources
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
+
 	// Helper method to update the lastLogin for the user
 	private static void updateLastLogin(Connection connection, String username) throws SQLException {
 		String updateLastLoginQuery = "UPDATE users SET last_login = NOW() WHERE username = ?";

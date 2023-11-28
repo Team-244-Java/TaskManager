@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="253.0" prefWidth="336.0" stylesheets="@../CreateReminder.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.CreateTeamController">
+   <children>
+      <Label layoutX="115.0" layoutY="14.0" styleClass="header-label" text="Create Team" />
+      <Label layoutX="25.0" layoutY="69.0" styleClass="field-label" text="Team Title" />
+      <TextField fx:id="titleTextField" layoutX="87.0" layoutY="65.0" prefHeight="26.0" prefWidth="187.0" styleClass="text-field" />
+      <Button fx:id="createBtn" layoutX="115.0" layoutY="187.0" mnemonicParsing="false" onAction="#createTeam" styleClass="action-button" text="Create" />
+      <Button fx:id="cancelButton" layoutX="180.0" layoutY="187.0" mnemonicParsing="false" onAction="#cancelPopup" styleClass="action-button" text="Cancel" />
+      <Label layoutX="26.0" layoutY="125.0" styleClass="field-label" text="Members" />
+      <CheckComboBox fx:id="checkComboBox" layoutX="87.0" layoutY="120.0" prefHeight="26.0" prefWidth="187.0" />
+   </children>
+</AnchorPane>

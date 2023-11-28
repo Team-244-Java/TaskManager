@@ -63,11 +63,11 @@ public class Reminder {
 	}
 
 	public static void addReminder(String title, String note, LocalDateTime date, String frequency, int user_id) {
-		Connection connection = null;
+
 		try {
+			Connection connection = DatabaseHandler.getConnection();
 			String sql = "INSERT INTO reminders (title, note, reminder_date, frequency, user_id) "
 					+ "VALUES (?, ?, ?, ?, ?)";
-			connection = DatabaseHandler.getConnection();
 
 			PreparedStatement pStmt = connection.prepareStatement(sql);
 
@@ -88,8 +88,8 @@ public class Reminder {
 
 		try {
 			Connection connection = DatabaseHandler.getConnection();
-			PreparedStatement pStmt = connection.prepareStatement(
-					"UPDATE reminders SET title=?, note=?, reminder_date=?, frequency=? WHERE id= ?");
+			PreparedStatement pStmt = connection
+					.prepareStatement("UPDATE reminders SET title=?, note=?, reminder_date=?, frequency=? WHERE id= ?");
 
 			pStmt.setString(1, title);
 			pStmt.setString(2, note);

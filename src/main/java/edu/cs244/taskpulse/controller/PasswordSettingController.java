@@ -1,5 +1,8 @@
 package edu.cs244.taskpulse.controller;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +15,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
+import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.UserSession;
+import javafx.scene.control.Alert;
 
 public class PasswordSettingController {
 
@@ -33,8 +39,6 @@ public class PasswordSettingController {
     @FXML
     private Button ProfileSettingsEditProfileButton;
 
-    @FXML
-    private Label ProfileSettingsUsernameLabel;
 
     @FXML
     private TextField currentPasswordTextField;
@@ -42,8 +46,13 @@ public class PasswordSettingController {
     @FXML
     private TextField newPasswordTextField;
     
+    
+    @FXML
+    private TextField confirmPasswordTextField;
+    
 
-   
+   @FXML
+   private Label errorLabel;
 
 
     @FXML
@@ -56,6 +65,8 @@ public class PasswordSettingController {
 
     }
     
+    
+  
     @FXML
     void actionChangeProfile(MouseEvent event) {
 //    	set the current state
@@ -72,24 +83,91 @@ public class PasswordSettingController {
     }
     
     
+    
+    
+    
     @FXML
     private void savePasswordChanges() {
 //    	get current and new password inputs 
     	String currentPasswordField = currentPasswordTextField.getText();
     	String newPasswordField = newPasswordTextField.getText();
-    	String usernameField = ProfileSettingsUsernameLabel.getText();
+    	String confirmPasswordField = confirmPasswordTextField.getText();
+    	Integer passwordLength = currentPasswordField.length();
+    	
+    	
     	
 //    	TODO: implement a way to show error if password is invalid
+    	if (currentPasswordField.isEmpty()) {
+    		errorLabel.setText("Current Password field is empty");
+    		return;
+    	}
     	
-//    	sets the user name label based on the input from unsernameField
-    	ProfileSettingsUsernameLabel.setText(usernameField);
+    	if (passwordLength < 8) {
+    		errorLabel.setText("Password must be at least 8 characters long");
+    		return;
+    	}
+    	
+    	if (newPasswordField.isEmpty()) {
+    		errorLabel.setText("New Password field is empty");
+    		return;
+    	}
+    	
+    	if (confirmPasswordField.isEmpty()) {
+    		errorLabel.setText("Confirm Password field is empty");
+    		return;
+    	}
+    	
+    	if (!newPasswordField.equals(confirmPasswordField)) {
+    		errorLabel.setText("Passwords are not matching");
+    		return;
+    	}
     	
 //    	prints out the inputs
-    	System.out.println(currentPasswordField);
-    	System.out.println(newPasswordField);
+//    	System.out.println(currentPasswordField);
+//    	System.out.println(newPasswordField);
+    	
+    	
+    	
+//    	TODO: add code to save the changes to the database here after all checks passed
+//    	Get user data
+    	int userId = UserSession.getCurrentUser().getUserId();
+
     	
 //    	TODO: add code to save the changes to the database here
+    	Connection connection = null;
+    	try {
+    		String sql = "UPDATE users "
+    				+ "SET password = ? WHERE id = ?";
+    			
+    		connection = DatabaseHandler.getConnection();
+    		PreparedStatement pStmt = connection.prepareStatement(sql);
+    		
+    		// Set Parameters
+			pStmt.setString(1, newPasswordField);
+			pStmt.setInt(2, userId);
+    		
+    		//execute update
+			pStmt.executeUpdate();
+			connection.commit();
+    	}catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    	
+    	
+//    	add code to show password change was successful 
+    	showPasswordChangeSuccessAlert();
     }
+    
+    
+    private void showPasswordChangeSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Password changed successfully!");
+
+        alert.showAndWait();
+    }
+
     
     @FXML
     void actionChangePassword(MouseEvent event) {
