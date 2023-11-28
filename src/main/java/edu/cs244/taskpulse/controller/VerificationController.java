@@ -1,7 +1,8 @@
 package edu.cs244.taskpulse.controller;
 
 import edu.cs244.taskpulse.loader.DashboardLoader;
-import edu.cs244.taskpulse.utils.Verification;
+import edu.cs244.taskpulse.utils.UserSession;
+import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,9 +33,9 @@ public class VerificationController {
 
     @FXML
 	public void handleVerifiyButtonAction() {
-	    String email = accountInput.getText();
+    	String email = accountInput.getText();
     	String code = codeInput.getText();
-		boolean codeSucessful = Verification.checkCode(email, code);
+		boolean codeSucessful = VerificationAndForgotPassword.checkCodeAndUpdateStatus(email, code);
 		if (codeSucessful) {
 			warningLabel.setText(""); // Clear any previous error messages
 			Stage currentStage = (Stage) verifiyButton.getScene().getWindow();
@@ -48,7 +49,8 @@ public class VerificationController {
     	@FXML
        void handleMailButtonAction() throws Exception {
     	String email = accountInput.getText();
-		Verification.sendMail(email);
+		VerificationAndForgotPassword.sendMail(email, "Verification", "Your verification code is: ");
+    	warningLabel.setText("A code been sent");
     }
     
 }

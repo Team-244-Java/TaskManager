@@ -2,13 +2,15 @@ package edu.cs244.taskpulse.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.DashboardLoader;
+import edu.cs244.taskpulse.loader.ForgotPasswordLoader;
 import edu.cs244.taskpulse.loader.RegisterLoader;
 import edu.cs244.taskpulse.loader.VerificationLoader;
 import edu.cs244.taskpulse.models.User;
 import edu.cs244.taskpulse.utils.UserSession;
-import edu.cs244.taskpulse.utils.Verification;
+import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -60,17 +62,24 @@ public class LoginController {
 
 	@FXML
 	private Label welcomeLabel;
-
+	
 	@FXML
-	void actionForgetPassword(MouseEvent event) {
+	private FontAwesomeIcon ForgotPassBtn;
+	
+	@FXML
+	void actionForgotPasswordBtn(MouseEvent event) {
+		Stage currentStage = (Stage) loginBtn.getScene().getWindow();
 
+		ForgotPasswordLoader registerLoader = new ForgotPasswordLoader();
+		
+		registerLoader.start(currentStage);
 	}
 
 	@FXML
 	void actionLoginBtn() {
 		String userName = username.getText();
 		String passWord = password.getText();
-		boolean active = Verification.checkStatus(userName);
+		boolean active = VerificationAndForgotPassword.checkStatus(userName);
 		User authenticatedUser = User.login2(userName, passWord);
 
 		// boolean loginSuccessful = User.login(userName, passWord);

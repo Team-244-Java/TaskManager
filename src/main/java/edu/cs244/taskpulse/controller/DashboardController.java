@@ -10,9 +10,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.CreateTeamLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
@@ -31,7 +33,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -63,7 +68,10 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private HBox DashboardCreateNewTaskButton;
-
+	
+	@FXML
+	private Button refreshTaskBtn;
+	
 	@FXML
 	private HBox DashboardEditRegistrationButton;
 
@@ -209,7 +217,6 @@ public class DashboardController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		showUsername();
-		
 		loadUserTeamDetails(teamShowComboBox, UserSession.getCurrentUser().getUserId());
 		String selectedTeamName = teamShowComboBox.getValue();
 		loadTeamMember(getTeamMembers(getTeamId(selectedTeamName)));
@@ -244,7 +251,12 @@ public class DashboardController implements Initializable {
 		PasswordSettingLoader passwordUi = new PasswordSettingLoader();
 		passwordUi.newWindow();
 	}
-
+	@FXML
+	void onRefreshTask() {
+		Stage currentStage = (Stage) refreshTaskBtn.getScene().getWindow();
+		DashboardLoader dashboard = new DashboardLoader();
+		dashboard.start(currentStage);
+	}
 	@FXML
 	void textFieldPressEnter() {
 		String userMessage = chatBoxTextField.getText().trim();
@@ -406,6 +418,7 @@ public class DashboardController implements Initializable {
 		loadReminder();
 	}
 	
+
 	public void onNewTeamAdded() {
 		teamShowComboBox.getItems().clear();
 		loadUserTeamDetails(teamShowComboBox, UserSession.getCurrentUser().getUserId());
@@ -427,7 +440,21 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void logout() {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Logout");
+        alert.setContentText("Are you sure you want to logouut?");
+        
+        ButtonType logoutButton = new ButtonType("Logout", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
+        alert.getButtonTypes().setAll(logoutButton, cancelButton);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == logoutButton) {
+    		Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
+    		currentStage.close();
+
+        }
 	}
 
 	@FXML

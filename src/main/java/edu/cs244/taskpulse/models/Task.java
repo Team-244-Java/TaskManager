@@ -119,16 +119,40 @@ public class Task {
 			}
 	}
 
-	public void updateTask() {
+	public static void updateTask(String title, String description, String due_date, int id) {
+		Connection connection = null;
+    	try {
+    		String sql = "UPDATE tasks "
+    				+ "SET title = ?, description = ?, due_date = ? WHERE id = ?";
+    			
+    		connection = DatabaseHandler.getConnection();
+    		PreparedStatement pStmt = connection.prepareStatement(sql);
+    		
+    		// Set Parameters
+			pStmt.setString(1, title);
+			pStmt.setString(2, description);
+			pStmt.setString(3, due_date);
+			pStmt.setInt(4, id);
+    		
+    		//execute update
+			pStmt.executeUpdate();
+			connection.commit();
+    	}catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    
 	}
 
-	public void deleteTask(int taskID) throws SQLException {
+	public static void deleteTask(int taskID) {
 		try (Connection connection = DatabaseHandler.getConnection();
 				PreparedStatement preparedStatement = connection
 				.prepareStatement("DELETE FROM tasks WHERE id = ?")) {
 			preparedStatement.setInt(1, taskID);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
+			connection.commit();
 			
+		}catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
