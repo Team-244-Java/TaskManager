@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.Stage;
+
 import java.time.LocalDate;
 
 public class TaskEditController {
@@ -31,7 +33,7 @@ public class TaskEditController {
     private Button TaskEditWindowCancelTaskButton;
 
     @FXML
-    private Button TaskEditWindowCreateTaskButton;
+    private Button TaskEditWindowSaveTaskButton;
 
     @FXML
     private DatePicker TaskEditWindowDatePicker;
@@ -52,17 +54,32 @@ public class TaskEditController {
     
     @FXML
     void CancelTaskAction(ActionEvent event) {
-
+		Stage currentStage = (Stage) TaskEditWindowCancelTaskButton.getScene().getWindow();
+		currentStage.close();
     }
 
     @FXML
-    void CreateTaskAction(ActionEvent event) {
-
+    void SaveTaskAction(ActionEvent event) {
+    	//get task data
+		String title = TaskEditWindowTaskNameTextField.getText();
+		String description =  TaskEditWindowHTMLEditor.getHtmlText();
+		String strippedText = description.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "");
+		//convert date to string
+		LocalDate dueDate = TaskEditWindowDatePicker.getValue();
+		String sDate = dueDate.toString();
+		int taskId = this.taskItem.getTaskId();
+		
+		Task.updateTask(title, strippedText, sDate, taskId);
+    	Stage currentStage = (Stage) TaskEditWindowCancelTaskButton.getScene().getWindow();
+		currentStage.close();
     }
 
     @FXML
     void DeleteTaskAction(ActionEvent event) {
-
+    	int taskId = this.taskItem.getTaskId();
+    	Task.deleteTask(taskId);
+       	Stage currentStage = (Stage) TaskEditDeleteButton.getScene().getWindow();
+    	currentStage.close();
     }
 
     public void setTaskItem(Task taskItem) {
@@ -71,17 +88,9 @@ public class TaskEditController {
     	this.TaskEditWindowTaskNameTextField.setText(this.taskItem.getTitle());
     	LocalDate dueDate = LocalDate.parse(this.taskItem.getDueDate());
     	this.TaskEditWindowDatePicker.setValue(dueDate);
-    	this.TaskEditWindowHTMLEditor.setHtmlText("<h3 color='blue;'>" + this.taskItem.getDescription() + "</h3>" + "<p>" + "editing task id #:" + this.taskItem.getTaskId());
+    	this.TaskEditWindowHTMLEditor.setHtmlText(this.taskItem.getDescription());
     	
     }
-    
-    @FXML
-	public static void setInputs() {
-		//this.taskItem = taskItem;
-		TaskEditLabelTwo.setText("hello");
-		//description.setText(taskItem.getDescription());
-		//TaskEditWindowDatePicker.setPromptText(taskItem.getDueDate());
-	}
     
     
 	

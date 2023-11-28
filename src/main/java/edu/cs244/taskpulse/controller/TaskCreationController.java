@@ -71,8 +71,6 @@ public class TaskCreationController {
 		//load changes and close previous page
 		Stage currentStage = (Stage) TaskCreationWindowCreateTaskButton.getScene().getWindow();
 		currentStage.close();
-		DashboardLoader dashboard = new DashboardLoader();
-		dashboard.start(currentStage);
     }
 
     
