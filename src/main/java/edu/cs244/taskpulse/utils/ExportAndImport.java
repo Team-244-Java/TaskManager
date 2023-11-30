@@ -4,15 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.*;
 import javafx.stage.Stage;
 
 public class ExportAndImport {
-
+	
+	
 	public static void Insert(String path) {
 
 		int batchSize = 10;
