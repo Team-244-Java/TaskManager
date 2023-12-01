@@ -77,6 +77,8 @@ public class ExportAndImport {
 		ResultSet results = null;
 		int userid = 14;
 		try {
+			path = path.replace("file:/", "");
+			path = path.replaceAll("/", "//");
 			PrintWriter printWriter1 = new PrintWriter(new File(path));
 			StringBuilder stringBuilder = new StringBuilder();
 

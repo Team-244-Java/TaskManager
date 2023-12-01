@@ -2,7 +2,10 @@ package edu.cs244.taskpulse.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.DashboardLoader;
@@ -433,8 +438,22 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void exportTask() {
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save file");
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
+		fileChooser.setInitialFileName("Tasks.csv");
+		File savedFile = fileChooser.showSaveDialog(null);
+		System.out.println(savedFile);
+		
+		if (savedFile != null) {
+			String path = new String(savedFile.toURI().toString());
+			System.out.println(path);
+			ExportAndImport.Export(path);
+			
+		}
+       
 	}
+	
 
 	@FXML
 	void uploadTask() {
