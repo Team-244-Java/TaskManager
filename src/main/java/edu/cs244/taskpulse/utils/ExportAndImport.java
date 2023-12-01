@@ -4,15 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.*;
 import javafx.stage.Stage;
 
 public class ExportAndImport {
-
+	
+	
 	public static void Insert(String path) {
 
 		int batchSize = 10;
@@ -74,6 +77,8 @@ public class ExportAndImport {
 		ResultSet results = null;
 		int userid = 14;
 		try {
+			path = path.replace("file:/", "");
+			path = path.replaceAll("/", "//");
 			PrintWriter printWriter1 = new PrintWriter(new File(path));
 			StringBuilder stringBuilder = new StringBuilder();
 

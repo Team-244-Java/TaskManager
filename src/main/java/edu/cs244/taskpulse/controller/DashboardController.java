@@ -1,7 +1,11 @@
 package edu.cs244.taskpulse.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.CreateTeamLoader;
@@ -22,6 +28,7 @@ import edu.cs244.taskpulse.models.Reminder;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.ChatGPTHttpClient;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.ExportAndImport;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,6 +59,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class DashboardController implements Initializable {
@@ -149,7 +157,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private HBox uploadTaskBtn;
-
+	
 	@FXML
 	private Label welcomeUserLabel;
 
@@ -430,13 +438,38 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void exportTask() {
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save file");
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
+		fileChooser.setInitialFileName("Tasks.csv");
+		File savedFile = fileChooser.showSaveDialog(null);
+		System.out.println(savedFile);
+		
+		if (savedFile != null) {
+			String path = new String(savedFile.toURI().toString());
+			System.out.println(path);
+			ExportAndImport.Export(path);
+			
+		}
+       
 	}
+	
 
 	@FXML
 	void uploadTask() {
-
+		FileChooser fileChooser = new FileChooser();
+		
+		fileChooser.setTitle("Open a file");
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
+		File selectedFile = fileChooser.showOpenDialog(null);
+//			show the file dialog
+		    	
+		if (selectedFile != null) {
+			String path = selectedFile.getPath();
+		    ExportAndImport.Insert(path);
+		}
 	}
+	
 
 	@FXML
 	void logout() {
