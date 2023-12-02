@@ -1,7 +1,6 @@
 package edu.cs244.taskpulse.controller;
 
 import edu.cs244.taskpulse.loader.DashboardLoader;
-import edu.cs244.taskpulse.utils.UserSession;
 import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

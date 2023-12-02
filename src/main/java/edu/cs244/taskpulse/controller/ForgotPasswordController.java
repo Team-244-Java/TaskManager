@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.loader.LoginLoader;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
-import edu.cs244.taskpulse.utils.Hasher;
+import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,6 +81,7 @@ public class ForgotPasswordController {
 	void actionCodeBtn() throws Exception {
 		String email = userEmail.getText();
 		VerificationAndForgotPassword.sendMail(email, "Forgot Password", "Your code for resting your password is: " );
+		
 		errorLabel.setText("A code been sent");
 
 	}
@@ -129,7 +130,7 @@ public class ForgotPasswordController {
 	    	errorLabel.setText("New Password is not matching");
 	        return;
 	    }
-	    if (userPassword.length() <= 8) {
+	    if (userPassword.length() <= 7) {
 	    	errorLabel.setText("Password must be at least 8 characters long");
 	        return;
 	    }
@@ -154,11 +155,11 @@ public class ForgotPasswordController {
 	}
 	public static void updateUserPassword(String email, String password) {
 		Connection connection = null;
-		String hashedPassword = Hasher.getSHA(password);
+		String hashedPassword = HasherAndEncrypt.getSHA(password);
 		try {
 			connection = DatabaseHandler.getConnection();
-			String updateStatus = "UPDATE users SET hashed_password = ? WHERE email = ?";
-			PreparedStatement pStmt = connection.prepareStatement(updateStatus);
+			String updatePassword = "UPDATE users SET hashed_password = ? WHERE email = ?";
+			PreparedStatement pStmt = connection.prepareStatement(updatePassword);
 			pStmt.setString(1, hashedPassword);
 			pStmt.setString(2, email);
 			pStmt.executeUpdate();

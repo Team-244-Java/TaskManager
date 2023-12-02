@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
-import edu.cs244.taskpulse.utils.Hasher;
+import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 
 public class User {
 
@@ -26,7 +26,7 @@ public class User {
 	// Parameterized constructor
 	public User(String username, String password, String email) {
 		this.username = username;
-		this.hashedPassword = Hasher.getSHA(password); // Placeholder for hashing logic
+		this.hashedPassword = HasherAndEncrypt.getSHA(password); // Placeholder for hashing logic
 		this.email = email;
 	}
 
@@ -61,7 +61,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.hashedPassword = Hasher.getSHA(password); // Hashing the password before storing
+		this.hashedPassword = HasherAndEncrypt.getSHA(password); // Hashing the password before storing
 	}
 
 	public void setEmail(String email) {
@@ -156,7 +156,7 @@ public class User {
 				String storedHashedPassword = rs.getString("hashed_password");
 
 				// 2. Hash the password provided by the user attempting to login
-				String hashedInputPassword = Hasher.getSHA(inputPassword); // This is the same hashPassword method as in
+				String hashedInputPassword = HasherAndEncrypt.getSHA(inputPassword); // This is the same hashPassword method as in
 																			// the User class
 
 				// 3. Compare the two hashes
@@ -208,7 +208,7 @@ public class User {
 				String storedHashedPassword = rs.getString("hashed_password");
 
 				// 2. Hash the password provided by the user attempting to login
-				String hashedInputPassword = Hasher.getSHA(inputPassword); // This is the same hashPassword method as in
+				String hashedInputPassword = HasherAndEncrypt.getSHA(inputPassword); // This is the same hashPassword method as in
 																			// the User class
 
 				// 3. Compare the two hashes

@@ -243,7 +243,6 @@ public class DashboardController implements Initializable {
 	void editProfile() {
 		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
 		profileUi.newWindow();
-
 	}
 
 	@FXML
@@ -253,9 +252,10 @@ public class DashboardController implements Initializable {
 	}
 	@FXML
 	void onRefreshTask() {
-		Stage currentStage = (Stage) refreshTaskBtn.getScene().getWindow();
-		DashboardLoader dashboard = new DashboardLoader();
-		dashboard.start(currentStage);
+		tasks.clear();
+		tilePane.getChildren().clear();
+		loadTask();
+		
 	}
 	@FXML
 	void textFieldPressEnter() {
@@ -443,7 +443,7 @@ public class DashboardController implements Initializable {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
         alert.setHeaderText("Logout");
-        alert.setContentText("Are you sure you want to logouut?");
+        alert.setContentText("Are you sure you want to logout?");
         
         ButtonType logoutButton = new ButtonType("Logout", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);

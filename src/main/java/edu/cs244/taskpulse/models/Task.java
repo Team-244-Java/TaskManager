@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 
 public class Task {
 
@@ -96,11 +97,11 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public static void addTask(String title, String description, String due_date, int user_id){
+	public static void addTask(String title, String description, String due_date, String status, int user_id){
 		Connection connection = null;
 		try {
-			String sql = "INSERT INTO tasks (title, description, due_date, user_id) " +  
-					"VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO tasks (title, description, due_date, status, user_id) " +  
+					"VALUES (?, ?, ?, ?, ?)";
 			connection = DatabaseHandler.getConnection();
 			
 			PreparedStatement pStmt = connection.prepareStatement(sql);
@@ -109,7 +110,8 @@ public class Task {
 			pStmt.setString(1, title);
 			pStmt.setString(2, description);
 			pStmt.setString(3, due_date);
-			pStmt.setInt(4, user_id);
+			pStmt.setString(4, status);
+			pStmt.setInt(5, user_id);
 			
 			//execute
 			pStmt.executeUpdate();
@@ -119,11 +121,11 @@ public class Task {
 			}
 	}
 
-	public static void updateTask(String title, String description, String due_date, int id) {
+	public static void updateTask(String title, String description, String due_date, String status, int id) {
 		Connection connection = null;
     	try {
     		String sql = "UPDATE tasks "
-    				+ "SET title = ?, description = ?, due_date = ? WHERE id = ?";
+    				+ "SET title = ?, description = ?, due_date = ?, status = ? WHERE id = ?";
     			
     		connection = DatabaseHandler.getConnection();
     		PreparedStatement pStmt = connection.prepareStatement(sql);
@@ -132,7 +134,8 @@ public class Task {
 			pStmt.setString(1, title);
 			pStmt.setString(2, description);
 			pStmt.setString(3, due_date);
-			pStmt.setInt(4, id);
+			pStmt.setString(4, status);
+			pStmt.setInt(5, id);
     		
     		//execute update
 			pStmt.executeUpdate();

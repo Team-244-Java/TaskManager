@@ -2,6 +2,7 @@ package edu.cs244.taskpulse.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import edu.cs244.taskpulse.models.Task;
+import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,7 +36,7 @@ public class TaskController {
 	public void setData(Task taskItem) {
 		this.taskItem = taskItem;
 		this.taskTitle.setText(taskItem.getTitle());
-		this.description.setText(taskItem.getDescription());
+		this.description.setText(taskItem.getTitle());
 		this.dueDate.setText(taskItem.getDueDate());
 		this.status.setText(taskItem.getStatus());
 
@@ -55,7 +56,6 @@ public class TaskController {
 			stage.setTitle("Task Edit");
 			stage.setScene(new Scene(root1));
 			stage.show();
-			// TaskEditController.setInputs("hello");
 
 		} catch (Exception e) {
 			e.printStackTrace();

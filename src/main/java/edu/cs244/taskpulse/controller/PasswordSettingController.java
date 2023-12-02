@@ -2,6 +2,8 @@ package edu.cs244.taskpulse.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import javafx.event.ActionEvent;
@@ -16,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
+import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.scene.control.Alert;
 
@@ -92,8 +95,8 @@ public class PasswordSettingController {
     	String currentPasswordField = currentPasswordTextField.getText();
     	String newPasswordField = newPasswordTextField.getText();
     	String confirmPasswordField = confirmPasswordTextField.getText();
-    	Integer passwordLength = currentPasswordField.length();
-    	
+    	Integer passwordLength = newPasswordField.length();
+    	Boolean checkCurrentPasswordStatus = checkCurrentPassword(currentPasswordField);
     	
     	
 //    	TODO: implement a way to show error if password is invalid
@@ -102,7 +105,12 @@ public class PasswordSettingController {
     		return;
     	}
     	
-    	if (passwordLength < 8) {
+    	if (checkCurrentPasswordStatus == false) {
+    		errorLabel.setText("Current Password does not match");
+    		return;
+    	}
+    	
+    	if (passwordLength <= 7) {
     		errorLabel.setText("Password must be at least 8 characters long");
     		return;
     	}
@@ -122,39 +130,10 @@ public class PasswordSettingController {
     		return;
     	}
     	
-//    	prints out the inputs
-//    	System.out.println(currentPasswordField);
-//    	System.out.println(newPasswordField);
-    	
-    	
-    	
-//    	TODO: add code to save the changes to the database here after all checks passed
-//    	Get user data
-    	int userId = UserSession.getCurrentUser().getUserId();
 
     	
 //    	TODO: add code to save the changes to the database here
-    	Connection connection = null;
-    	try {
-    		String sql = "UPDATE users "
-    				+ "SET password = ? WHERE id = ?";
-    			
-    		connection = DatabaseHandler.getConnection();
-    		PreparedStatement pStmt = connection.prepareStatement(sql);
-    		
-    		// Set Parameters
-			pStmt.setString(1, newPasswordField);
-			pStmt.setInt(2, userId);
-    		
-    		//execute update
-			pStmt.executeUpdate();
-			connection.commit();
-    	}catch (Exception ex) {
-    		ex.printStackTrace();
-    	}
-    	
-    	
-//    	add code to show password change was successful 
+    	updatePassword(newPasswordField);
     	showPasswordChangeSuccessAlert();
     }
     
@@ -181,6 +160,58 @@ public class PasswordSettingController {
     	passwordLoader.open(currentStage);
     	
 
+    }
+    
+    public void updatePassword(String password) {
+    	int userId = UserSession.getCurrentUser().getUserId();
+    	
+    	Connection connection = null;
+		String hashedPassword = HasherAndEncrypt.getSHA(password);
+		try {
+			connection = DatabaseHandler.getConnection();
+			String updatePassword = "UPDATE users SET hashed_password = ? WHERE id = ?";
+			PreparedStatement pStmt = connection.prepareStatement(updatePassword);
+			pStmt.setString(1, hashedPassword);
+			pStmt.setInt(2, userId);
+			pStmt.executeUpdate();
+			connection.commit();
+			connection.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+    }
+    
+    public boolean checkCurrentPassword(String currentPassword) {
+    	//get user data
+    	int userId = UserSession.getCurrentUser().getUserId();
+    	
+		Connection connection = null;
+		PreparedStatement pStmt = null;
+		ResultSet rs = null;
+		String hashedPasswordCurrentPassword = HasherAndEncrypt.getSHA(currentPassword);
+		try {
+			connection = DatabaseHandler.getConnection();
+			String checkPasswordCurrentPassword = "SELECT hashed_password FROM users WHERE id = ?";
+			pStmt = connection.prepareStatement(checkPasswordCurrentPassword);
+			pStmt.setInt(1, userId);
+			
+			//checking if current password matches  
+			rs = pStmt.executeQuery();
+			if (rs.next()) {
+				String currentPasswordFromDatabase = rs.getString("hashed_password");
+
+				if (hashedPasswordCurrentPassword.equals(currentPasswordFromDatabase)) {
+					return true;
+				}
+			}
+
+			return false; // incorrect current password 
+
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
     }
 
 }
