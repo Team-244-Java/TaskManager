@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -32,6 +33,7 @@ import edu.cs244.taskpulse.utils.ExportAndImport;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -174,8 +176,8 @@ public class DashboardController implements Initializable {
 	private boolean waitingForGptResponse = false;
 
 	@FXML
-	void onSearch() {
-
+	void onSearch() throws SQLException {
+		loadRefreshtasked();		
 	}
 
 	private List<Task> getData(int userId) throws SQLException {
@@ -251,7 +253,6 @@ public class DashboardController implements Initializable {
 	void editProfile() {
 		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
 		profileUi.newWindow();
-
 	}
 
 	@FXML
@@ -259,12 +260,15 @@ public class DashboardController implements Initializable {
 		PasswordSettingLoader passwordUi = new PasswordSettingLoader();
 		passwordUi.newWindow();
 	}
+	
 	@FXML
 	void onRefreshTask() {
-		Stage currentStage = (Stage) refreshTaskBtn.getScene().getWindow();
-		DashboardLoader dashboard = new DashboardLoader();
-		dashboard.start(currentStage);
+		tasks.clear();
+		tilePane.getChildren().clear();
+		loadTask();
+		
 	}
+	
 	@FXML
 	void textFieldPressEnter() {
 		String userMessage = chatBoxTextField.getText().trim();
@@ -478,7 +482,7 @@ public class DashboardController implements Initializable {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
         alert.setHeaderText("Logout");
-        alert.setContentText("Are you sure you want to logouut?");
+        alert.setContentText("Are you sure you want to logout?");
         
         ButtonType logoutButton = new ButtonType("Logout", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -602,4 +606,58 @@ public class DashboardController implements Initializable {
             return new HBox(); // Return an empty HBox in case of an error
         }
     }
+    
+    private void loadRefreshtasked() {
+    	int userId = UserSession.getCurrentUser().getUserId();
+		String title = searchBox.getText();
+		try {
+			tasks.clear();
+			tilePane.getChildren().clear();
+			tasks.addAll(getSearchData(userId, title));
+			
+			for (int i = 0; i < tasks.size(); i++) {
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				Task task = tasks.get(i);
+				LocalDate today = LocalDate.now();
+				LocalDate taskDueDays = LocalDate.parse(task.getDueDate()); // test date, need to implement accepting
+																			// input from task
+
+				long result = today.until(taskDueDays, ChronoUnit.DAYS);
+				String color = ColorOfPostIt(result);
+
+				fxmlLoader.setLocation(getClass().getResource(color));
+				AnchorPane anchorPane = fxmlLoader.load();
+
+				TaskController taskController = fxmlLoader.getController();
+				taskController.setData(tasks.get(i));
+
+				tilePane.getChildren().add(anchorPane);
+				tilePane.setPadding(new Insets(10));
+
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private List<Task> getSearchData(int userId, String title) throws SQLException {
+        List<Task> tasks = new ArrayList<>();
+
+        try (Connection connection = DatabaseHandler.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Task task = new Task(resultSet.getString("title"),
+                            resultSet.getString("due_date"), resultSet.getString("status"),
+                            resultSet.getString("description"));
+                    tasks.add(task);
+                }
+            }
+        }
+        return tasks;
+    }
+
 }

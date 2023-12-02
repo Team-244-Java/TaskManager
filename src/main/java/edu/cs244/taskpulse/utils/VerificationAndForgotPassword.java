@@ -47,7 +47,7 @@ public class VerificationAndForgotPassword {
 			// generate code and send it
 			int randomCode = 10000 + (int) (Math.random() * 90000);
 			String code = String.valueOf(randomCode);
-			sendCodeDatbase(code, recepient);
+			sendCodeDatabase(code, recepient);
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myAccountEmail));
@@ -61,7 +61,7 @@ public class VerificationAndForgotPassword {
 		return null;
 	}
 
-	public static void sendCodeDatbase(String code, String recepient) {
+	public static void sendCodeDatabase(String code, String recepient) {
 		Connection connection = null;
 		try {
 			String sql = "UPDATE users " + "SET code = ? WHERE email = ?";

@@ -17,8 +17,9 @@ public class ProfileSettingsLoader {
 		
 		ProfileSettingController profile = (ProfileSettingController)fxmlLoader.getController();
 		profile.updatePicture(ProfileSettingController.getPicture());
+		profile.updateUsernameLabel();
 		
-		stage.setTitle("Profile");
+		stage.setTitle("Profile Setting");
 		stage.setScene(new Scene(root1));
 		stage.show();
 	} catch (Exception e) {
@@ -31,7 +32,8 @@ public class ProfileSettingsLoader {
 			
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ProfileSetting.fxml"));
 			ProfileSettingController profile = (ProfileSettingController)fxmlLoader.getController();
-			//profile.updatePicture(ProfileSettingController.getPicture());
+			profile.updatePicture(ProfileSettingController.getPicture());
+			profile.updateUsernameLabel();
 			
 			primaryStage.setTitle("Profile Setting");
 			primaryStage.setScene(new Scene(root, 1220, 740));

@@ -189,7 +189,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox fx:id="settingsBtn" alignment="CENTER" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="profile-item">
+                        <HBox fx:id="settingsBtn" alignment="CENTER" onMouseClicked="#editPassword" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="profile-item">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
