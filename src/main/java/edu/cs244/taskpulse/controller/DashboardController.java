@@ -449,6 +449,7 @@ public class DashboardController implements Initializable {
 			String path = new String(savedFile.toURI().toString());
 			System.out.println(path);
 			ExportAndImport.Export(path);
+			onRefreshTask();
 			
 		}
        
@@ -467,6 +468,7 @@ public class DashboardController implements Initializable {
 		if (selectedFile != null) {
 			String path = selectedFile.getPath();
 		    ExportAndImport.Insert(path);
+		    onRefreshTask();
 		}
 	}
 	
