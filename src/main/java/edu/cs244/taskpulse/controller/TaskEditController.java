@@ -63,6 +63,14 @@ public class TaskEditController implements Initializable{
     
 	private String[] status = {"To Do", "In Progress", "Done"};
 	
+	private DashboardController dashboardController;
+	    
+	    public void setDashboardController(DashboardController dashboardController) {
+	        this.dashboardController = dashboardController;
+	    }
+	    
+
+	    
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
     	TaskEditStatusBox.getItems().addAll(status);
@@ -88,6 +96,7 @@ public class TaskEditController implements Initializable{
 		
 		Task.updateTask(title, strippedText, sDate, status, taskId);
     	Stage currentStage = (Stage) TaskEditWindowCancelTaskButton.getScene().getWindow();
+    	refresh();
 		currentStage.close();
     }
 
@@ -96,6 +105,7 @@ public class TaskEditController implements Initializable{
     	int taskId = this.taskItem.getTaskId();
     	Task.deleteTask(taskId);
        	Stage currentStage = (Stage) TaskEditDeleteButton.getScene().getWindow();
+       	refresh();
     	currentStage.close();
     }
 
@@ -110,6 +120,10 @@ public class TaskEditController implements Initializable{
     	
     }
     
-    
+    private void refresh() {
+		if (dashboardController != null) {
+            dashboardController.RefreshTask();
+		}
+    }
 	
 }

@@ -61,6 +61,12 @@ public class TaskCreationController implements Initializable {
 
 	    private String[] status = {"To Do", "In Progress", "Done"};
 	    
+	    private DashboardController dashboardController;
+	    
+	    public void setDashboardController(DashboardController dashboardController) {
+	        this.dashboardController = dashboardController;
+	    }
+	    
 	    @Override
 	    public void initialize(URL arg0, ResourceBundle arg1) {
 	    	TaskCreationStatusBox.getItems().addAll(status);
@@ -68,6 +74,8 @@ public class TaskCreationController implements Initializable {
 	    
     @FXML
     	void CreateTaskAction(ActionEvent event) {
+
+    	
     	//get task data and user ID
 		String title = TaskCreationWindowTaskNameTextField.getText();
 		String description =  TaskCreationWindowHTMLEditor.getHtmlText();
@@ -83,6 +91,7 @@ public class TaskCreationController implements Initializable {
 		
 		//load changes and close previous page
 		Stage currentStage = (Stage) TaskCreationWindowCreateTaskButton.getScene().getWindow();
+		refresh();
 		currentStage.close();
     }
 
@@ -91,5 +100,10 @@ public class TaskCreationController implements Initializable {
 		Stage currentStage = (Stage) TaskCreationWindowCancelTaskButton.getScene().getWindow();
 		currentStage.close();
     }
-    
+
+    private void refresh() {
+		if (dashboardController != null) {
+            dashboardController.RefreshTask();
+		}
+    }
 }

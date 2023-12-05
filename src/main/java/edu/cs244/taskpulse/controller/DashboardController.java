@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
+import edu.cs244.taskpulse.loader.CreateTaskLoader;
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.CreateTeamLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
@@ -236,17 +237,8 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void DashboardCreateNewTaskButton() {
-
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
-			Parent root1 = (Parent) fxmlLoader.load();
-			Stage stage = new Stage();
-			stage.setTitle("Task Creation");
-			stage.setScene(new Scene(root1));
-			stage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		CreateTaskLoader taskUi = new CreateTaskLoader(this);
+		taskUi.newWindow();
 	}
 
 	@FXML
@@ -263,10 +255,13 @@ public class DashboardController implements Initializable {
 	
 	@FXML
 	void onRefreshTask() {
+		RefreshTask();
+	}
+	
+	public void RefreshTask() {
 		tasks.clear();
 		tilePane.getChildren().clear();
 		loadTask();
-		
 	}
 	
 	@FXML
@@ -368,6 +363,7 @@ public class DashboardController implements Initializable {
 
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
+				taskController.setDashboardController(this);
 
 				tilePane.getChildren().add(anchorPane);
 				tilePane.setPadding(new Insets(10));
@@ -644,7 +640,7 @@ public class DashboardController implements Initializable {
         List<Task> tasks = new ArrayList<>();
 
         try (Connection connection = DatabaseHandler.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
 
