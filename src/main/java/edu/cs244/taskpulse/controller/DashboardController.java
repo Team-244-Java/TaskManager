@@ -485,7 +485,7 @@ public class DashboardController implements Initializable {
 	 public void updateAvatar(String url) {
 		 Image image = new Image(url);
 		 userAvatarImageView.setImage(image);
-		 userAvatarImageView.setFitWidth(75);
+		 userAvatarImageView.setFitWidth(50);
 		 userAvatarImageView.setFitHeight(50);
 	 }
 
