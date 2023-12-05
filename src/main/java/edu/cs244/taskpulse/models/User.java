@@ -16,6 +16,7 @@ public class User {
 	private String hashedPassword; // Hashed for security reasons
 	private String email;
 	private List<Team> teams;
+	private int currentTeamId;
 
 	// Constructors:
 
@@ -47,6 +48,10 @@ public class User {
 	public List<Team> getTeams() {
 		return teams;
 	}
+	
+	public int getCurrentTeamId() {
+		return currentTeamId;
+	}
 
 	// We won't have a getter for the password for security reasons
 
@@ -70,6 +75,10 @@ public class User {
 
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
+	}
+	
+	public void setCurrentTeamId(int currentTeamId) {
+		this.currentTeamId = currentTeamId;
 	}
 
 	// Operational Methods:

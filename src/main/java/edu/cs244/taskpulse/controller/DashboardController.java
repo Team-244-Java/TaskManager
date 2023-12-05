@@ -2,10 +2,7 @@ package edu.cs244.taskpulse.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,15 +10,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
-import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.CreateTeamLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
@@ -33,7 +26,6 @@ import edu.cs244.taskpulse.utils.ExportAndImport;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -78,10 +70,10 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private HBox DashboardCreateNewTaskButton;
-	
+
 	@FXML
 	private Button refreshTaskBtn;
-	
+
 	@FXML
 	private HBox DashboardEditRegistrationButton;
 
@@ -159,7 +151,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private HBox uploadTaskBtn;
-	
+
 	@FXML
 	private Label welcomeUserLabel;
 
@@ -168,38 +160,57 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private ComboBox<String> teamShowComboBox;
-	
-    @FXML
-    private VBox teamMemberContainer;
+
+	@FXML
+	private VBox teamMemberContainer;
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
+	private int selectedTeamId = -1;
+
+	public int getSelecttedTeamId() {
+		return selectedTeamId;
+	}
 
 	@FXML
 	void onSearch() throws SQLException {
-		loadRefreshtasked();		
+		loadRefreshtasked();
 	}
 
-	private List<Task> getData(int userId) throws SQLException {
-
+	private List<Task> getData(int userId, int teamId) throws SQLException {
 		List<Task> tasks = new ArrayList<>();
 
 		try (Connection connection = DatabaseHandler.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("SELECT * FROM tasks WHERE user_id = ?")) {
-			preparedStatement.setInt(1, userId);
-
+				PreparedStatement preparedStatement = createTaskQuery(connection, userId, teamId)) {
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
 					Task task = new Task(resultSet.getInt("id"), resultSet.getString("title"),
 							resultSet.getString("due_date"), resultSet.getString("status"),
-							resultSet.getString("description"));
+							resultSet.getString("description"), resultSet.getInt("assignTo"));
 					tasks.add(task);
 				}
 			}
 		}
 
 		return tasks;
+	}
+
+	private PreparedStatement createTaskQuery(Connection connection, int userId, int teamId) throws SQLException {
+		if (teamId > 0) {
+			// If a team is selected, fetch tasks for the team
+			String teamQuery = "SELECT * from tasks WHERE team_id = ?";
+
+			PreparedStatement preparedStatement = connection.prepareStatement(teamQuery);
+			preparedStatement.setInt(1, teamId);
+			return preparedStatement;
+		} else {
+			// If no team is selected, fetch individual tasks for the user
+			String userQuery = "SELECT * FROM tasks WHERE user_id = ? and team_id = -1";
+
+			PreparedStatement preparedStatement = connection.prepareStatement(userQuery);
+			preparedStatement.setInt(1, userId);
+			return preparedStatement;
+		}
 	}
 
 	private List<Reminder> getReminderData(int userId) throws SQLException {
@@ -239,7 +250,9 @@ public class DashboardController implements Initializable {
 
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
-			Parent root1 = (Parent) fxmlLoader.load();
+			Parent root1 = fxmlLoader.load();
+			TaskCreationController taskCreationController = fxmlLoader.getController();
+			taskCreationController.setDashboardController(this);
 			Stage stage = new Stage();
 			stage.setTitle("Task Creation");
 			stage.setScene(new Scene(root1));
@@ -260,15 +273,15 @@ public class DashboardController implements Initializable {
 		PasswordSettingLoader passwordUi = new PasswordSettingLoader();
 		passwordUi.newWindow();
 	}
-	
+
 	@FXML
 	void onRefreshTask() {
 		tasks.clear();
 		tilePane.getChildren().clear();
 		loadTask();
-		
+
 	}
-	
+
 	@FXML
 	void textFieldPressEnter() {
 		String userMessage = chatBoxTextField.getText().trim();
@@ -351,7 +364,8 @@ public class DashboardController implements Initializable {
 		int userId = UserSession.getCurrentUser().getUserId();
 
 		try {
-			tasks.addAll(getData(userId));
+			tasks.clear();
+			tasks.addAll(getData(userId, selectedTeamId));
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
@@ -368,6 +382,8 @@ public class DashboardController implements Initializable {
 
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
+
+				taskController.setDashboardController(this);
 
 				tilePane.getChildren().add(anchorPane);
 				tilePane.setPadding(new Insets(10));
@@ -429,7 +445,11 @@ public class DashboardController implements Initializable {
 		reminderContainer.getChildren().clear();
 		loadReminder();
 	}
-	
+
+	public void onNewTaskAdded() {
+		tilePane.getChildren().clear();
+		loadTask();
+	}
 
 	public void onNewTeamAdded() {
 		teamShowComboBox.getItems().clear();
@@ -448,52 +468,50 @@ public class DashboardController implements Initializable {
 		fileChooser.setInitialFileName("Tasks.csv");
 		File savedFile = fileChooser.showSaveDialog(null);
 		System.out.println(savedFile);
-		
+
 		if (savedFile != null) {
 			String path = new String(savedFile.toURI().toString());
 			System.out.println(path);
 			ExportAndImport.Export(path);
 			onRefreshTask();
-			
+
 		}
-       
+
 	}
-	
 
 	@FXML
 	void uploadTask() {
 		FileChooser fileChooser = new FileChooser();
-		
+
 		fileChooser.setTitle("Open a file");
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
 		File selectedFile = fileChooser.showOpenDialog(null);
 //			show the file dialog
-		    	
+
 		if (selectedFile != null) {
 			String path = selectedFile.getPath();
-		    ExportAndImport.Insert(path);
-		    onRefreshTask();
+			ExportAndImport.Insert(path);
+			onRefreshTask();
 		}
 	}
-	
 
 	@FXML
 	void logout() {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("Logout");
-        alert.setContentText("Are you sure you want to logout?");
-        
-        ButtonType logoutButton = new ButtonType("Logout", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+		alert.setTitle("Logout");
+		alert.setHeaderText("Logout");
+		alert.setContentText("Are you sure you want to logout?");
 
-        alert.getButtonTypes().setAll(logoutButton, cancelButton);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == logoutButton) {
-    		Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
-    		currentStage.close();
+		ButtonType logoutButton = new ButtonType("Logout", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        }
+		alert.getButtonTypes().setAll(logoutButton, cancelButton);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == logoutButton) {
+			Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
+			currentStage.close();
+
+		}
 	}
 
 	@FXML
@@ -531,19 +549,23 @@ public class DashboardController implements Initializable {
 		comboBox.setItems(observableTeamNames);
 
 		if (!observableTeamNames.isEmpty()) {
+			observableTeamNames.add(0, "Individual Tasks");
 			comboBox.getSelectionModel().selectFirst();
-		}else {
-	        comboBox.setPromptText("No Team");
-	    }
-	    comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-	        if (newValue != null) {
-	            String selectedTeamName = newValue;
-	            int selectedTeamId = getTeamId(selectedTeamName);
-	            loadTeamMember(getTeamMembers(selectedTeamId));
-	        }
-	    });
+		} else {
+			comboBox.setPromptText("Individual Tasks");
+		}
+		comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				String selectedTeamName = newValue;
+				selectedTeamId = getTeamId(selectedTeamName);
+				UserSession.getCurrentUser().setCurrentTeamId(selectedTeamId);
+				loadTeamMember(getTeamMembers(selectedTeamId));
+				tilePane.getChildren().clear();
+				loadTask();
+			}
+		});
 	}
-	
+
 	public int getTeamId(String team_name) {
 		int teamId = 0;
 		try (Connection connection = DatabaseHandler.getConnection()) {
@@ -552,7 +574,7 @@ public class DashboardController implements Initializable {
 				ps.setString(1, team_name);
 				try (ResultSet result = ps.executeQuery()) {
 					while (result.next()) {
-						teamId =result.getInt("team_id");
+						teamId = result.getInt("team_id");
 					}
 				}
 			}
@@ -561,8 +583,8 @@ public class DashboardController implements Initializable {
 		}
 		return teamId;
 	}
-	
-	public List<String> getTeamMembers(int teamId){
+
+	public List<String> getTeamMembers(int teamId) {
 		List<String> teamMembers = new ArrayList<>();
 
 		try (Connection connection = DatabaseHandler.getConnection()) {
@@ -581,40 +603,40 @@ public class DashboardController implements Initializable {
 		}
 		return teamMembers;
 	}
-	
+
 	public void loadTeamMember(List<String> teamMembers) {
-		 teamMemberContainer.getChildren().clear();
-		 for (String member : teamMembers) {
-	            HBox teamMemberHBox = createTeamMemberHBox(member);
-	            teamMemberContainer.getChildren().add(teamMemberHBox);
-	        }
+		teamMemberContainer.getChildren().clear();
+		for (String member : teamMembers) {
+			HBox teamMemberHBox = createTeamMemberHBox(member);
+			teamMemberContainer.getChildren().add(teamMemberHBox);
+		}
 	}
-	
-    private HBox createTeamMemberHBox(String member) {
-        try {
-        	
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TeamMember.fxml"));
-            HBox teamMemberHBox = loader.load();
 
-            TeamMemberController teamMemberController = loader.getController();
+	private HBox createTeamMemberHBox(String member) {
+		try {
 
-            teamMemberController.setData(member);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TeamMember.fxml"));
+			HBox teamMemberHBox = loader.load();
 
-            return teamMemberHBox;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new HBox(); // Return an empty HBox in case of an error
-        }
-    }
-    
-    private void loadRefreshtasked() {
-    	int userId = UserSession.getCurrentUser().getUserId();
+			TeamMemberController teamMemberController = loader.getController();
+
+			teamMemberController.setData(member);
+
+			return teamMemberHBox;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new HBox(); // Return an empty HBox in case of an error
+		}
+	}
+
+	private void loadRefreshtasked() {
+		int userId = UserSession.getCurrentUser().getUserId();
 		String title = searchBox.getText();
 		try {
 			tasks.clear();
 			tilePane.getChildren().clear();
 			tasks.addAll(getSearchData(userId, title));
-			
+
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				Task task = tasks.get(i);
@@ -638,26 +660,26 @@ public class DashboardController implements Initializable {
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    private List<Task> getSearchData(int userId, String title) throws SQLException {
-        List<Task> tasks = new ArrayList<>();
+	}
 
-        try (Connection connection = DatabaseHandler.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
+	private List<Task> getSearchData(int userId, String title) throws SQLException {
+		List<Task> tasks = new ArrayList<>();
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    Task task = new Task(resultSet.getString("title"),
-                            resultSet.getString("due_date"), resultSet.getString("status"),
-                            resultSet.getString("description"));
-                    tasks.add(task);
-                }
-            }
-        }
-        return tasks;
-    }
+		try (Connection connection = DatabaseHandler.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
+			preparedStatement.setInt(1, userId);
+			preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					Task task = new Task(resultSet.getString("title"), resultSet.getString("due_date"),
+							resultSet.getString("status"), resultSet.getString("description"));
+					tasks.add(task);
+				}
+			}
+		}
+		return tasks;
+	}
 
 }
