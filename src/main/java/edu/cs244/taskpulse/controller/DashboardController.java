@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -169,6 +171,9 @@ public class DashboardController implements Initializable {
 	@FXML
 	private ComboBox<String> teamShowComboBox;
 	
+	@FXML
+	private ImageView userAvatarImageView;
+	
     @FXML
     private VBox teamMemberContainer;
 
@@ -232,6 +237,7 @@ public class DashboardController implements Initializable {
 		loadTeamMember(getTeamMembers(getTeamId(selectedTeamName)));
 		loadTask();
 		loadReminder();
+		updateAvatar(getPicture());
 	}
 
 	@FXML
@@ -439,6 +445,49 @@ public class DashboardController implements Initializable {
 	private void showUsername() {
 		welcomeUserLabel.setText("Welcome " + UserSession.getCurrentUser().getUsername());
 	}
+	
+	
+
+	 static public String getPicture() {
+	    	//Get user info
+	    	int userId = UserSession.getCurrentUser().getUserId();
+	    	
+	    	//Check if user have profile picture
+	    	String url = "";
+	        Connection connection = null;
+	    	try {
+	    		String sql = "SELECT profile_picture FROM users WHERE id = ?";
+	    			
+	    		connection = DatabaseHandler.getConnection();
+	    		PreparedStatement pStmt = connection.prepareStatement(sql);
+	    		
+	    		// Set Parameters
+				pStmt.setInt(1, userId);
+				
+				try (ResultSet rs = pStmt.executeQuery()) {
+					if (rs.next()) {
+						url = rs.getString("profile_picture");
+						
+			        	if (url == null) {
+			        		url = "images/ProfileIcon.png";
+			        	}
+						return url;
+					} 
+				}
+	    		
+
+	    	}catch (Exception ex) {
+	    		ex.printStackTrace();
+	    	}
+			return url;
+	    }
+	 
+	 public void updateAvatar(String url) {
+		 Image image = new Image(url);
+		 userAvatarImageView.setImage(image);
+		 userAvatarImageView.setFitWidth(75);
+		 userAvatarImageView.setFitHeight(50);
+	 }
 
 	@FXML
 	void exportTask() {
