@@ -173,7 +173,7 @@ public class DashboardController implements Initializable {
 	}
 
 	@FXML
-	void onSearch() throws SQLException {
+	void onSearch() throws SQLException, ClassNotFoundException {
 		loadRefreshtasked();
 	}
 
@@ -635,7 +635,7 @@ public class DashboardController implements Initializable {
 		try {
 			tasks.clear();
 			tilePane.getChildren().clear();
-			tasks.addAll(getSearchData(userId, title));
+			tasks.addAll(getSearchData(getData(userId,selectedTeamId), title));
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
@@ -662,24 +662,18 @@ public class DashboardController implements Initializable {
 		}
 	}
 
-	private List<Task> getSearchData(int userId, String title) throws SQLException {
-		List<Task> tasks = new ArrayList<>();
-
-		try (Connection connection = DatabaseHandler.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
-			preparedStatement.setInt(1, userId);
-			preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
-
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				while (resultSet.next()) {
-					Task task = new Task(resultSet.getString("title"), resultSet.getString("due_date"),
-							resultSet.getString("status"), resultSet.getString("description"));
-					tasks.add(task);
-				}
+	private List<Task> getSearchData(List<Task> list, String title){
+		List<Task> matchingTask = new ArrayList<>();
+		
+		for(Task tasks : list) {
+			
+			if(tasks.getTitle().toLowerCase().contains(title.toLowerCase())) {
+				matchingTask.add(tasks);
 			}
 		}
-		return tasks;
+
+		return matchingTask;
+		
 	}
 
 }
