@@ -17,7 +17,7 @@ public class CreateTeamLoader {
 	public void newWindow() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CreateTeam.fxml"));
-			Parent root = (Parent) fxmlLoader.load();
+			Parent root = fxmlLoader.load();
 			CreateTeamController createTeamController = fxmlLoader.getController();
 			createTeamController.setDashboardController(dashboardController);
 			Stage stage = new Stage();
