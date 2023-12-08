@@ -24,7 +24,7 @@ public class ExportAndImport {
 		try {
 			connection = DatabaseHandler.getConnection();
 
-			String sql = "insert into tasks(title, due_date, status, description, user_id) values(?,?,?,?,?)";
+			String sql = "insert into tasks(title, due_date, status, description, user_id, team_id) values(?,?,?,?,?,?)";
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -41,14 +41,15 @@ public class ExportAndImport {
 				String due_date = data[2];
 				String status = data[3];
 				String description = data[4];
-				int userId = UserSession.getCurrentUser().getUserId();
+
+				int userIds = UserSession.getCurrentUser().getUserId();
 
 				statement.setString(1, title);
 				statement.setString(2, due_date);
 				statement.setString(3, status);
 				statement.setString(4, description);
-				statement.setInt(5, userId);
-
+				statement.setInt(5, userIds);
+				statement.setInt(6, -1);
 				statement.addBatch();
 				if (count % batchSize == 0) {
 					statement.executeBatch();
@@ -98,6 +99,7 @@ public class ExportAndImport {
 				stringBuilder.append(",");
 				stringBuilder.append(results.getString("description"));
 				stringBuilder.append(",");
+				stringBuilder.append(results.getInt("user_id"));
 				stringBuilder.append("\r\n");
 
 			}
