@@ -40,12 +40,6 @@ public class TaskController {
 	@FXML
 	private Label taskTitle;
 
-	private DashboardController dashboardController;
-
-    public void setDashboardController(DashboardController dashboardController) {
-        this.dashboardController = dashboardController;
-    }
-
 	private Task taskItem;
 
 	private DashboardController dashboardController;

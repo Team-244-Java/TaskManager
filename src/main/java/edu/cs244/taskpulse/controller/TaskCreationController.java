@@ -66,12 +66,8 @@ public class TaskCreationController implements Initializable {
 
 	@FXML
 	private Text TaskStatusLabel;
-  
-	    private DashboardController dashboardController;
-	    
-	    public void setDashboardController(DashboardController dashboardController) {
-	        this.dashboardController = dashboardController;
-	    }
+
+	private DashboardController dashboardController;
 
 	public void setDashboardController(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
@@ -129,13 +125,6 @@ public class TaskCreationController implements Initializable {
 	void CancelTaskAction(ActionEvent event) {
 		Stage currentStage = (Stage) TaskCreationWindowCancelTaskButton.getScene().getWindow();
 		currentStage.close();
-    }
-
-    private void refresh() {
-		if (dashboardController != null) {
-            dashboardController.RefreshTask();
-		}
-    }
 	}
 
 	private List<String> getUsers(int teamId) throws SQLException {
@@ -156,21 +145,21 @@ public class TaskCreationController implements Initializable {
 	}
 
 	private int getUserId(String username) {
-	    int userId = 0;
-	    try (Connection connection = DatabaseHandler.getConnection()) {
-	        String query = "SELECT id FROM users WHERE username = ?";
-	        try (PreparedStatement ps = connection.prepareStatement(query)) {
-	            ps.setString(1, username);
-	            try (ResultSet result = ps.executeQuery()) {
-	                if (result.next()) {
-	                    userId = result.getInt("id");
-	                }
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace(); // Handle or log the exception appropriately
-	    }
-	    return userId;
+		int userId = 0;
+		try (Connection connection = DatabaseHandler.getConnection()) {
+			String query = "SELECT id FROM users WHERE username = ?";
+			try (PreparedStatement ps = connection.prepareStatement(query)) {
+				ps.setString(1, username);
+				try (ResultSet result = ps.executeQuery()) {
+					if (result.next()) {
+						userId = result.getInt("id");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); // Handle or log the exception appropriately
+		}
+		return userId;
 	}
 
 	private void refresh() {
