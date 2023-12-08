@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import edu.cs244.taskpulse.loader.TaskEditLoader;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import javafx.fxml.FXML;
@@ -47,10 +48,16 @@ public class TaskController {
 
 	private Task taskItem;
 
+	private DashboardController dashboardController;
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
+    
 	public void setData(Task taskItem) {
 		this.taskItem = taskItem;
 		this.taskTitle.setText(taskItem.getTitle());
-		this.description.setText(taskItem.getTitle());
+		this.description.setText(taskItem.getDescription());
 		this.dueDate.setText(taskItem.getDueDate());
 		this.status.setText(taskItem.getStatus());
 		this.assignTo.setText(getUserName(taskItem.getAssignedTo()));
@@ -58,23 +65,8 @@ public class TaskController {
 
 	@FXML
 	void onActionEdit() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TaskEdit.fxml"));
-			Parent root1 = fxmlLoader.load();
-			Stage stage = new Stage();
-			
-			TaskEditController taskEditController = fxmlLoader.getController();
-			
-			taskEditController.setTaskItem(taskItem);
-			taskEditController.setDashboardController(dashboardController);
-			
-			stage.setTitle("Task Edit");
-			stage.setScene(new Scene(root1));
-			stage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		TaskEditLoader taskEditUi = new TaskEditLoader(dashboardController,taskItem);
+		taskEditUi.newWindow();
 	}
 	
 	private String getUserName(int userId) {

@@ -66,8 +66,12 @@ public class TaskCreationController implements Initializable {
 
 	@FXML
 	private Text TaskStatusLabel;
-
-	private DashboardController dashboardController;
+  
+	    private DashboardController dashboardController;
+	    
+	    public void setDashboardController(DashboardController dashboardController) {
+	        this.dashboardController = dashboardController;
+	    }
 
 	public void setDashboardController(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
@@ -100,7 +104,6 @@ public class TaskCreationController implements Initializable {
 
 	@FXML
 	void CreateTaskAction(ActionEvent event) {
-		// get task data and user ID
 		String title = TaskCreationWindowTaskNameTextField.getText();
 		String description = TaskCreationWindowHTMLEditor.getHtmlText();
 		String strippedText = description.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "");
@@ -116,6 +119,7 @@ public class TaskCreationController implements Initializable {
 
 		// load changes and close previous page
 		Stage currentStage = (Stage) TaskCreationWindowCreateTaskButton.getScene().getWindow();
+		refresh();
 		currentStage.close();
 
 		refresh();
@@ -125,6 +129,13 @@ public class TaskCreationController implements Initializable {
 	void CancelTaskAction(ActionEvent event) {
 		Stage currentStage = (Stage) TaskCreationWindowCancelTaskButton.getScene().getWindow();
 		currentStage.close();
+    }
+
+    private void refresh() {
+		if (dashboardController != null) {
+            dashboardController.RefreshTask();
+		}
+    }
 	}
 
 	private List<String> getUsers(int teamId) throws SQLException {
@@ -167,5 +178,4 @@ public class TaskCreationController implements Initializable {
 			dashboardController.onNewTaskAdded();
 		}
 	}
-
 }

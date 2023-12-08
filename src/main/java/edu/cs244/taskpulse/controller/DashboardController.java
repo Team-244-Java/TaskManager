@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
+import edu.cs244.taskpulse.loader.CreateTaskLoader;
+import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.loader.CreateTeamLoader;
 import edu.cs244.taskpulse.loader.PasswordSettingLoader;
 import edu.cs244.taskpulse.loader.ProfileSettingsLoader;
@@ -247,19 +249,8 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void DashboardCreateNewTaskButton() {
-
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TaskCreation.fxml"));
-			Parent root1 = fxmlLoader.load();
-			TaskCreationController taskCreationController = fxmlLoader.getController();
-			taskCreationController.setDashboardController(this);
-			Stage stage = new Stage();
-			stage.setTitle("Task Creation");
-			stage.setScene(new Scene(root1));
-			stage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		CreateTaskLoader taskUi = new CreateTaskLoader(this);
+		taskUi.newWindow();
 	}
 
 	@FXML
@@ -276,10 +267,13 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void onRefreshTask() {
+		RefreshTask();
+	}
+	
+	public void RefreshTask() {
 		tasks.clear();
 		tilePane.getChildren().clear();
 		loadTask();
-
 	}
 
 	@FXML
@@ -382,6 +376,7 @@ public class DashboardController implements Initializable {
 
 				TaskController taskController = fxmlLoader.getController();
 				taskController.setData(tasks.get(i));
+				taskController.setDashboardController(this);
 
 				taskController.setDashboardController(this);
 
@@ -660,26 +655,25 @@ public class DashboardController implements Initializable {
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
-	}
+    }
+    
+    private List<Task> getSearchData(int userId, String title) throws SQLException {
+        List<Task> tasks = new ArrayList<>();
 
-	private List<Task> getSearchData(int userId, String title) throws SQLException {
-		List<Task> tasks = new ArrayList<>();
+        try (Connection connection = DatabaseHandler.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
 
-		try (Connection connection = DatabaseHandler.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
-			preparedStatement.setInt(1, userId);
-			preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
-
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				while (resultSet.next()) {
-					Task task = new Task(resultSet.getString("title"), resultSet.getString("due_date"),
-							resultSet.getString("status"), resultSet.getString("description"));
-					tasks.add(task);
-				}
-			}
-		}
-		return tasks;
-	}
-
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Task task = new Task(resultSet.getString("title"),
+                            resultSet.getString("due_date"), resultSet.getString("status"),
+                            resultSet.getString("description"));
+                    tasks.add(task);
+                }
+            }
+        }
+        return tasks;
+    }
 }
