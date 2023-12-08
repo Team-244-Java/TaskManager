@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.CreateTaskLoader;
@@ -163,8 +165,14 @@ public class DashboardController implements Initializable {
 	@FXML
 	private ComboBox<String> teamShowComboBox;
 
+	
+	@FXML
+	private ImageView userAvatarImageView;
+	
+
 	@FXML
 	private VBox teamMemberContainer;
+
 
 	private ChatGPTHttpClient chatGPTClient = new ChatGPTHttpClient();
 	private boolean waitingForGptResponse = false;
@@ -175,7 +183,7 @@ public class DashboardController implements Initializable {
 	}
 
 	@FXML
-	void onSearch() throws SQLException {
+	void onSearch() throws SQLException, ClassNotFoundException {
 		loadRefreshtasked();
 	}
 
@@ -245,6 +253,7 @@ public class DashboardController implements Initializable {
 		loadTeamMember(getTeamMembers(getTeamId(selectedTeamName)));
 		loadTask();
 		loadReminder();
+		updateAvatar(getPicture());
 	}
 
 	@FXML
@@ -454,6 +463,49 @@ public class DashboardController implements Initializable {
 	private void showUsername() {
 		welcomeUserLabel.setText("Welcome " + UserSession.getCurrentUser().getUsername());
 	}
+	
+	
+
+	 static public String getPicture() {
+	    	//Get user info
+	    	int userId = UserSession.getCurrentUser().getUserId();
+	    	
+	    	//Check if user have profile picture
+	    	String url = "";
+	        Connection connection = null;
+	    	try {
+	    		String sql = "SELECT profile_picture FROM users WHERE id = ?";
+	    			
+	    		connection = DatabaseHandler.getConnection();
+	    		PreparedStatement pStmt = connection.prepareStatement(sql);
+	    		
+	    		// Set Parameters
+				pStmt.setInt(1, userId);
+				
+				try (ResultSet rs = pStmt.executeQuery()) {
+					if (rs.next()) {
+						url = rs.getString("profile_picture");
+						
+			        	if (url == null) {
+			        		url = "images/ProfileIcon.png";
+			        	}
+						return url;
+					} 
+				}
+	    		
+
+	    	}catch (Exception ex) {
+	    		ex.printStackTrace();
+	    	}
+			return url;
+	    }
+	 
+	 public void updateAvatar(String url) {
+		 Image image = new Image(url);
+		 userAvatarImageView.setImage(image);
+		 userAvatarImageView.setFitWidth(50);
+		 userAvatarImageView.setFitHeight(50);
+	 }
 
 	@FXML
 	void exportTask() {
@@ -630,7 +682,7 @@ public class DashboardController implements Initializable {
 		try {
 			tasks.clear();
 			tilePane.getChildren().clear();
-			tasks.addAll(getSearchData(userId, title));
+			tasks.addAll(getSearchData(getData(userId,selectedTeamId), title));
 
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
@@ -655,25 +707,20 @@ public class DashboardController implements Initializable {
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    private List<Task> getSearchData(int userId, String title) throws SQLException {
-        List<Task> tasks = new ArrayList<>();
+	}
 
-        try (Connection connection = DatabaseHandler.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tasks WHERE user_id = ? AND LOWER(title) LIKE ?")) {
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, "%" + title.toLowerCase() + "%");
+	private List<Task> getSearchData(List<Task> list, String title){
+		List<Task> matchingTask = new ArrayList<>();
+		
+		for(Task tasks : list) {
+			
+			if(tasks.getTitle().toLowerCase().contains(title.toLowerCase())) {
+				matchingTask.add(tasks);
+			}
+		}
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    Task task = new Task(resultSet.getString("title"),
-                            resultSet.getString("due_date"), resultSet.getString("status"),
-                            resultSet.getString("description"));
-                    tasks.add(task);
-                }
-            }
-        }
-        return tasks;
-    }
+		return matchingTask;
+		
+	}
+
 }
