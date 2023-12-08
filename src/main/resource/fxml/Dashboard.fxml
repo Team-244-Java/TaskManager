@@ -86,7 +86,7 @@
                               <Insets left="5.0" top="3.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="Segoe UI" size="16.0" />
+                              <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
                         <HBox fx:id="DashboardCreateNewTaskButton" alignment="CENTER" onMouseClicked="#DashboardCreateNewTaskButton" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="work-item">
@@ -169,7 +169,7 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="Segoe UI" size="16.0" />
+                              <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
                         <HBox fx:id="DashboardEditRegistrationButton" alignment="CENTER" onMouseClicked="#editProfile" prefHeight="43.0" prefWidth="152.0" spacing="15.0" styleClass="profile-item">
@@ -218,7 +218,7 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="Segoe UI" size="16.0" />
+                              <Font name="Segoe UI Bold" size="16.0" />
                            </font>
                         </Label>
                      </children>
