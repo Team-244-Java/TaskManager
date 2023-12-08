@@ -2,11 +2,9 @@ package edu.cs244.taskpulse.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
-import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 
 public class Task {
 
@@ -17,6 +15,8 @@ public class Task {
 	private String status;
 	private int userId;
 	private String priority;
+	private int teamId;
+	private int assignTo; // this is userId
 
 	// Constructor : setting the defaults...
 	public Task(int taskId, String title, String description, String dueDate, String status, int userId,
@@ -29,13 +29,14 @@ public class Task {
 		this.userId = userId;
 		this.priority = priority;
 	}
-	
-	public Task(int id, String title, String dueDate, String status, String description) {
+
+	public Task(int id, String title, String dueDate, String status, String description, int assignTo) {
 		this.taskId = id;
 		this.title = title;
 		this.dueDate = dueDate;
 		this.status = status;
 		this.description = description;
+		this.assignTo = assignTo;
 	}
 
 	public Task(String title, String dueDate, String status, String description) {
@@ -73,6 +74,14 @@ public class Task {
 		return priority;
 	}
 
+	public int getTeamId() {
+		return teamId;
+	}
+
+	public int getAssignedTo() {
+		return assignTo;
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -97,13 +106,22 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public static void addTask(String title, String description, String due_date, String status, int user_id){
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
+
+	public void setAssignTo(int asssignTo) {
+		this.assignTo = asssignTo;
+	}
+
+	public static void addTask(String title, String description, String due_date, String status, int user_id,
+			int teamId, int assignedTo) {
 		Connection connection = null;
 		try {
-			String sql = "INSERT INTO tasks (title, description, due_date, status, user_id) " +  
-					"VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO tasks (title, description, due_date, status, user_id, team_id, assignTo) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 			connection = DatabaseHandler.getConnection();
-			
+
 			PreparedStatement pStmt = connection.prepareStatement(sql);
 
 //			// Set Parameters
@@ -112,49 +130,50 @@ public class Task {
 			pStmt.setString(3, due_date);
 			pStmt.setString(4, status);
 			pStmt.setInt(5, user_id);
+			pStmt.setInt(6, teamId);
+			pStmt.setInt(7, assignedTo);
 			
-			//execute
+			// execute
 			pStmt.executeUpdate();
 			connection.commit();
-		}catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
-	public static void updateTask(String title, String description, String due_date, String status, int id) {
+	public static void updateTask(String title, String description, String due_date, String status, int id, int assignTo) {
 		Connection connection = null;
-    	try {
-    		String sql = "UPDATE tasks "
-    				+ "SET title = ?, description = ?, due_date = ?, status = ? WHERE id = ?";
-    			
-    		connection = DatabaseHandler.getConnection();
-    		PreparedStatement pStmt = connection.prepareStatement(sql);
-    		
-    		// Set Parameters
+		try {
+			String sql = "UPDATE tasks " + "SET title = ?, description = ?, due_date = ?, status = ?, assignTo = ? WHERE id = ?";
+
+			connection = DatabaseHandler.getConnection();
+			PreparedStatement pStmt = connection.prepareStatement(sql);
+
+			// Set Parameters
 			pStmt.setString(1, title);
 			pStmt.setString(2, description);
 			pStmt.setString(3, due_date);
 			pStmt.setString(4, status);
-			pStmt.setInt(5, id);
-    		
-    		//execute update
+			pStmt.setInt(5, assignTo);
+			pStmt.setInt(6, id);
+
+			// execute update
 			pStmt.executeUpdate();
 			connection.commit();
-    	}catch (Exception ex) {
-    		ex.printStackTrace();
-    	}
-    
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 	}
 
 	public static void deleteTask(int taskID) {
 		try (Connection connection = DatabaseHandler.getConnection();
-				PreparedStatement preparedStatement = connection
-				.prepareStatement("DELETE FROM tasks WHERE id = ?")) {
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM tasks WHERE id = ?")) {
 			preparedStatement.setInt(1, taskID);
 			preparedStatement.executeUpdate();
 			connection.commit();
-			
-		}catch (Exception ex) {
+
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
