@@ -1,5 +1,6 @@
 package edu.cs244.taskpulse.loader;
 
+import edu.cs244.taskpulse.controller.DashboardController;
 import edu.cs244.taskpulse.controller.ProfileSettingController;
 
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,15 @@ import javafx.stage.Stage;
 
 
 public class ProfileSettingsLoader {
+	
+	private DashboardController dashboardController;
+
+	public ProfileSettingsLoader(DashboardController dashboardController) {
+		this.dashboardController = dashboardController;
+	}
+	
+	public ProfileSettingsLoader() {
+	}
 	public void newWindow() {
 	try {
 		FXMLLoader fxmlLoader =  new FXMLLoader(getClass().getResource("/fxml/ProfileSetting.fxml"));
@@ -18,6 +28,7 @@ public class ProfileSettingsLoader {
 		ProfileSettingController profile = (ProfileSettingController)fxmlLoader.getController();
 		profile.updatePicture(ProfileSettingController.getPicture());
 		profile.updateUsernameLabel();
+		profile.setDashboardController(dashboardController);
 		
 		stage.setTitle("Profile Setting");
 		stage.setScene(new Scene(root1));
@@ -34,6 +45,7 @@ public class ProfileSettingsLoader {
 			ProfileSettingController profile = (ProfileSettingController)fxmlLoader.getController();
 			profile.updatePicture(ProfileSettingController.getPicture());
 			profile.updateUsernameLabel();
+			profile.setDashboardController(dashboardController);
 			
 			primaryStage.setTitle("Profile Setting");
 			primaryStage.setScene(new Scene(root, 1220, 740));

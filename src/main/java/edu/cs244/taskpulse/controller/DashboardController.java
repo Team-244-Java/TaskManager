@@ -264,7 +264,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void editProfile() {
-		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
+		ProfileSettingsLoader profileUi = new ProfileSettingsLoader(this);
 		profileUi.newWindow();
 	}
 

@@ -75,6 +75,12 @@ public class ProfileSettingController {
     @FXML
     private TextField usernameTextField;
 	    
+    private DashboardController dashboardController;
+
+	public void setDashboardController(DashboardController dashboardController) {
+		this.dashboardController = dashboardController;
+	}
+	
 	    @FXML
 	    private void handleSaveChanges() {
 	    	//get info from text fields and user data
@@ -168,6 +174,7 @@ public class ProfileSettingController {
 	    	}catch (Exception ex) {
 	    		ex.printStackTrace();
 	    	}
+	    	refresh();
 	    }
 	    
 	    static public String getPicture() {
@@ -239,4 +246,8 @@ public class ProfileSettingController {
 	    public void updateUsernameLabel() {
 	    	ProfileSettingsUsernameLabel.setText(UserSession.getCurrentUser().getUsername());
 	    }
+	    
+	    private void refresh() {
+	    	dashboardController.updateAvatar(getPicture());
+		}
 }
