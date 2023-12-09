@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.jsoup.Jsoup;
+
 public class TaskEditController implements Initializable {
 
 	@FXML
@@ -108,7 +110,7 @@ public class TaskEditController implements Initializable {
 		// get task data
 		String title = TaskEditWindowTaskNameTextField.getText();
 		String description = TaskEditWindowHTMLEditor.getHtmlText();
-		String strippedText = description.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "");
+		String text = Jsoup.parse(description).text();
 		// convert date to string
 		LocalDate dueDate = TaskEditWindowDatePicker.getValue();
 		String sDate = dueDate.toString();
@@ -116,7 +118,7 @@ public class TaskEditController implements Initializable {
 		int taskId = this.taskItem.getTaskId();
 		int assignTo = getUserId(TaskEditAssignedToComboBox.getValue());
 
-		Task.updateTask(title, strippedText, sDate, status, taskId, assignTo);
+		Task.updateTask(title, text, sDate, status, taskId, assignTo);
 		Stage currentStage = (Stage) TaskEditWindowCancelTaskButton.getScene().getWindow();
 		refresh();
 		currentStage.close();
@@ -183,6 +185,8 @@ public class TaskEditController implements Initializable {
 		if (dashboardController != null) {
 			dashboardController.onNewTaskAdded();
 		}
+		
+		
 	}
 
 }
