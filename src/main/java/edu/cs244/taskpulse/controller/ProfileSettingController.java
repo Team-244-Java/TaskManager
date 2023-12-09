@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 
 
 
+
 public class ProfileSettingController {
 
     @FXML
@@ -74,6 +75,8 @@ public class ProfileSettingController {
 
     @FXML
     private TextField usernameTextField;
+    
+    private DashboardController dashboardController;
 	    
 	    @FXML
 	    private void handleSaveChanges() {
@@ -127,7 +130,16 @@ public class ProfileSettingController {
 	    	// Save to database
 	    	updateProfile(first_name, last_name, username, phonenumber, email, userId);
 	    	errorLabel.setText("You updated your Profile!");
+	    	
+	    	refresh();
+	    	
 	    }
+	    
+	    private void refresh() {
+    		if (dashboardController != null) {
+    			dashboardController.onNewTaskAdded();
+    		}
+    	}
 	    
 	    
 	    @FXML
@@ -168,6 +180,8 @@ public class ProfileSettingController {
 	    	}catch (Exception ex) {
 	    		ex.printStackTrace();
 	    	}
+	    	
+	    
 	    }
 	    
 	    static public String getPicture() {
@@ -239,4 +253,8 @@ public class ProfileSettingController {
 	    public void updateUsernameLabel() {
 	    	ProfileSettingsUsernameLabel.setText(UserSession.getCurrentUser().getUsername());
 	    }
+	    
+	    public void setDashboardController(DashboardController dashboardController) {
+			this.dashboardController = dashboardController;
+		}
 }

@@ -264,7 +264,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	void editProfile() {
-		ProfileSettingsLoader profileUi = new ProfileSettingsLoader();
+		ProfileSettingsLoader profileUi = new ProfileSettingsLoader(this);
 		profileUi.newWindow();
 	}
 
@@ -471,41 +471,68 @@ public class DashboardController implements Initializable {
 	    	int userId = UserSession.getCurrentUser().getUserId();
 	    	
 	    	//Check if user have profile picture
-	    	String url = "";
+	    	String defaultPicture = "/images/PageIcon.png";
+	        String url = "";
 	        Connection connection = null;
+	        
 	    	try {
-	    		String sql = "SELECT profile_picture FROM users WHERE id = ?";
-	    			
+	    		String sql = "SELECT COALESCE(profile_picture, ?) AS profile_picture FROM users WHERE id = ?";
+	    		
 	    		connection = DatabaseHandler.getConnection();
 	    		PreparedStatement pStmt = connection.prepareStatement(sql);
 	    		
 	    		// Set Parameters
-				pStmt.setInt(1, userId);
+	    		pStmt.setString(1, defaultPicture);
+				pStmt.setInt(2, userId);
 				
 				try (ResultSet rs = pStmt.executeQuery()) {
 					if (rs.next()) {
 						url = rs.getString("profile_picture");
+						if (url == null || url.isEmpty()) {
+							url = defaultPicture;
+						}
 						
-			        	if (url == null) {
-			        		url = "images/ProfileIcon.png";
-			        	}
 						return url;
 					} 
 				}
 	    		
-
 	    	}catch (Exception ex) {
 	    		ex.printStackTrace();
+	    	} finally {
+	            // Close the connection
+	            if (connection != null) {
+	                try {
+	                    connection.close();
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	            }
+	    	
 	    	}
+	    	
 			return url;
 	    }
 	 
 	 public void updateAvatar(String url) {
 		 Image image = new Image(url);
-		 userAvatarImageView.setImage(image);
-		 userAvatarImageView.setFitWidth(50);
-		 userAvatarImageView.setFitHeight(50);
+		 if (image != null) {
+		        userAvatarImageView.setImage(image);
+		        userAvatarImageView.setFitWidth(50);
+		        userAvatarImageView.setFitHeight(50);
+		    }
 	 }
+	 
+	 
+//	 public void handleAvatarUpdate() {
+////		 Fetch the updated avatar URL from the database for the current user
+//		 int userId = UserSession.getCurrentUser().getUserId();
+//		 
+//		 String newAvatarUrl = updateAvatar(getPicture());
+//		 
+//		 
+//		 
+//		 
+//	 }
 
 	@FXML
 	void exportTask() {
