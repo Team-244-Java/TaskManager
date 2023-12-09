@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.jsoup.Jsoup;
+
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
 import javafx.collections.FXCollections;
@@ -102,7 +104,7 @@ public class TaskCreationController implements Initializable {
 	void CreateTaskAction(ActionEvent event) {
 		String title = TaskCreationWindowTaskNameTextField.getText();
 		String description = TaskCreationWindowHTMLEditor.getHtmlText();
-		String strippedText = description.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "");
+		String text = Jsoup.parse(description).text();
 		// convert date to string
 		LocalDate dueDate = TaskCreationWindowDatePicker.getValue();
 		String sDate = dueDate.toString();
@@ -111,7 +113,7 @@ public class TaskCreationController implements Initializable {
 		int teams_id = dashboardController.getSelecttedTeamId();
 		int assignTo = getUserId(TaskCreationAssignedToComboBox.getValue());
 		// send to database
-		Task.addTask(title, strippedText, sDate, status, userId, teams_id, assignTo);
+		Task.addTask(title, text, sDate, status, userId, teams_id, assignTo);
 
 		// load changes and close previous page
 		Stage currentStage = (Stage) TaskCreationWindowCreateTaskButton.getScene().getWindow();
