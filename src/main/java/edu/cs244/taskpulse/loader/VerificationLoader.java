@@ -10,7 +10,7 @@ public class VerificationLoader {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Verification.fxml"));
 			primaryStage.setTitle("Verification");
-			primaryStage.setScene(new Scene(root, 400, 400));
+			primaryStage.setScene(new Scene(root, 1000, 600));
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

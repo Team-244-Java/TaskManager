@@ -2,41 +2,60 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #212121;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.VerificationController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../loginStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cs244.taskpulse.controller.VerificationController">
    <children>
-      <Label layoutX="92.0" layoutY="8.0" text="Verification" textFill="WHITE">
+      <Pane fx:id="content_area" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #246B9D;">
+         <children>
+            <ImageView fitHeight="362.0" fitWidth="348.0" layoutX="76.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/LoginPageImage.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="675.0" layoutY="38.0" text="Verification">
          <font>
-            <Font name="Tahoma Bold" size="36.0" />
+            <Font name="Segoe UI Bold" size="30.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="114.0" layoutY="52.0" prefHeight="5.0" prefWidth="166.0" style="-fx-background-color: #246B9D;" />
-      <ImageView fitHeight="194.0" fitWidth="271.0" layoutX="67.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/brain.png" />
-         </image>
-      </ImageView>
-      <Text fill="#c6c1c1" layoutX="62.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the email to verify" wrappingWidth="269.5">
+      <Label layoutX="518.0" layoutY="203.0" prefHeight="36.0" prefWidth="94.0" text="Email">
          <font>
-            <Font name="Tahoma Bold" size="13.0" />
+            <Font name="Segoe UI Bold" size="16.0" />
          </font>
-      </Text>
-      <Text fill="#c3c2c2" layoutX="62.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the code provided" wrappingWidth="269.5">
+      </Label>
+      <TextField fx:id="userEmail" layoutX="625.0" layoutY="203.0" prefHeight="36.0" prefWidth="244.0" promptText="example@email.com">
          <font>
-            <Font name="Tahoma Bold" size="13.0" />
+            <Font name="Segoe UI" size="12.0" />
+         </font></TextField>
+      <Button fx:id="verifyBtn" layoutX="672.0" layoutY="419.0" mnemonicParsing="false" onAction="#actionVerifyBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Verify" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font></Button>
+      <Label layoutX="720.0" layoutY="577.0" text="2023 CIS244" textFill="GREY" />
+      <Label layoutX="940.0" layoutY="585.0" text="version 1.0" textFill="GREY" />
+      <Button fx:id="sendCodeBtn" layoutX="898.0" layoutY="203.0" mnemonicParsing="false" onAction="#actionCodeBtn" prefHeight="36.0" prefWidth="85.0" style="-fx-background-color: #246B9D;" text="Send Code" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
          </font>
-      </Text>
-      <Button fx:id="verifiyButton" layoutX="287.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleVerifiyButtonAction" prefHeight="26.0" prefWidth="84.0" style="-fx-background-color: #246B9D; -fx-background-radius: 90;" text="Verify" textFill="WHITE" />
-      <PasswordField fx:id="codeInput" layoutX="111.0" layoutY="293.0" prefHeight="26.0" prefWidth="157.0" style="-fx-background-radius: 85;" />
-      <TextField fx:id="accountInput" layoutX="111.0" layoutY="217.0" prefHeight="26.0" prefWidth="157.0" style="-fx-background-radius: 85;" />
-      <Button fx:id="mailButton" layoutX="287.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleMailButtonAction" prefHeight="26.0" prefWidth="84.0" style="-fx-background-color: #246B9D; -fx-background-radius: 90;" text="Send email" textFill="WHITE" />
-      <Label fx:id="warningLabel" layoutX="133.0" layoutY="345.0" prefHeight="17.0" prefWidth="134.0" textFill="#e80505" />
+      </Button>
+      <Text fx:id="errorLabel" fill="#f50707" layoutX="672.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="149.0000000000001" />
+      <Label layoutX="518.0" layoutY="282.0" prefHeight="36.0" prefWidth="94.0" text="Verfiy code">
+         <font>
+            <Font name="Segoe UI Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="userCode" layoutX="625.0" layoutY="282.0" prefHeight="36.0" prefWidth="244.0" promptText="code">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>

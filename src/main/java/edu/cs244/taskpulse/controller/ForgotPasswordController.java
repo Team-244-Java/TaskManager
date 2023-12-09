@@ -83,7 +83,7 @@ public class ForgotPasswordController {
 		VerificationAndForgotPassword.sendMail(email, "Forgot Password", "Your code for resting your password is: " );
 		
 		errorLabel.setText("A code been sent");
-
+		sendCodeBtn.setDisable(true);
 	}
 
 	@FXML

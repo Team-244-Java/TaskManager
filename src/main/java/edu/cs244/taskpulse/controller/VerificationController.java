@@ -2,54 +2,73 @@ package edu.cs244.taskpulse.controller;
 
 import edu.cs244.taskpulse.loader.DashboardLoader;
 import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
 public class VerificationController {
 	
-	
+	@FXML
+    private AnchorPane anchorPane;
 
     @FXML
-    private TextField accountInput;
+    private Pane content_area;
 
     @FXML
-    private PasswordField codeInput;
-    
-    
-    public Button mailButton;
+    private Text errorLabel;
 
     @FXML
-    private Label warningLabel;
-    
+    private Button sendCodeBtn;
+
     @FXML
-    public Button verifiyButton;
+    private TextField userCode;
+
+    @FXML
+    private TextField userEmail;
+
+    @FXML
+    private Button verifyBtn;
 
 
     @FXML
-	public void handleVerifiyButtonAction() {
-    	String email = accountInput.getText();
-    	String code = codeInput.getText();
+	void actionVerifyBtn(ActionEvent event) {
+    	String email = userEmail.getText();
+    	String code = userCode.getText();
 		boolean codeSucessful = VerificationAndForgotPassword.checkCodeAndUpdateStatus(email, code);
 		if (codeSucessful) {
-			warningLabel.setText(""); // Clear any previous error messages
-			Stage currentStage = (Stage) verifiyButton.getScene().getWindow();
+			errorLabel.setText(""); // Clear any previous error messages
+			Stage currentStage = (Stage) verifyBtn.getScene().getWindow();
 			DashboardLoader dashboardLoader = new DashboardLoader();
 			dashboardLoader.start(currentStage);
 		} else {
-			warningLabel.setText("Code is incorrect.");
+			errorLabel.setText("Code is incorrect.");
 		}
 	}
 
     	@FXML
-       void handleMailButtonAction() throws Exception {
-    	String email = accountInput.getText();
+       void actionCodeBtn() throws Exception {
+    	String email = userEmail.getText();
 		VerificationAndForgotPassword.sendMail(email, "Verification", "Your verification code is: ");
-    	warningLabel.setText("A code been sent");
+		errorLabel.setText("A code been sent");
+		sendCodeBtn.setDisable(true);
+		
     }
-    
+    	
+        @FXML
+        void setOnMouseDragged(MouseEvent event) {
+
+        }
+
+        @FXML
+        void setOnMousePressed(MouseEvent event) {
+
+        }
+
 }
