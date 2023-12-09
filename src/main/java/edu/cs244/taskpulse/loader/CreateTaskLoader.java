@@ -25,6 +25,7 @@ public class CreateTaskLoader {
 			Stage stage = new Stage();
 			stage.setTitle("Task Creation");
 			stage.setScene(new Scene(root1));
+			stage.setResizable(false);
 			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
