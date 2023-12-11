@@ -15,9 +15,8 @@ import javax.mail.internet.MimeMessage;
 
 public class Mail{
 	
-	public static void sendMail(String recepient) throws Exception {
+	public static void sendMail(String recepient, int numOfTaskDue) throws Exception {
 		Properties properties = new Properties();
-		System.out.println("preparing to send email");
 		
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
@@ -34,19 +33,19 @@ public class Mail{
 			}
 		});
 		
-		Message message = prepareMessage(session,myAccountEmail, recepient);
+		Message message = prepareMessage(session, myAccountEmail, recepient, numOfTaskDue);
 		
 		Transport.send(message);
 	
 	}
 	
-	private static Message prepareMessage(Session session, String myAccountEmail, String recepient) {
+	private static Message prepareMessage(Session session, String myAccountEmail, String recepient, int numOfTaskDue) {
 		try {
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(myAccountEmail));
 		message.setRecipient(Message.RecipientType.TO,new InternetAddress(recepient));
 		message.setSubject("Task Reminder");
-		message.setText("This is a task Reminder");
+		message.setText("You have " + numOfTaskDue + " task(s) that is due soon.");
 		return message;
 		}catch (Exception ex) {
 			Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
