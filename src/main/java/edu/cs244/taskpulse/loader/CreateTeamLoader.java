@@ -5,6 +5,7 @@ import edu.cs244.taskpulse.controller.DashboardController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class CreateTeamLoader {
@@ -21,6 +22,8 @@ public class CreateTeamLoader {
 			CreateTeamController createTeamController = fxmlLoader.getController();
 			createTeamController.setDashboardController(dashboardController);
 			Stage stage = new Stage();
+			Image icon = new Image("/images/PageIcon.png");
+			stage.getIcons().add(icon);
 			stage.setTitle("Create Team");
 			stage.setScene(new Scene(root));
 			stage.show();

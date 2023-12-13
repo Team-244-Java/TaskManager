@@ -5,6 +5,7 @@ import edu.cs244.taskpulse.controller.ProfileSettingController;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -29,7 +30,8 @@ public class ProfileSettingsLoader {
 		profile.updatePicture(ProfileSettingController.getPicture());
 		profile.updateUsernameLabel();
 		profile.setDashboardController(dashboardController);
-		
+		Image icon = new Image("/images/PageIcon.png");
+		stage.getIcons().add(icon);
 		stage.setTitle("Profile Setting");
 		stage.setScene(new Scene(root1));
 		stage.show();
