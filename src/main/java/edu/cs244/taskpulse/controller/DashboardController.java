@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import edu.cs244.taskpulse.utils.Mail;
 import edu.cs244.taskpulse.loader.CreateReminderLoader;
 import edu.cs244.taskpulse.loader.CreateTaskLoader;
 import edu.cs244.taskpulse.loader.DashboardLoader;
@@ -254,6 +255,7 @@ public class DashboardController implements Initializable {
 		loadTask();
 		loadReminder();
 		updateAvatar(getPicture());
+		//TaskReminder();
 	}
 
 	@FXML
@@ -683,7 +685,7 @@ public class DashboardController implements Initializable {
 			tasks.clear();
 			tilePane.getChildren().clear();
 			tasks.addAll(getSearchData(getData(userId,selectedTeamId), title));
-
+			
 			for (int i = 0; i < tasks.size(); i++) {
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				Task task = tasks.get(i);
@@ -722,5 +724,45 @@ public class DashboardController implements Initializable {
 		return matchingTask;
 		
 	}
+	private void TaskReminder() {
+		try {
+		int id = UserSession.getCurrentUser().getUserId();
+		getEmail(id);
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plusDays(1);
+		String stringTomorrow = tomorrow.toString();
+		int i = 0;
+		
+		for(Task tasks : getData(UserSession.getCurrentUser().getUserId(),selectedTeamId)) {
+			String test = tasks.getDueDate();
+			
+			if(test.equals(stringTomorrow)) {
+				test = tasks.getTitle();
+				i++;
+			}
+		}
+		if (i > 0) {
+			Mail.sendMail(getEmail(id), i);
+		}
 
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
+}
+	
+	private String getEmail(int id) {
+		ResultSet rs = null;
+		try (Connection connection = DatabaseHandler.getConnection();
+			PreparedStatement stmt = connection.prepareStatement("SELECT email FROM users WHERE id = ?");){
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getString("email");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
