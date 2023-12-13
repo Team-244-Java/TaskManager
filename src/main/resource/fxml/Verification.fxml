@@ -26,7 +26,7 @@
             <Font name="Segoe UI Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="518.0" layoutY="203.0" prefHeight="36.0" prefWidth="94.0" text="Email">
+      <Label layoutX="505.0" layoutY="203.0" prefHeight="36.0" prefWidth="107.0" text="Email">
          <font>
             <Font name="Segoe UI Bold" size="16.0" />
          </font>
@@ -41,13 +41,13 @@
          </font></Button>
       <Label layoutX="720.0" layoutY="577.0" text="2023 CIS244" textFill="GREY" />
       <Label layoutX="940.0" layoutY="585.0" text="version 1.0" textFill="GREY" />
-      <Button fx:id="sendCodeBtn" layoutX="898.0" layoutY="203.0" mnemonicParsing="false" onAction="#actionCodeBtn" prefHeight="36.0" prefWidth="85.0" style="-fx-background-color: #246B9D;" text="Send Code" textFill="WHITE">
+      <Button fx:id="sendCodeBtn" layoutX="704.0" layoutY="339.0" mnemonicParsing="false" onAction="#actionCodeBtn" prefHeight="36.0" prefWidth="85.0" style="-fx-background-color: #246B9D;" text="Send Code" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>
       </Button>
       <Text fx:id="errorLabel" fill="#f50707" layoutX="672.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="149.0000000000001" />
-      <Label layoutX="518.0" layoutY="282.0" prefHeight="36.0" prefWidth="94.0" text="Verfiy code">
+      <Label layoutX="505.0" layoutY="282.0" prefHeight="36.0" prefWidth="107.0" text="Verify Code">
          <font>
             <Font name="Segoe UI Bold" size="16.0" />
          </font>
