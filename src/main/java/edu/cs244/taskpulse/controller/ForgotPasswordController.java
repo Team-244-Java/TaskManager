@@ -11,7 +11,6 @@ import edu.cs244.taskpulse.loader.LoginLoader;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.HasherAndEncrypt;
 import edu.cs244.taskpulse.utils.VerificationAndForgotPassword;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

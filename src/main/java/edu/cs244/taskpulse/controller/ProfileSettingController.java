@@ -1,30 +1,22 @@
 package edu.cs244.taskpulse.controller;
 
 import java.io.File;
-import java.net.URI;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import edu.cs244.taskpulse.utils.UserSession;
-import edu.cs244.taskpulse.controller.RegisterController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import edu.cs244.taskpulse.loader.PasswordSettingLoader;
-import javafx.event.ActionEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 
 

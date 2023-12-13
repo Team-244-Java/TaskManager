@@ -10,12 +10,8 @@ import edu.cs244.taskpulse.loader.TaskEditLoader;
 import edu.cs244.taskpulse.models.Task;
 import edu.cs244.taskpulse.utils.DatabaseHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public class TaskController {
 
