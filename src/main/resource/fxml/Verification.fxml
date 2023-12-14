@@ -41,7 +41,7 @@
          </font></Button>
       <Label layoutX="720.0" layoutY="577.0" text="2023 CIS244" textFill="GREY" />
       <Label layoutX="940.0" layoutY="585.0" text="version 1.0" textFill="GREY" />
-      <Button fx:id="sendCodeBtn" layoutX="704.0" layoutY="339.0" mnemonicParsing="false" onAction="#actionCodeBtn" prefHeight="36.0" prefWidth="85.0" style="-fx-background-color: #246B9D;" text="Send Code" textFill="WHITE">
+      <Button fx:id="sendCodeBtn" layoutX="672.0" layoutY="357.0" mnemonicParsing="false" onAction="#actionCodeBtn" prefHeight="36.0" prefWidth="149.0" style="-fx-background-color: #246B9D;" text="Send Code" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>

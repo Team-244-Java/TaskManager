@@ -512,11 +512,11 @@ public class DashboardController implements Initializable {
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV files", "*.csv"));
 		fileChooser.setInitialFileName("Tasks.csv");
 		File savedFile = fileChooser.showSaveDialog(null);
-		System.out.println(savedFile);
+		//System.out.println(savedFile);
 
 		if (savedFile != null) {
 			String path = new String(savedFile.toURI().toString());
-			System.out.println(path);
+			//System.out.println(path);
 			ExportAndImport.Export(path);
 			//onRefreshTask();
 

@@ -85,13 +85,13 @@ public class Team {
 		            // Update the CheckComboBox with the new team name
 		            if (teamComboBox != null) {
 		                Platform.runLater(() -> {  // Ensure UI updates on the JavaFX application thread
-		                	System.out.println("Executing runLater block");
-		                    System.out.println("Before adding: " + teamComboBox.getItems());
+		                	//System.out.println("Executing runLater block");
+		                    //System.out.println("Before adding: " + teamComboBox.getItems());
 		                    
 		                    teamComboBox.getItems().add(teamName);
 		                    teamComboBox.getCheckModel().check(teamName);
 		                    
-		                    System.out.println("After adding: " + teamComboBox.getItems());
+		                    //System.out.println("After adding: " + teamComboBox.getItems());
 		                });
 		            }
 
