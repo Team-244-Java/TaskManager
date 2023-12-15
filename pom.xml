@@ -6,10 +6,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>edu.cs244</groupId>
-	<artifactId>taskpulse</artifactId>
+	<artifactId>TaskDiver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>taskpulse</name>
+	<name>TaskDiver</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
@@ -171,7 +171,7 @@
 					</executions>
 					<configuration>
 						<mainClass>
-							edu.cs244.taskpulse.Main</mainClass>
+							edu.cs244.TaskDiver.Main</mainClass>
 						<arguments>
 						</arguments>
 					</configuration>
